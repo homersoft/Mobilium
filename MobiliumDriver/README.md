@@ -1,16 +1,16 @@
-##Prepare
+## Prepare
 No preparations steps are needed to run driver.
 
-##Initialize
+## Initialize
 To initialize all requirements, simply run command below:
 ```
 make init
 ```
 
-##Test
+## Test
 Currently there are no tests available for MobiliumDriver.
 
-##Run
+## Run
 MobiliumDriver should be started by MobiliumServer. If you want to start it manually, run command below:
 ```
 xcodebuild -project MobiliumDriver.xcodeproj \
