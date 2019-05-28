@@ -10,16 +10,15 @@ import XCTest
 import Network
 import SocketIO
 
-let ip = "192.168.52.93"
-let port = 65432
-
-
 class MobiliumDriver: XCTestCase, StreamDelegate {
     var socket: SocketIOClient?
     var keepAlive = true
 
     func testApplication() {
-        let manager = SocketManager(socketURL: URL(string: "tcp://\(ip):\(port)")!, config: [.log(true), .compress])
+        guard let host = ProcessInfo.processInfo.environment["HOST"],
+            let port = ProcessInfo.processInfo.environment["PORT"] else { return XCTFail("Host or port not provided") }
+
+        let manager = SocketManager(socketURL: URL(string: "tcp://\(host):\(port)")!, config: [.log(true), .compress])
         socket = manager.socket(forNamespace: "/driver")
 
         socket?.on(clientEvent: .connect) { [weak self] (data, ack) in

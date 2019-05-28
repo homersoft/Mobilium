@@ -5,4 +5,8 @@ test:
 	nosetests tests
 
 run:
-	PYTHONPATH=`pwd` python mobilium_client/client.py
+ifndef ADDRESS
+	echo "ADDRESS variable not passed"
+	exit 1
+endif
+	PYTHONPATH=`pwd` python mobilium_client/client.py -a $(ADDRESS)

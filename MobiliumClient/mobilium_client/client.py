@@ -1,3 +1,4 @@
+import argparse
 import asyncio
 
 from socketio import AsyncClient, AsyncClientNamespace
@@ -23,13 +24,21 @@ class MobiliumClientNamespace(AsyncClientNamespace):
         await super(AsyncClientNamespace, self).send(message)
 
 
-async def start_client():
+async def start_client(address: str, port: int):
     client = AsyncClient()
     client.register_namespace(MobiliumClientNamespace('/client'))
-    await client.connect('tcp://192.168.52.93:65432')
+    await client.connect('tcp://{0}:{1}'.format(address, port))
     await client.wait()
 
 
-if __name__ == '__main__':
+def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("-a", "--address", help="Mobilium Server IP Address", required=True)
+    parser.add_argument("-p", "--port", help="Mobilium Server port. Default: 65432", default=65432)
+    arguments = parser.parse_args()
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(start_client())
+    loop.run_until_complete(start_client(arguments.address, arguments.port))
+
+
+if __name__ == '__main__':
+    main()

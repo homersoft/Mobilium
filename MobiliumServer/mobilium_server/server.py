@@ -1,3 +1,4 @@
+import argparse
 from asyncio.subprocess import DEVNULL
 from subprocess import Popen
 
@@ -10,8 +11,10 @@ from mobilium_server.remote_message_handler import RemoteMessageHandler
 
 
 class Server(MessageHandler):
-    def __init__(self):
+    def __init__(self, address: str, port: int):
         MessageHandler.__init__(self, 'server')
+        self.address = address
+        self.port = port
         self.app = web.Application()
         self.socket = AsyncServer(async_mode='aiohttp')
         self.socket.attach(self.app)
@@ -28,14 +31,14 @@ class Server(MessageHandler):
         project = '../MobiliumDriver/MobiliumDriver.xcodeproj'
         scheme = 'MobiliumDriver'
         udid = '8b85dcfac17ce6251cda6c932ef0871a5e1603fa'
-        command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" test' \
-            .format(project, scheme, udid)
+        command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test' \
+            .format(project, scheme, udid, self.address, self.port)
         Popen(command, stdin=DEVNULL, stdout=DEVNULL, stderr=DEVNULL, shell=True)
 
     def run(self):
         self.register_remote_message_handler('/client')
         self.register_remote_message_handler('/driver')
-        web.run_app(self.app, host='192.168.52.93', port=65432)
+        web.run_app(self.app, host=self.address, port=self.port)
 
     def register_remote_message_handler(self, name: str):
         handler = RemoteMessageHandler(name)
@@ -43,5 +46,13 @@ class Server(MessageHandler):
         self.broker.register_message_handler(handler)
 
 
+def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("-a", "--address", help="Mobilium Server IP Address", required=True)
+    parser.add_argument("-p", "--port", help="Mobilium Server port. Default: 65432", default=65432)
+    arguments = parser.parse_args()
+    Server(arguments.address, arguments.port).run()
+
+
 if __name__ == '__main__':
-    Server().run()
+    main()
