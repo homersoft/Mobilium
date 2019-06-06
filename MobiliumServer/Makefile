@@ -1,8 +1,5 @@
 init:
-	pip install -r requirements.txt
-
-test:
-	nosetests tests
+	pip install -e .
 
 run:
 ifndef ADDRESS

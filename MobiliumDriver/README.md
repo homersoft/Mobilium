@@ -7,9 +7,6 @@ To initialize all requirements, simply run command below:
 make init
 ```
 
-## Test
-Currently there are no tests available for MobiliumDriver.
-
 ## Run
 MobiliumDriver should be started by MobiliumServer. If you want to start it manually, run command below:
 ```
