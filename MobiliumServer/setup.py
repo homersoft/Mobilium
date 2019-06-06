@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-setup(name='mobilium_server',
+setup(name='mobilium-server',
       version='0.0.1',
       description='Mobilium Server',
       url='https://github.com/homersoft/Mobilium',
