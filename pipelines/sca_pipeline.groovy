@@ -2,5 +2,6 @@
 
 
 pipelinePythonSCA(
-	pythonVersion: '3.6'
+	pythonVersion: '3.6',
+	packages: []
 )
