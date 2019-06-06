@@ -2,5 +2,5 @@
 
 
 pipelinePythonSCA(
-	pythonVersion: '3.7'
+	pythonVersion: '3.6'
 )
