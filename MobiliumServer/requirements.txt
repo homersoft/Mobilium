@@ -1,5 +1,0 @@
-python-socketio == 4.0.3
-aiohttp == 3.5.4
-websockets == 7.0
-
-nose
