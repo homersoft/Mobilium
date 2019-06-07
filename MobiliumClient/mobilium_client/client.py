@@ -19,9 +19,9 @@ class MobiliumClientNamespace(AsyncClientNamespace):
         if message == 'TestExecuted':
             await self.disconnect()
 
-    async def send(self, message):
+    async def send(self, message, namespace=None, callback=None):
         print('<<< {0}'.format(message))
-        await super(AsyncClientNamespace, self).send(message)
+        await super(MobiliumClientNamespace, self).send(message, namespace=namespace, callback=callback)
 
 
 async def start_client(address: str, port: int):

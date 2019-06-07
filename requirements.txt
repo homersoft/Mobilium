@@ -1,0 +1,4 @@
+./MobiliumClient
+./MobiliumServer
+
+setuptools>=30.0.0

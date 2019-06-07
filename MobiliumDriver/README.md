@@ -1,14 +1,11 @@
 ## Prepare
-No preparations steps are needed to run driver.
+You need to have Xcode and Carthage installed on machine.
 
 ## Initialize
 To initialize all requirements, simply run command below:
 ```
-make init
+carthage update --platform iOS --cache-builds --use-ssh
 ```
-
-## Test
-Currently there are no tests available for MobiliumDriver.
 
 ## Run
 MobiliumDriver should be started by MobiliumServer. If you want to start it manually, run command below:

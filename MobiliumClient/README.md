@@ -5,17 +5,11 @@ all commends inside them.
 ## Initialize
 To initialize all requirements, simply run command below:
 ```
-make init
-```
-
-## Test
-In order to perform unit testing of MobiliumClient, simply run command below:
-```
-make test
+pip install .
 ```
 
 ## Run
 Use command below to start client connecting to server at given address:
 ```
-make run ADDRESS=0.0.0.0
+mobilium-client -a SERVER-IP-ADDRESS
 ```
