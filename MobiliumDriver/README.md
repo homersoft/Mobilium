@@ -1,10 +1,10 @@
 ## Prepare
-No preparations steps are needed to run driver.
+You need to have Xcode and Carthage installed on machine.
 
 ## Initialize
 To initialize all requirements, simply run command below:
 ```
-make init
+carthage update --platform iOS --cache-builds --use-ssh
 ```
 
 ## Run

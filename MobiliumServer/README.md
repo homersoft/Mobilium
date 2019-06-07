@@ -5,11 +5,11 @@ all commends inside them.
 ## Initialize
 To initialize all requirements, simply run command below:
 ```
-make init
+pip install .
 ```
 
 ## Run
 Use command below to start server with given address:
 ```
-make run ADDRESS=0.0.0.0
+mobilium-server -a SERVER-IP-ADDRESS
 ```
