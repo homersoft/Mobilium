@@ -281,7 +281,7 @@ playground.xcworkspace
 # Packages/
 # Package.pins
 # Package.resolved
-.build/
+**/.build/
 
 # CocoaPods
 # We recommend against adding the Pods directory to your .gitignore. However
@@ -324,10 +324,10 @@ iOSInjectionProject/
 ## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
 
 ### Xcode Patch ###
-*.xcodeproj/*
-!*.xcodeproj/project.pbxproj
-!*.xcodeproj/xcshareddata/
-!*.xcworkspace/contents.xcworkspacedata
+**/*.xcodeproj/*
+!**/*.xcodeproj/project.pbxproj
+!**/*.xcodeproj/xcshareddata/
+!**/*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 
