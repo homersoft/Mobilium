@@ -37,12 +37,12 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "HOST"
-            value = "$(HOST)"
+            value = "192.168.52.57"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "PORT"
-            value = "$(PORT)"
+            value = "65432"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

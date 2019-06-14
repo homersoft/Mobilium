@@ -11,6 +11,10 @@ from mobilium_server.remote_message_handler import RemoteMessageHandler
 
 
 class Server(MessageHandler):
+    udid = '3adbc878f0b32c44a296c2fc62f46fe50c548355'
+    bundle_id = 'com.silvair.commissioning.test.dev'
+    ipa_path = './app.ipa'
+
     def __init__(self, address: str, port: int):
         MessageHandler.__init__(self, 'server')
         self.address = address
@@ -26,14 +30,27 @@ class Server(MessageHandler):
             self.run()
         if message == 'StartDriver':
             self.start_driver()
+        if message == 'InstallApp':
+            await self.install_app()
+        if message == 'UninstallApp':
+            await self.uninstall_app()
+
+    async def install_app(self):
+        command = 'ideviceinstaller -u {0} -i {1}'.format(self.udid, self.ipa_path)
+        self.open(command)
+        await self.broker.process_message('AppInstalled')
+
+    async def uninstall_app(self):
+        command = 'ideviceinstaller -U {}'.format(self.bundle_id)
+        self.open(command)
+        await self.broker.process_message('AppUninstalled')
 
     def start_driver(self):
         project = '../MobiliumDriver/MobiliumDriver.xcodeproj'
         scheme = 'MobiliumDriver'
-        udid = '8b85dcfac17ce6251cda6c932ef0871a5e1603fa'
         command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test' \
-            .format(project, scheme, udid, self.address, self.port)
-        Popen(command, stdin=DEVNULL, stdout=DEVNULL, stderr=DEVNULL, shell=True)
+            .format(project, scheme, self.udid, self.address, self.port)
+        self.open(command)
 
     def run(self):
         self.register_remote_message_handler('/client')
@@ -44,6 +61,11 @@ class Server(MessageHandler):
         handler = RemoteMessageHandler(name)
         self.socket.register_namespace(handler)
         self.broker.register_message_handler(handler)
+
+    def open(self, command: str):
+        print('Run: {}'.format(command))
+        Popen(command, stdin=DEVNULL, stdout=DEVNULL, stderr=DEVNULL, shell=True)
+
 
 
 def main():
