@@ -38,12 +38,12 @@ class Server(MessageHandler):
     async def install_app(self):
         command = 'ideviceinstaller -u {0} -i {1}'.format(self.udid, self.ipa_path)
         self.open(command)
-        await self.broker.process_message('AppInstalled')
+        await self.send_message('AppInstalled')
 
     async def uninstall_app(self):
         command = 'ideviceinstaller -U {}'.format(self.bundle_id)
         self.open(command)
-        await self.broker.process_message('AppUninstalled')
+        await self.send_message('AppUninstalled')
 
     def start_driver(self):
         project = '../MobiliumDriver/MobiliumDriver.xcodeproj'
@@ -66,6 +66,8 @@ class Server(MessageHandler):
         print('Run: {}'.format(command))
         Popen(command, stdin=DEVNULL, stdout=DEVNULL, stderr=DEVNULL, shell=True)
 
+    async def send_message(self, message: str):
+        await self.broker.process_message(message)
 
 
 def main():
