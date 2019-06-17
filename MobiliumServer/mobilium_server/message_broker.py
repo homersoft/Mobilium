@@ -14,12 +14,12 @@ class MessageBroker:
         self.message_handlers.remove(message_handler)
 
     async def process_message(self, message: str):
-        if message in ['DriverStarted', 'TestExecuted']:
+        if message in ['DriverStarted', 'TestExecuted', 'AppInstalled', 'AppUninstalled']:
             handler = next(handler for handler in self.message_handlers if handler.name == '/client')
             await handler.process_message(message)
         if message in ['ExecuteTest']:
             handler = next(handler for handler in self.message_handlers if handler.name == '/driver')
             await handler.process_message(message)
-        if message in ['StartDriver']:
+        if message in ['StartDriver', 'InstallApp', 'UninstallApp']:
             handler = next(handler for handler in self.message_handlers if handler.name == 'server')
             await handler.process_message(message)

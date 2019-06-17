@@ -15,8 +15,12 @@ class MobiliumClientNamespace(AsyncClientNamespace):
     async def on_message(self, message):
         print('>>> {0}'.format(message))
         if message == 'DriverStarted':
+            await self.send('InstallApp')
+        if message == 'AppInstalled':
             await self.send('ExecuteTest')
         if message == 'TestExecuted':
+            await self.send('UninstallApp')
+        if message == 'AppUninstalled':
             await self.disconnect()
 
     async def send(self, message, namespace=None, callback=None):

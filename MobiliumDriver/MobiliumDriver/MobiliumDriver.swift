@@ -39,7 +39,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
 
     func executeTest() {
         continueAfterFailure = true
-
+        
         let app = XCUIApplication(bundleIdentifier: "com.silvair.commissioning.test.dev")
         app.launch()
 
