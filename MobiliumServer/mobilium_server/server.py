@@ -50,7 +50,7 @@ class Server(MessageHandler):
         scheme = 'MobiliumDriver'
         command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test' \
             .format(project, scheme, self.udid, self.address, self.port)
-        self.open(command, waits=False)
+        self.open(command, waits_for_termination=False)
 
     def run(self):
         self.register_remote_message_handler('/client')
@@ -62,12 +62,12 @@ class Server(MessageHandler):
         self.socket.register_namespace(handler)
         self.broker.register_message_handler(handler)
 
-    def open(self, command: str, waits: bool = True):
+    def open(self, command: str, waits_for_termination: bool = True):
         print('Run: "{}"...'.format(command))
         process = Popen(command, stdin=DEVNULL, stdout=DEVNULL, stderr=DEVNULL, shell=True)
-        if waits:
+        if waits_for_termination:
             process.wait()
-            print('...process finished'.format(command))
+            print('...process finished')
 
     async def send_message(self, message: str):
         await self.broker.process_message(message)
