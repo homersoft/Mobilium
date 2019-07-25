@@ -1,13 +1,18 @@
 import argparse
 import asyncio
 
+from google.protobuf.message import Message
 from socketio import AsyncClient, AsyncClientNamespace
+
+import mobilium_client.proto.messages_pb2 as proto
 
 
 class MobiliumClientNamespace(AsyncClientNamespace):
     async def on_connect(self):
         print('Connected')
-        await self.send('StartDriver')
+        message = proto.MobiliumMessage()
+        message.startDriverRequest.CopyFrom(proto.StartDriverRequest())
+        await self.send(message)
 
     async def on_disconnect(self):
         print('Disconnected')
@@ -24,8 +29,13 @@ class MobiliumClientNamespace(AsyncClientNamespace):
             await self.disconnect()
 
     async def send(self, message, namespace=None, callback=None):
-        print('<<< {0}'.format(message))
-        await super(MobiliumClientNamespace, self).send(message, namespace=namespace, callback=callback)
+        if isinstance(message, Message):
+            data = message.SerializeToString()
+            print('<<< {0}'.format(message))
+            await super(MobiliumClientNamespace, self).send(data, namespace=namespace, callback=callback)
+        else:
+            print('<<< {0}'.format(message))
+            await super(MobiliumClientNamespace, self).send(message, namespace=namespace, callback=callback)
 
 
 async def start_client(address: str, port: int):

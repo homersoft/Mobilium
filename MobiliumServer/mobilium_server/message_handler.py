@@ -3,5 +3,5 @@ class MessageHandler:
         self.name = name
         self.broker = None
 
-    def process_message(self, message: str):
+    def process_message(self, data: bytes):
         pass

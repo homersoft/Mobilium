@@ -2,3 +2,10 @@ syntax = "proto3";
 
 message StartDriverRequest {}
 message StartDriverResponse {}
+
+message MobiliumMessage {
+    oneof message {
+        StartDriverRequest startDriverRequest = 1;
+        StartDriverResponse startDriverResponse = 2;
+    }
+}
