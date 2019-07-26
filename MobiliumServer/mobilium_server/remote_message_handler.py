@@ -19,5 +19,4 @@ class RemoteMessageHandler(MessageHandler, AsyncNamespace):
         await self.send(message)
 
     async def on_message(self, sid, data: bytes):
-        print('{0} >> {1}'.format(self.name, data))
         await self.broker.process_message(data)

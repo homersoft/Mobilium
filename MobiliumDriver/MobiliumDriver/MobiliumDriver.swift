@@ -22,24 +22,32 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         socket = manager.socket(forNamespace: "/driver")
 
         socket?.on(clientEvent: .connect) { [weak self] (data, ack) in
-            self?.socket?.emit("message", with: ["DriverStarted"])
+            let message = MobiliumMessage.with { populator in
+                populator.message = .startDriverResponse(StartDriverResponse())
+            }
+            let data: Data = (try? message.serializedData()) ?? Data()
+            self?.socket?.emit("message", with: [data])
         }
         socket?.on(clientEvent: .disconnect) { [weak self] (data, ack) in
             self?.keepAlive = false
         }
         socket?.on("message") { [weak self] (data, ack) in
-            if data.first as? String == "ExecuteTest" {
+            guard let serializedData = data.first as? Data,
+                let mobiliumMessage = try? MobiliumMessage(serializedData: serializedData),
+                let message = mobiliumMessage.message else { return }
+
+            if case .executeTestRequest = message {
                 self?.executeTest()
             }
         }
         socket?.connect()
 
-        while keepAlive && RunLoop.main.run(mode: .default, before: .distantFuture) {}
+        while keepAlive && RunLoop.main.run(mode: .default, before: .distantFuture) { }
     }
 
     func executeTest() {
         continueAfterFailure = true
-        
+
         let app = XCUIApplication(bundleIdentifier: "com.silvair.commissioning.test.dev")
         app.launch()
 

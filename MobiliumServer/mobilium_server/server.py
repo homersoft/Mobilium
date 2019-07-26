@@ -30,7 +30,6 @@ class Server(MessageHandler):
     async def process_message(self, data: bytes):
         if isinstance(data, bytes):
             mobilium_message: Message = proto.MobiliumMessage().FromString(data)
-            print(mobilium_message.WhichOneof('message'))
             message = getattr(mobilium_message, mobilium_message.WhichOneof('message'))
             if isinstance(message, proto.StartDriverRequest):
                 self.start_driver()

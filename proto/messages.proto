@@ -3,9 +3,14 @@ syntax = "proto3";
 message StartDriverRequest {}
 message StartDriverResponse {}
 
+message ExecuteTestRequest {}
+message ExecuteTestResponse {}
+
 message MobiliumMessage {
     oneof message {
         StartDriverRequest startDriverRequest = 1;
         StartDriverResponse startDriverResponse = 2;
+        ExecuteTestRequest executeTestRequest = 3;
+        ExecuteTestResponse executeTestResponse = 4;
     }
 }

@@ -10,6 +10,8 @@
 		808127EE229BE7F1002028AE /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 808127EC229BE7F1002028AE /* Starscream.framework */; };
 		808127EF229BE7F1002028AE /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 808127ED229BE7F1002028AE /* SocketIO.framework */; };
 		80C4ADB02294372000D1A11D /* MobiliumDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C4ADAF2294372000D1A11D /* MobiliumDriver.swift */; };
+		CE7EA34122E9DC8B00BE4567 /* messages.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7EA34022E9DC8B00BE4567 /* messages.pb.swift */; };
+		CE7EA34322E9DF9600BE4567 /* SwiftProtobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7EA34222E9DF9600BE4567 /* SwiftProtobuf.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +20,8 @@
 		80C4ADAB2294372000D1A11D /* MobiliumDriver.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobiliumDriver.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		80C4ADAF2294372000D1A11D /* MobiliumDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobiliumDriver.swift; sourceTree = "<group>"; };
 		80C4ADB12294372000D1A11D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE7EA34022E9DC8B00BE4567 /* messages.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = messages.pb.swift; sourceTree = "<group>"; };
+		CE7EA34222E9DF9600BE4567 /* SwiftProtobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftProtobuf.framework; path = Carthage/Build/iOS/SwiftProtobuf.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +30,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				808127EE229BE7F1002028AE /* Starscream.framework in Frameworks */,
+				CE7EA34322E9DF9600BE4567 /* SwiftProtobuf.framework in Frameworks */,
 				808127EF229BE7F1002028AE /* SocketIO.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -36,6 +41,7 @@
 		808127EB229BE7F1002028AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE7EA34222E9DF9600BE4567 /* SwiftProtobuf.framework */,
 				808127ED229BE7F1002028AE /* SocketIO.framework */,
 				808127EC229BE7F1002028AE /* Starscream.framework */,
 			);
@@ -62,10 +68,19 @@
 		80C4ADAE2294372000D1A11D /* MobiliumDriver */ = {
 			isa = PBXGroup;
 			children = (
+				CE7EA33F22E9DC8B00BE4567 /* proto */,
 				80C4ADAF2294372000D1A11D /* MobiliumDriver.swift */,
 				80C4ADB12294372000D1A11D /* Info.plist */,
 			);
 			path = MobiliumDriver;
+			sourceTree = "<group>";
+		};
+		CE7EA33F22E9DC8B00BE4567 /* proto */ = {
+			isa = PBXGroup;
+			children = (
+				CE7EA34022E9DC8B00BE4567 /* messages.pb.swift */,
+			);
+			path = proto;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -143,6 +158,7 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Starscream.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SocketIO.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftProtobuf.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -159,6 +175,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE7EA34122E9DC8B00BE4567 /* messages.pb.swift in Sources */,
 				80C4ADB02294372000D1A11D /* MobiliumDriver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -14,5 +14,6 @@ class MessageBroker:
         self.message_handlers.remove(message_handler)
 
     async def process_message(self, data: bytes):
+        print('>> {0}'.format(data))
         for handler in self.message_handlers:
             await handler.process_message(data)
