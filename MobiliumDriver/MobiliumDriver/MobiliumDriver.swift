@@ -12,6 +12,7 @@ import SocketIO
 
 class MobiliumDriver: XCTestCase, StreamDelegate {
     var socket: SocketIOClient?
+    var deserializer = MessageDeserializer()
     var keepAlive = true
 
     func testApplication() {
@@ -22,21 +23,16 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         socket = manager.socket(forNamespace: "/driver")
 
         socket?.on(clientEvent: .connect) { [weak self] (data, ack) in
-            let message = MobiliumMessage.with { populator in
-                populator.message = .startDriverResponse(StartDriverResponse())
-            }
-            let data: Data = (try? message.serializedData()) ?? Data()
+            let data = MessageDataFactory.startDriverResponse()
             self?.socket?.emit("message", with: [data])
         }
         socket?.on(clientEvent: .disconnect) { [weak self] (data, ack) in
             self?.keepAlive = false
         }
         socket?.on("message") { [weak self] (data, ack) in
-            guard let serializedData = data.first as? Data,
-                let mobiliumMessage = try? MobiliumMessage(serializedData: serializedData),
-                let message = mobiliumMessage.message else { return }
+            guard let data = data as? [Data] else { return }
 
-            if case .executeTestRequest = message {
+            if self?.deserializer.executeTestRequest(from: data) != nil {
                 self?.executeTest()
             }
         }
