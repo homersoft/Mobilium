@@ -2,6 +2,7 @@ import argparse
 import asyncio
 
 from google.protobuf.message import Message
+from mobilium_proto_messages.MessageDataFactory import MessageDataFactory
 from socketio import AsyncClient, AsyncClientNamespace
 
 import mobilium_client.proto.messages_pb2 as proto
@@ -10,8 +11,7 @@ import mobilium_client.proto.messages_pb2 as proto
 class MobiliumClientNamespace(AsyncClientNamespace):
     async def on_connect(self):
         print('Connected')
-        message = proto.MobiliumMessage()
-        message.startDriverRequest.CopyFrom(proto.StartDriverRequest())
+        message = MessageDataFactory.start_driver_request()
         await self.send(message)
 
     async def on_disconnect(self):
@@ -25,8 +25,7 @@ class MobiliumClientNamespace(AsyncClientNamespace):
                 await self.send('InstallApp')
         else:
             if data == 'AppInstalled':
-                message = proto.MobiliumMessage()
-                message.executeTestRequest.CopyFrom(proto.ExecuteTestRequest())
+                message = MessageDataFactory.execute_test_request()
                 await self.send(message)
             if data == 'TestExecuted':
                 await self.send('UninstallApp')

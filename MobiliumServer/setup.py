@@ -16,7 +16,8 @@ setup(name='mobilium-server',
           'python-socketio == 4.0.3',
           'aiohttp == 3.5.4',
           'websockets == 7.0',
-          'protobuf == 3.9.0'
+          'protobuf == 3.9.0',
+          'mobilium-proto-messages == 0.0.1'
       ],
       entry_points={
           'console_scripts': [

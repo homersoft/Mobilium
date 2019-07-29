@@ -75,7 +75,7 @@ class Server(MessageHandler):
             process.wait()
             print('...process finished')
 
-    async def send_message(self, message: str):
+    async def send_message(self, message: bytes):
         await self.broker.process_message(message)
 
 

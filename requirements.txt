@@ -1,3 +1,4 @@
+./ProtoMessages
 ./MobiliumClient
 ./MobiliumServer
 
