@@ -3,13 +3,12 @@ from asyncio.subprocess import DEVNULL
 from subprocess import Popen
 
 from aiohttp import web
-from google.protobuf.message import Message
+from mobilium_proto_messages.MessageDeserializer import MessageDeserializer
 from socketio import AsyncServer
 
 from mobilium_server.message_broker import MessageBroker
 from mobilium_server.message_handler import MessageHandler
 from mobilium_server.remote_message_handler import RemoteMessageHandler
-import mobilium_client.proto.messages_pb2 as proto
 
 
 class Server(MessageHandler):
@@ -29,9 +28,7 @@ class Server(MessageHandler):
 
     async def process_message(self, data: bytes):
         if isinstance(data, bytes):
-            mobilium_message: Message = proto.MobiliumMessage().FromString(data)
-            message = getattr(mobilium_message, mobilium_message.WhichOneof('message'))
-            if isinstance(message, proto.StartDriverRequest):
+            if MessageDeserializer.start_driver_request(data) is not None:
                 self.start_driver()
         else:
             if data == 'Run':
