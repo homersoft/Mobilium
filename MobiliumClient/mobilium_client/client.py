@@ -1,26 +1,31 @@
 import argparse
 import asyncio
 
+from mobilium_proto_messages.message_data_factory import MessageDataFactory
+from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from socketio import AsyncClient, AsyncClientNamespace
 
 
 class MobiliumClientNamespace(AsyncClientNamespace):
     async def on_connect(self):
         print('Connected')
-        await self.send('StartDriver')
+        message = MessageDataFactory.start_driver_request()
+        await self.send(message)
 
     async def on_disconnect(self):
         print('Disconnected')
 
-    async def on_message(self, message):
-        print('>>> {0}'.format(message))
-        if message == 'DriverStarted':
-            await self.send('InstallApp')
-        if message == 'AppInstalled':
-            await self.send('ExecuteTest')
-        if message == 'TestExecuted':
-            await self.send('UninstallApp')
-        if message == 'AppUninstalled':
+    async def on_message(self, data):
+        if MessageDeserializer.start_driver_response(data):
+            message = MessageDataFactory.install_app_request()
+            await self.send(message)
+        elif MessageDeserializer.install_app_response(data):
+            message = MessageDataFactory.execute_test_request()
+            await self.send(message)
+        elif MessageDeserializer.execute_test_response(data):
+            message = MessageDataFactory.uninstall_app_request()
+            await self.send(message)
+        elif MessageDeserializer.uninstall_app_response(data):
             await self.disconnect()
 
     async def send(self, message, namespace=None, callback=None):

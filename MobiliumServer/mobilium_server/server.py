@@ -3,6 +3,8 @@ from asyncio.subprocess import DEVNULL
 from subprocess import Popen
 
 from aiohttp import web
+from mobilium_proto_messages.message_data_factory import MessageDataFactory
+from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from socketio import AsyncServer
 
 from mobilium_server.message_broker import MessageBroker
@@ -11,7 +13,7 @@ from mobilium_server.remote_message_handler import RemoteMessageHandler
 
 
 class Server(MessageHandler):
-    udid = '3adbc878f0b32c44a296c2fc62f46fe50c548355'
+    udid = '925253b6b76922294a4235ba2dafcd9e495ea3a7'
     bundle_id = 'com.silvair.commissioning.test.dev'
     ipa_path = './app.ipa'
 
@@ -25,25 +27,25 @@ class Server(MessageHandler):
         self.broker = MessageBroker()
         self.broker.register_message_handler(self)
 
-    async def process_message(self, message: str):
-        if message == 'Run':
-            self.run()
-        if message == 'StartDriver':
+    async def process_message(self, data: bytes):
+        if MessageDeserializer.start_driver_request(data):
             self.start_driver()
-        if message == 'InstallApp':
+        elif MessageDeserializer.install_app_request(data):
             await self.install_app()
-        if message == 'UninstallApp':
+        elif MessageDeserializer.uninstall_app_request(data):
             await self.uninstall_app()
 
     async def install_app(self):
         command = 'ideviceinstaller -u {0} -i {1}'.format(self.udid, self.ipa_path)
         self.open(command)
-        await self.send_message('AppInstalled')
+        message = MessageDataFactory.install_app_response()
+        await self.send_message(message)
 
     async def uninstall_app(self):
         command = 'ideviceinstaller -U {}'.format(self.bundle_id)
         self.open(command)
-        await self.send_message('AppUninstalled')
+        message = MessageDataFactory.uninstall_app_response()
+        await self.send_message(message)
 
     def start_driver(self):
         project = '../MobiliumDriver/MobiliumDriver.xcodeproj'
@@ -69,7 +71,7 @@ class Server(MessageHandler):
             process.wait()
             print('...process finished')
 
-    async def send_message(self, message: str):
+    async def send_message(self, message: bytes):
         await self.broker.process_message(message)
 
 
