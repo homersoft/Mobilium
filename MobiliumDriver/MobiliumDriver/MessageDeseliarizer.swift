@@ -12,8 +12,8 @@ import SwiftProtobuf
 class MessageDeserializer {
 
     func executeTestRequest(from data: [Data]) -> ExecuteTestRequest? {
-        let message = extract(from: data) { oneofMessage in
-            guard case .executeTestRequest(let message) = oneofMessage else { return nil }
+        let message = extract(from: data) { oneOfMessage in
+            guard case .executeTestRequest(let message) = oneOfMessage else { return nil }
 
             return message
         }
