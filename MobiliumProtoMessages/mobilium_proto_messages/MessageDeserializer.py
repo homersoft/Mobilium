@@ -1,4 +1,4 @@
-# pylint: disable=undefined_variable, no_name_in_module, import_error, wildcard_import
+# pylint: disable=E0602, E0611, E0401, W0401
 from typing import Optional, TypeVar, Type
 
 from google.protobuf.message import Message
@@ -6,7 +6,7 @@ from mobilium_proto_messages.proto.messages_pb2 import *
 
 
 class MessageDeserializer:
-    T = TypeVar("T", bound=Message) # pylint: disable=invalid_name
+    T = TypeVar("T", bound=Message)  # pylint: disable=C0103
 
     @staticmethod
     def start_driver_request(data: bytes) -> Optional[StartDriverRequest]:
