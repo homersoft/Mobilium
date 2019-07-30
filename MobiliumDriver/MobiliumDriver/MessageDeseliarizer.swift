@@ -23,8 +23,8 @@ class MessageDeserializer {
     private func extract(from data: [Data], using extractor: (MobiliumMessage.OneOf_Message) -> Message?) -> Message? {
         guard let serializedData = data.first,
             let mobiliumMessage = try? MobiliumMessage(serializedData: serializedData),
-            let oneofMessage = mobiliumMessage.message  else { return nil }
+            let oneOfMessage = mobiliumMessage.message  else { return nil }
 
-        return extractor(oneofMessage)
+        return extractor(oneOfMessage)
     }
 }
