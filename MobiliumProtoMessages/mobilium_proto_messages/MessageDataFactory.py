@@ -1,3 +1,4 @@
+# pylint: disable=undefined_variable, no_name_in_module, import_error, wildcard_import
 from mobilium_proto_messages.proto.messages_pb2 import *
 
 
