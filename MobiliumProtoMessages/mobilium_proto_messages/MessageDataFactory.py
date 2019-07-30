@@ -14,3 +14,27 @@ class MessageDataFactory:
         message = MobiliumMessage()
         message.executeTestRequest.CopyFrom(ExecuteTestRequest())
         return message.SerializeToString()
+
+    @staticmethod
+    def install_app_request() -> bytes:
+        message = MobiliumMessage()
+        message.installAppRequest.CopyFrom(InstallAppRequest())
+        return message.SerializeToString()
+
+    @staticmethod
+    def uninstall_app_request() -> bytes:
+        message = MobiliumMessage()
+        message.uninstallAppRequest.CopyFrom(UninstallAppRequest())
+        return message.SerializeToString()
+
+    @staticmethod
+    def install_app_response() -> bytes:
+        message = MobiliumMessage()
+        message.installAppResponse.CopyFrom(InstallAppResponse())
+        return message.SerializeToString()
+
+    @staticmethod
+    def uninstall_app_response() -> bytes:
+        message = MobiliumMessage()
+        message.uninstallAppResponse.CopyFrom(UninstallAppResponse())
+        return message.SerializeToString()

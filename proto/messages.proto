@@ -3,6 +3,12 @@ syntax = "proto3";
 message StartDriverRequest {}
 message StartDriverResponse {}
 
+message InstallAppRequest {}
+message InstallAppResponse {}
+
+message UninstallAppRequest {}
+message UninstallAppResponse {}
+
 message ExecuteTestRequest {}
 message ExecuteTestResponse {}
 
@@ -10,7 +16,11 @@ message MobiliumMessage {
     oneof message {
         StartDriverRequest startDriverRequest = 1;
         StartDriverResponse startDriverResponse = 2;
-        ExecuteTestRequest executeTestRequest = 3;
-        ExecuteTestResponse executeTestResponse = 4;
+        InstallAppRequest installAppRequest = 3;
+        InstallAppResponse installAppResponse = 4;
+        UninstallAppRequest uninstallAppRequest = 5;
+        UninstallAppResponse uninstallAppResponse = 6;
+        ExecuteTestRequest executeTestRequest = 7;
+        ExecuteTestResponse executeTestResponse = 8;
     }
 }

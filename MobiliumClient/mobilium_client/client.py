@@ -1,11 +1,9 @@
 import argparse
 import asyncio
 
-from google.protobuf.message import Message
 from mobilium_proto_messages.MessageDataFactory import MessageDataFactory
+from mobilium_proto_messages.MessageDeserializer import MessageDeserializer
 from socketio import AsyncClient, AsyncClientNamespace
-
-import mobilium_client.proto.messages_pb2 as proto
 
 
 class MobiliumClientNamespace(AsyncClientNamespace):
@@ -18,28 +16,21 @@ class MobiliumClientNamespace(AsyncClientNamespace):
         print('Disconnected')
 
     async def on_message(self, data):
-        if isinstance(data, bytes):
-            mobilium_message: Message = proto.MobiliumMessage().FromString(data)
-            message = getattr(mobilium_message, mobilium_message.WhichOneof('message'))
-            if isinstance(message, proto.StartDriverResponse):
-                await self.send('InstallApp')
-        else:
-            if data == 'AppInstalled':
-                message = MessageDataFactory.execute_test_request()
-                await self.send(message)
-            if data == 'TestExecuted':
-                await self.send('UninstallApp')
-            if data == 'AppUninstalled':
-                await self.disconnect()
+        if MessageDeserializer.start_driver_response(data):
+            message = MessageDataFactory.install_app_request()
+            await self.send(message)
+        elif MessageDeserializer.install_app_response(data):
+            message = MessageDataFactory.execute_test_request()
+            await self.send(message)
+        elif MessageDeserializer.execute_test_response(data):
+            message = MessageDataFactory.uninstall_app_request()
+            await self.send(message)
+        elif MessageDeserializer.uninstall_app_response(data):
+            await self.disconnect()
 
     async def send(self, message, namespace=None, callback=None):
-        if isinstance(message, Message):
-            data = message.SerializeToString()
-            print('<<< {0}'.format(message))
-            await super(MobiliumClientNamespace, self).send(data, namespace=namespace, callback=callback)
-        else:
-            print('<<< {0}'.format(message))
-            await super(MobiliumClientNamespace, self).send(message, namespace=namespace, callback=callback)
+        print('<<< {0}'.format(message))
+        await super(MobiliumClientNamespace, self).send(message, namespace=namespace, callback=callback)
 
 
 async def start_client(address: str, port: int):

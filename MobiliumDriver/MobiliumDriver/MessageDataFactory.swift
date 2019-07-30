@@ -16,6 +16,12 @@ class MessageDataFactory {
         }
     }
 
+    static func executeTestResponse() -> Data {
+        return dataWith { populator in
+            populator.message = .executeTestResponse(ExecuteTestResponse())
+        }
+    }
+
     static private func dataWith(populator: (inout MobiliumMessage) throws -> ()) -> Data {
         guard let message = try? MobiliumMessage.with(populator),
             let data = try? message.serializedData() else { return Data() }

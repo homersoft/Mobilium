@@ -3,6 +3,7 @@ from asyncio.subprocess import DEVNULL
 from subprocess import Popen
 
 from aiohttp import web
+from mobilium_proto_messages.MessageDataFactory import MessageDataFactory
 from mobilium_proto_messages.MessageDeserializer import MessageDeserializer
 from socketio import AsyncServer
 
@@ -27,26 +28,24 @@ class Server(MessageHandler):
         self.broker.register_message_handler(self)
 
     async def process_message(self, data: bytes):
-        if isinstance(data, bytes):
-            if MessageDeserializer.start_driver_request(data) is not None:
-                self.start_driver()
-        else:
-            if data == 'Run':
-                self.run()
-            if data == 'InstallApp':
-                await self.install_app()
-            if data == 'UninstallApp':
-                await self.uninstall_app()
+        if MessageDeserializer.start_driver_request(data):
+            self.start_driver()
+        elif MessageDeserializer.install_app_request(data):
+            await self.install_app()
+        elif MessageDeserializer.uninstall_app_request(data):
+            await self.uninstall_app()
 
     async def install_app(self):
         command = 'ideviceinstaller -u {0} -i {1}'.format(self.udid, self.ipa_path)
         self.open(command)
-        await self.send_message('AppInstalled')
+        message = MessageDataFactory.install_app_response()
+        await self.send_message(message)
 
     async def uninstall_app(self):
         command = 'ideviceinstaller -U {}'.format(self.bundle_id)
         self.open(command)
-        await self.send_message('AppUninstalled')
+        message = MessageDataFactory.uninstall_app_response()
+        await self.send_message(message)
 
     def start_driver(self):
         project = '../MobiliumDriver/MobiliumDriver.xcodeproj'

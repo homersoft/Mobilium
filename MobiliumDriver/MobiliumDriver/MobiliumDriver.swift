@@ -50,7 +50,8 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         Thread.sleep(forTimeInterval: 1.0)
 
         app.terminate()
-        socket?.emit("message", "TestExecuted")
+        let data = MessageDataFactory.executeTestResponse()
+        socket?.emit("message", with: [data])
 
         Thread.sleep(forTimeInterval: 1.0)
         socket?.disconnect()
