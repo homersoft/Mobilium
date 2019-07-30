@@ -1,8 +1,8 @@
 import argparse
 import asyncio
 
-from mobilium_proto_messages.MessageDataFactory import MessageDataFactory
-from mobilium_proto_messages.MessageDeserializer import MessageDeserializer
+from mobilium_proto_messages.message_data_factory import MessageDataFactory
+from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from socketio import AsyncClient, AsyncClientNamespace
 
 

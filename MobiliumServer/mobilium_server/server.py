@@ -3,8 +3,8 @@ from asyncio.subprocess import DEVNULL
 from subprocess import Popen
 
 from aiohttp import web
-from mobilium_proto_messages.MessageDataFactory import MessageDataFactory
-from mobilium_proto_messages.MessageDeserializer import MessageDeserializer
+from mobilium_proto_messages.message_data_factory import MessageDataFactory
+from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from socketio import AsyncServer
 
 from mobilium_server.message_broker import MessageBroker
