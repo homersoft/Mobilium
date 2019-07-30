@@ -41,3 +41,4 @@ class MessageDeserializer:
         message = getattr(mobilium_message, mobilium_message.WhichOneof('message'))
         if isinstance(message, type_of_meesage):
             return message
+        return None
