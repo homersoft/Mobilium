@@ -39,7 +39,5 @@ class MessageDeserializer:
     def __message(data: bytes, type_of_meesage: Type[T]) -> Optional[T]:
         mobilium_message: Message = MobiliumMessage().FromString(data)
         message = getattr(mobilium_message, mobilium_message.WhichOneof('message'))
-        if type(message) is type_of_meesage:
+        if isinstance(message, type_of_meesage):
             return message
-        else:
-            return None

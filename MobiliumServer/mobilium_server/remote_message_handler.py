@@ -14,9 +14,9 @@ class RemoteMessageHandler(MessageHandler, AsyncNamespace):
     def on_disconnect(self, sid):
         print('{0} disconnected'.format(self.name))
 
-    async def process_message(self, message: str):
-        print('{0} << {1}'.format(self.name, message))
-        await self.send(message)
+    async def process_message(self, data: bytes):
+        print('{0} << {1}'.format(self.name, data))
+        await self.send(data)
 
     async def on_message(self, sid, data: bytes):
         await self.broker.process_message(data)
