@@ -1,19 +1,7 @@
 # Mobilium
 
-## Prerequisites
-
-* [Protocol Buffers](https://github.com/protocolbuffers/protobuf)
-```
-brew install protobuf
-```
-
-* [Swift Protobuf](https://github.com/apple/swift-protobuf/)
-```
-brew install swift-protobuf
-```
-
 ## Initialize
-To generate Proto Buffers messages run script:
-```
-./proto.sh
-```
+* Install and generate [Proto Buffers messages](proto/README.md)
+* Install [Driver](MobiliumDriver/README.md)
+* Install and run [Server](MobiliumServer/README.md)
+* Install and run [Client](MobiliumClient/README.md)
