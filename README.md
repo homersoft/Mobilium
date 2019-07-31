@@ -17,8 +17,3 @@ To generate Proto Buffers messages run script:
 ```
 ./proto.sh
 ```
-
-To initialize all requirements, simply run command below:
-```
-pip install .
-```
