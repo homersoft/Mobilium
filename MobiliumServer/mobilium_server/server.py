@@ -13,7 +13,6 @@ from mobilium_server.remote_message_handler import RemoteMessageHandler
 
 
 class Server(MessageHandler):
-    udid = '925253b6b76922294a4235ba2dafcd9e495ea3a7'
     bundle_id = 'com.silvair.commissioning.test.dev'
     ipa_path = './app.ipa'
 
@@ -28,30 +27,51 @@ class Server(MessageHandler):
         self.broker.register_message_handler(self)
 
     async def process_message(self, data: bytes):
-        if MessageDeserializer.start_driver_request(data):
-            self.start_driver()
-        elif MessageDeserializer.install_app_request(data):
-            await self.install_app()
-        elif MessageDeserializer.uninstall_app_request(data):
-            await self.uninstall_app()
+        if await self.handle_start_driver(data):
+            pass
+        elif await self.handle_install_app(data):
+            pass
+        elif await self.handle_uninstall_app(data):
+            pass
 
-    async def install_app(self):
-        command = 'ideviceinstaller -u {0} -i {1}'.format(self.udid, self.ipa_path)
+    async def handle_start_driver(self, data: bytes) -> bool:
+        message = MessageDeserializer.start_driver_request(data)
+        if message is not None:
+            self.start_driver(message.udid)
+            return True
+        return False
+
+    async def handle_install_app(self, data: bytes) -> bool:
+        message = MessageDeserializer.install_app_request(data)
+        if message is not None:
+            await self.install_app(message.udid)
+            return True
+        return False
+
+    async def handle_uninstall_app(self, data: bytes) -> bool:
+        message = MessageDeserializer.uninstall_app_request(data)
+        if message is not None:
+            await self.uninstall_app(message.udid)
+            return True
+        return False
+
+    async def install_app(self, udid: str):
+        command = 'ideviceinstaller -u {0} -i {1}'.format(udid, self.ipa_path)
         self.open(command)
         message = MessageDataFactory.install_app_response()
         await self.send_message(message)
 
-    async def uninstall_app(self):
-        command = 'ideviceinstaller -U {}'.format(self.bundle_id)
+    async def uninstall_app(self, udid: str):
+        command = 'ideviceinstaller -u {0} -U {1}'.format(udid, self.bundle_id)
         self.open(command)
         message = MessageDataFactory.uninstall_app_response()
         await self.send_message(message)
 
-    def start_driver(self):
+    def start_driver(self, udid: str):
         project = '../MobiliumDriver/MobiliumDriver.xcodeproj'
         scheme = 'MobiliumDriver'
         command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test' \
-            .format(project, scheme, self.udid, self.address, self.port)
+            .format(project, scheme, udid, self.address, self.port)
         self.open(command, waits_for_termination=False)
 
     def run(self):

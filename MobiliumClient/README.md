@@ -11,5 +11,5 @@ pip install .
 ## Run
 Use command below to start client connecting to server at given address:
 ```
-mobilium-client -a SERVER-IP-ADDRESS
+mobilium-client -a SERVER-IP-ADDRESS -u iOS-DEVICE-UDID
 ```
