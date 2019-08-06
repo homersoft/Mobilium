@@ -5,11 +5,13 @@ from subprocess import Popen
 from aiohttp import web
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
+from mobilium_proto_messages.message_processor import MessageProcessor
 from socketio import AsyncServer
 
 from mobilium_server.message_broker import MessageBroker
 from mobilium_server.message_handler import MessageHandler
 from mobilium_server.remote_message_handler import RemoteMessageHandler
+from mobilium_server.message_processors.start_driver_processor import StartDriverProcessor
 
 
 class Server(MessageHandler):
@@ -25,21 +27,17 @@ class Server(MessageHandler):
         self.socket.attach(self.app)
         self.broker = MessageBroker()
         self.broker.register_message_handler(self)
+        self.processor = self.build_processor()
+
+    def build_processor(self) -> MessageProcessor:
+        return StartDriverProcessor(self.address, self.port)
 
     async def process_message(self, data: bytes):
-        if await self.handle_start_driver(data):
-            pass
-        elif await self.handle_install_app(data):
+        await self.processor.process(data)
+        if await self.handle_install_app(data):
             pass
         elif await self.handle_uninstall_app(data):
             pass
-
-    async def handle_start_driver(self, data: bytes) -> bool:
-        message = MessageDeserializer.start_driver_request(data)
-        if message is not None:
-            self.start_driver(message.udid)
-            return True
-        return False
 
     async def handle_install_app(self, data: bytes) -> bool:
         message = MessageDeserializer.install_app_request(data)
@@ -66,13 +64,6 @@ class Server(MessageHandler):
         self.open(command)
         message = MessageDataFactory.uninstall_app_response()
         await self.send_message(message)
-
-    def start_driver(self, udid: str):
-        project = '../MobiliumDriver/MobiliumDriver.xcodeproj'
-        scheme = 'MobiliumDriver'
-        command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test' \
-            .format(project, scheme, udid, self.address, self.port)
-        self.open(command, waits_for_termination=False)
 
     def run(self):
         self.register_remote_message_handler('/client')
