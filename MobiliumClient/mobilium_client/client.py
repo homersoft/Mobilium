@@ -48,7 +48,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-a", "--address", help="Mobilium Server IP Address", required=True)
     parser.add_argument("-p", "--port", help="Mobilium Server port. Default: 65432", default=65432)
-    parser.add_argument("-u", "--udid", help="Udid of iOS device on which tests are run", required=True)
+    parser.add_argument("-u", "--udid", help="UDID of iOS device on which tests are run", required=True)
     arguments = parser.parse_args()
     loop = asyncio.get_event_loop()
     loop.run_until_complete(start_client(arguments.address, arguments.port, arguments.udid))

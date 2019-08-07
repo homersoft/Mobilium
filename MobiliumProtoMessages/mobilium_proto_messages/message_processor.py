@@ -10,7 +10,11 @@ class MessageProcessor(ABC):
         self._next_processor = successor
         self.message_sender = message_sender
 
-    @abstractmethod
     async def process(self, data: bytes):
+        await self._process(data)
         if self._next_processor:
             await self._next_processor.process(data)
+
+    @abstractmethod
+    async def _process(self, data: bytes):
+        pass
