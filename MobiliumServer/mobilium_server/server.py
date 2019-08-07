@@ -6,6 +6,7 @@ from aiohttp import web
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from mobilium_proto_messages.message_processor import MessageProcessor
+from mobilium_server.server_message_sender import ServerMessageSender
 from socketio import AsyncServer
 
 from mobilium_server.message_broker import MessageBroker
@@ -30,7 +31,8 @@ class Server(MessageHandler):
         self.processor = self.build_processor()
 
     def build_processor(self) -> MessageProcessor:
-        return StartDriverProcessor(self.address, self.port)
+        message_sender = ServerMessageSender(self)
+        return StartDriverProcessor(message_sender, self.address, self.port)
 
     async def process_message(self, data: bytes):
         await self.processor.process(data)

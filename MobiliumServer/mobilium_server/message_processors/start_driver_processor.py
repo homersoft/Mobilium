@@ -1,12 +1,13 @@
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from mobilium_proto_messages.message_processor import MessageProcessor
+from mobilium_proto_messages.message_sender import MessageSender
 from mobilium_server.shell_executor import ShellExecutor
 
 
 class StartDriverProcessor(MessageProcessor):
 
-    def __init__(self, address: str, port: int):
-        super().__init__()
+    def __init__(self, message_sender: MessageSender, address: str, port: int):
+        super().__init__(message_sender)
         self.address = address
         self.port = port
 
