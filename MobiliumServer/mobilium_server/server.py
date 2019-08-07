@@ -1,23 +1,17 @@
 import argparse
-from asyncio.subprocess import DEVNULL
-from subprocess import Popen
 
 from aiohttp import web
 from socketio import AsyncServer
-from mobilium_proto_messages.message_data_factory import MessageDataFactory
-from mobilium_proto_messages.message_deserializer import MessageDeserializer
-from mobilium_proto_messages.message_processor import MessageProcessor
+
 from mobilium_proto_messages.message_sender import MessageSender
 
+from mobilium_server.message_processors.processor_factory import ProcessorFactory
 from mobilium_server.message_broker import MessageBroker
 from mobilium_server.message_handler import MessageHandler
 from mobilium_server.remote_message_handler import RemoteMessageHandler
-from mobilium_server.message_processors.start_driver_processor import StartDriverProcessor
-from mobilium_server.message_processors.install_app_processor import InstallAppProcessor
 
 
 class Server(MessageHandler, MessageSender):
-    bundle_id = 'com.silvair.commissioning.test.dev'
 
     def __init__(self, address: str, port: int):
         MessageHandler.__init__(self, 'server')
@@ -28,29 +22,10 @@ class Server(MessageHandler, MessageSender):
         self.socket.attach(self.app)
         self.broker = MessageBroker()
         self.broker.register_message_handler(self)
-        self.processor = self.build_message_processor()
-
-    def build_message_processor(self) -> MessageProcessor:
-        install_app_processor = InstallAppProcessor(self)
-        return StartDriverProcessor(self, self.address, self.port, install_app_processor)
+        self.processor = ProcessorFactory.make(self, address, port)
 
     async def process_message(self, data: bytes):
         await self.processor.process(data)
-        if await self.handle_uninstall_app(data):
-            pass
-
-    async def handle_uninstall_app(self, data: bytes) -> bool:
-        message = MessageDeserializer.uninstall_app_request(data)
-        if message is not None:
-            await self.uninstall_app(message.udid)
-            return True
-        return False
-
-    async def uninstall_app(self, udid: str):
-        command = 'ideviceinstaller -u {0} -U {1}'.format(udid, self.bundle_id)
-        self.open(command)
-        message = MessageDataFactory.uninstall_app_response()
-        await self.send(message)
 
     def run(self):
         self.register_remote_message_handler('/client')
@@ -61,13 +36,6 @@ class Server(MessageHandler, MessageSender):
         handler = RemoteMessageHandler(name)
         self.socket.register_namespace(handler)
         self.broker.register_message_handler(handler)
-
-    def open(self, command: str, waits_for_termination: bool = True):
-        print('Run: "{}"...'.format(command))
-        process = Popen(command, stdin=DEVNULL, stdout=DEVNULL, stderr=DEVNULL, shell=True)
-        if waits_for_termination:
-            process.wait()
-            print('...process finished')
 
     async def send(self, data: bytes):
         await self.broker.process_message(data)
