@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from MobiliumProtoMessages.mobilium_proto_messages.message_sender import MessageSender
+from mobilium_proto_messages.message_sender import MessageSender
 
 
 class MessageProcessor(ABC):

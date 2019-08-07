@@ -1,3 +1,5 @@
+from typing import Optional
+
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from mobilium_proto_messages.message_processor import MessageProcessor
 from mobilium_proto_messages.message_sender import MessageSender
@@ -6,8 +8,9 @@ from mobilium_server.shell_executor import ShellExecutor
 
 class StartDriverProcessor(MessageProcessor):
 
-    def __init__(self, message_sender: MessageSender, address: str, port: int):
-        super().__init__(message_sender)
+    def __init__(self, message_sender: MessageSender, address: str, port: int,
+                 successor: Optional[MessageProcessor] = None):
+        super().__init__(message_sender, successor)
         self.address = address
         self.port = port
 
@@ -15,7 +18,7 @@ class StartDriverProcessor(MessageProcessor):
         message = MessageDeserializer.start_driver_request(data)
         if message is not None:
             self.start_driver(message.udid)
-            return True
+        await super(StartDriverProcessor, self).process(data)
 
     def start_driver(self, udid: str):
         project = '../MobiliumDriver/MobiliumDriver.xcodeproj'
