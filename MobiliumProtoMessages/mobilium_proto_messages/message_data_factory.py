@@ -6,20 +6,26 @@ from mobilium_proto_messages.proto.messages_pb2 import *
 class MessageDataFactory:
 
     @staticmethod
-    def start_driver_request() -> bytes:
-        return MessageDataFactory.__data_with(StartDriverRequest())
+    def start_driver_request(udid: str) -> bytes:
+        message = StartDriverRequest()
+        message.udid = udid
+        return MessageDataFactory.__data_with(message)
 
     @staticmethod
     def execute_test_request() -> bytes:
         return MessageDataFactory.__data_with(ExecuteTestRequest())
 
     @staticmethod
-    def install_app_request() -> bytes:
-        return MessageDataFactory.__data_with(InstallAppRequest())
+    def install_app_request(udid: str) -> bytes:
+        message = InstallAppRequest()
+        message.udid = udid
+        return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def uninstall_app_request() -> bytes:
-        return MessageDataFactory.__data_with(UninstallAppRequest())
+    def uninstall_app_request(udid: str) -> bytes:
+        message = UninstallAppRequest()
+        message.udid = udid
+        return MessageDataFactory.__data_with(message)
 
     @staticmethod
     def install_app_response() -> bytes:

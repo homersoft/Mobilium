@@ -1,12 +1,18 @@
 syntax = "proto3";
 
-message StartDriverRequest {}
+message StartDriverRequest {
+    string udid = 1;
+}
 message StartDriverResponse {}
 
-message InstallAppRequest {}
+message InstallAppRequest {
+    string udid = 1;
+}
 message InstallAppResponse {}
 
-message UninstallAppRequest {}
+message UninstallAppRequest {
+    string udid = 1;
+}
 message UninstallAppResponse {}
 
 message ExecuteTestRequest {}
