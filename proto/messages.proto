@@ -7,26 +7,30 @@ message StartDriverResponse {}
 
 message InstallAppRequest {
     string udid = 1;
+    string file_path = 2;
 }
 message InstallAppResponse {}
 
 message UninstallAppRequest {
     string udid = 1;
+    string bundle_id = 2;
 }
 message UninstallAppResponse {}
 
-message ExecuteTestRequest {}
+message ExecuteTestRequest {
+    string bundle_id = 1;
+}
 message ExecuteTestResponse {}
 
 message MobiliumMessage {
     oneof message {
-        StartDriverRequest startDriverRequest = 1;
-        StartDriverResponse startDriverResponse = 2;
-        InstallAppRequest installAppRequest = 3;
-        InstallAppResponse installAppResponse = 4;
-        UninstallAppRequest uninstallAppRequest = 5;
-        UninstallAppResponse uninstallAppResponse = 6;
-        ExecuteTestRequest executeTestRequest = 7;
-        ExecuteTestResponse executeTestResponse = 8;
+        StartDriverRequest start_driver_request = 1;
+        StartDriverResponse start_driver_response = 2;
+        InstallAppRequest install_app_request = 3;
+        InstallAppResponse install_app_response = 4;
+        UninstallAppRequest uninstall_app_request = 5;
+        UninstallAppResponse uninstall_app_response = 6;
+        ExecuteTestRequest execute_test_request = 7;
+        ExecuteTestResponse execute_test_response = 8;
     }
 }

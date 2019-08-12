@@ -21,13 +21,13 @@ class MobiliumClientNamespace(AsyncClientNamespace):
 
     async def on_message(self, data):
         if MessageDeserializer.start_driver_response(data):
-            message = MessageDataFactory.install_app_request(self.device_udid)
+            message = MessageDataFactory.install_app_request(self.device_udid, '')
             await self.send(message)
         elif MessageDeserializer.install_app_response(data):
-            message = MessageDataFactory.execute_test_request()
+            message = MessageDataFactory.execute_test_request('')
             await self.send(message)
         elif MessageDeserializer.execute_test_response(data):
-            message = MessageDataFactory.uninstall_app_request(self.device_udid)
+            message = MessageDataFactory.uninstall_app_request(self.device_udid, '')
             await self.send(message)
         elif MessageDeserializer.uninstall_app_response(data):
             await self.disconnect()
