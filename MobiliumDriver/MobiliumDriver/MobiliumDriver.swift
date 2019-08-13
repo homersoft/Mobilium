@@ -32,8 +32,8 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         socket?.on("message") { [weak self] (data, ack) in
             guard let data = data as? [Data] else { return }
 
-            if self?.deserializer.executeTestRequest(from: data) != nil {
-                self?.executeTest()
+            if let message = self?.deserializer.executeTestRequest(from: data) {
+                self?.executeTest(bundleId: message.bundleID)
             }
         }
         socket?.connect()
@@ -41,10 +41,10 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         while keepAlive && RunLoop.main.run(mode: .default, before: .distantFuture) { }
     }
 
-    func executeTest() {
+    func executeTest(bundleId: String) {
         continueAfterFailure = true
 
-        let app = XCUIApplication(bundleIdentifier: "com.silvair.commissioning.test.dev")
+        let app = XCUIApplication(bundleIdentifier: bundleId)
         app.launch()
 
         Thread.sleep(forTimeInterval: 1.0)
