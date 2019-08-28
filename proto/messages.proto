@@ -22,11 +22,16 @@ message LaunchAppRequest {
 }
 message LaunchAppResponse {}
 
-message CheckElementVisibleRequest {
+message TerminateAppRequest {}
+
+message TerminateAppResponse {}
+
+message IsElementVisibleRequest {
     string accessibility_id = 1;
 }
-message CheckElementVisibleResponse {
-    bool is_visible = 1;
+message IsElementVisibleResponse {
+    string accessibility_id = 1;
+    bool is_visible = 2;
 }
 
 message MobiliumMessage {
@@ -39,7 +44,9 @@ message MobiliumMessage {
         UninstallAppResponse uninstall_app_response = 6;
         LaunchAppRequest launch_app_request = 7;
         LaunchAppResponse launch_app_response = 8;
-        CheckElementVisibleRequest check_element_visible_request = 9;
-        CheckElementVisibleResponse check_element_visible_response = 10;
+        TerminateAppRequest terminate_app_request = 9;
+        TerminateAppResponse terminate_app_response = 10;
+        IsElementVisibleRequest is_element_visible_request = 11;
+        IsElementVisibleResponse is_element_visible_response = 12;
     }
 }

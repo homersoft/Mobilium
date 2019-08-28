@@ -37,8 +37,12 @@ class MessageDeserializer:
         return MessageDeserializer.__message(data, LaunchAppResponse)
 
     @staticmethod
-    def check_element_visible_response(data: bytes) -> Optional[CheckElementVisibleResponse]:
-        return MessageDeserializer.__message(data, CheckElementVisibleResponse)
+    def is_element_visible_response(data: bytes) -> Optional[IsElementVisibleResponse]:
+        return MessageDeserializer.__message(data, IsElementVisibleResponse)
+
+    @staticmethod
+    def terminate_app_response(data: bytes) -> Optional[TerminateAppResponse]:
+        return MessageDeserializer.__message(data, TerminateAppResponse)
 
     @staticmethod
     def __message(data: bytes, type_of_meesage: Type[T]) -> Optional[T]:

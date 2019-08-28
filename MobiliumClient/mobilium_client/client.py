@@ -9,6 +9,14 @@ from mobilium_client import config
 
 
 class MobiliumClientNamespace(AsyncClientNamespace):
+    visible_elements: [str] = [
+        "login_button",
+        "login_field",
+        "password_field",
+        "tab_1"
+    ]
+    check_element_index = 0
+
     def __init__(self, namespace: str, device_udid: str):
         super().__init__(namespace)
         self.device_udid = device_udid
@@ -29,14 +37,22 @@ class MobiliumClientNamespace(AsyncClientNamespace):
             message = MessageDataFactory.launch_app_request(config.APP_BUNDLE_ID)
             await self.send(message)
         elif MessageDeserializer.launch_app_response(data):
-            login_button_id = "login_button"
-            message = MessageDataFactory.check_element_visible_request(login_button_id)
+            message = MessageDataFactory.is_element_visible_request(self.visible_elements[0])
             await self.send(message)
-        elif MessageDeserializer.check_element_visible_response(data):
-            response = MessageDeserializer.check_element_visible_response(data)
-            print("Element visible: {}".format(response.is_visible))
+        elif MessageDeserializer.is_element_visible_response(data):
+            response = MessageDeserializer.is_element_visible_response(data)
+            if response.is_visible:
+                self.check_element_index += 1
+            index = self.check_element_index
+            if index == len(self.visible_elements):
+                message = MessageDataFactory.terminate_app_request()
+                await self.send(message)
+            else:
+                message = MessageDataFactory.is_element_visible_request(self.visible_elements[index])
+                await self.send(message)
+        elif MessageDeserializer.terminate_app_response(data):
             message = MessageDataFactory.uninstall_app_request(self.device_udid, config.APP_BUNDLE_ID)
-            # await self.send(message)
+            await  self.send(message)
         elif MessageDeserializer.uninstall_app_response(data):
             await self.disconnect()
 

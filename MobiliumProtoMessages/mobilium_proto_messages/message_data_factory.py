@@ -20,12 +20,6 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def check_element_visible_request(accessibility_id: str) -> bytes:
-        message = CheckElementVisibleRequest()
-        message.accessibility_id = accessibility_id
-        return MessageDataFactory.__data_with(message)
-
-    @staticmethod
     def install_app_request(udid: str, file_path: str) -> bytes:
         message = InstallAppRequest()
         message.udid = udid
@@ -40,12 +34,23 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
+    def terminate_app_request() -> bytes:
+        message = TerminateAppRequest()
+        return MessageDataFactory.__data_with(message)
+
+    @staticmethod
     def install_app_response() -> bytes:
         return MessageDataFactory.__data_with(InstallAppResponse())
 
     @staticmethod
     def uninstall_app_response() -> bytes:
         return MessageDataFactory.__data_with(UninstallAppResponse())
+
+    @staticmethod
+    def is_element_visible_request(accessibility_id: str) -> bytes:
+        message = IsElementVisibleRequest()
+        message.accessibility_id = accessibility_id
+        return MessageDataFactory.__data_with(message)
 
     @staticmethod
     def __data_with(message: Message) -> bytes:

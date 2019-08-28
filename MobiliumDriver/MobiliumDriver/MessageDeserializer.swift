@@ -10,16 +10,6 @@ import Foundation
 import SwiftProtobuf
 
 class MessageDeserializer {
-
-    func checkElementVisibility(from data: [Data]) -> CheckElementVisibleRequest? {
-        let message = extract(from: data) { oneOfMessage in
-            guard case .checkElementVisibleRequest(let message) = oneOfMessage else { return nil }
-
-            return message
-        }
-        return message as? CheckElementVisibleRequest
-    }
-
     func launchAppRequest(from data: [Data]) -> LaunchAppRequest? {
         let message = extract(from: data) { oneOfMessage in
             guard case .launchAppRequest(let message) = oneOfMessage else { return nil }
@@ -27,6 +17,24 @@ class MessageDeserializer {
             return message
         }
         return message as? LaunchAppRequest
+    }
+
+    func isElementVisibileRequest(from data: [Data]) -> IsElementVisibleRequest? {
+        let message = extract(from: data) { oneOfMessage in
+            guard case .isElementVisibleRequest(let message) = oneOfMessage else { return nil }
+
+            return message
+        }
+        return message as? IsElementVisibleRequest
+    }
+
+    func terminateAppRequest(from data: [Data]) -> TerminateAppRequest? {
+        let message = extract(from: data) { oneOfMessage in
+            guard case .terminateAppRequest(let message) = oneOfMessage else { return nil }
+
+            return message
+        }
+        return message as? TerminateAppRequest
     }
 
     private func extract(from data: [Data], using extractor: (MobiliumMessage.OneOf_Message) -> Message?) -> Message? {

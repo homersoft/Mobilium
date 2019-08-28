@@ -24,9 +24,16 @@ class MessageDataFactory {
 
     static func elementVisiblityResponse(isVisible: Bool) -> Data {
         return dataWith(populator: { populator in
-            var response = CheckElementVisibleResponse()
+            var response = IsElementVisibleResponse()
             response.isVisible = isVisible
-            populator.message = .checkElementVisibleResponse(response)
+            populator.message = .isElementVisibleResponse(response)
+        })
+    }
+
+    static func terminateAppResponse() -> Data {
+        return dataWith(populator: { populator in
+            let response = TerminateAppResponse()
+            populator.message = .terminateAppResponse(response)
         })
     }
 
