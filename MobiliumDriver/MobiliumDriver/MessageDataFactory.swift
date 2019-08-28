@@ -16,10 +16,18 @@ class MessageDataFactory {
         }
     }
 
-    static func executeTestResponse() -> Data {
-        return dataWith { populator in
-            populator.message = .executeTestResponse(ExecuteTestResponse())
-        }
+    static func appLaunchResponse() -> Data {
+        return dataWith(populator: { populator in
+            populator.message = .launchAppResponse(LaunchAppResponse())
+        })
+    }
+
+    static func elementVisiblityResponse(isVisible: Bool) -> Data {
+        return dataWith(populator: { populator in
+            var response = CheckElementVisibleResponse()
+            response.isVisible = isVisible
+            populator.message = .checkElementVisibleResponse(response)
+        })
     }
 
     static private func dataWith(populator: (inout MobiliumMessage) throws -> ()) -> Data {

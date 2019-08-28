@@ -14,9 +14,15 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def execute_test_request(bundle_id: str) -> bytes:
-        message = ExecuteTestRequest()
+    def launch_app_request(bundle_id: str) -> bytes:
+        message = LaunchAppRequest()
         message.bundle_id = bundle_id
+        return MessageDataFactory.__data_with(message)
+
+    @staticmethod
+    def check_element_visible_request(accessibility_id: str) -> bytes:
+        message = CheckElementVisibleRequest()
+        message.accessibility_id = accessibility_id
         return MessageDataFactory.__data_with(message)
 
     @staticmethod

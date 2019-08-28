@@ -1,5 +1,5 @@
 //
-//  MessageDeseliarizer.swift
+//  MessageDeserializer.swift
 //  MobiliumDriver
 //
 //  Created by Tomasz Oraczewski on 26/07/2019.
@@ -11,13 +11,22 @@ import SwiftProtobuf
 
 class MessageDeserializer {
 
-    func executeTestRequest(from data: [Data]) -> ExecuteTestRequest? {
+    func checkElementVisibility(from data: [Data]) -> CheckElementVisibleRequest? {
         let message = extract(from: data) { oneOfMessage in
-            guard case .executeTestRequest(let message) = oneOfMessage else { return nil }
+            guard case .checkElementVisibleRequest(let message) = oneOfMessage else { return nil }
 
             return message
         }
-        return message as? ExecuteTestRequest
+        return message as? CheckElementVisibleRequest
+    }
+
+    func launchAppRequest(from data: [Data]) -> LaunchAppRequest? {
+        let message = extract(from: data) { oneOfMessage in
+            guard case .launchAppRequest(let message) = oneOfMessage else { return nil }
+
+            return message
+        }
+        return message as? LaunchAppRequest
     }
 
     private func extract(from data: [Data], using extractor: (MobiliumMessage.OneOf_Message) -> Message?) -> Message? {

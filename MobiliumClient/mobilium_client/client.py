@@ -26,11 +26,17 @@ class MobiliumClientNamespace(AsyncClientNamespace):
             message = MessageDataFactory.install_app_request(self.device_udid, config.APP_FILE_PATH)
             await self.send(message)
         elif MessageDeserializer.install_app_response(data):
-            message = MessageDataFactory.execute_test_request(config.APP_BUNDLE_ID)
+            message = MessageDataFactory.launch_app_request(config.APP_BUNDLE_ID)
             await self.send(message)
-        elif MessageDeserializer.execute_test_response(data):
+        elif MessageDeserializer.launch_app_response(data):
+            login_button_id = "login_button"
+            message = MessageDataFactory.check_element_visible_request(login_button_id)
+            await self.send(message)
+        elif MessageDeserializer.check_element_visible_response(data):
+            response = MessageDeserializer.check_element_visible_response(data)
+            print("Element visible: {}".format(response.is_visible))
             message = MessageDataFactory.uninstall_app_request(self.device_udid, config.APP_BUNDLE_ID)
-            await self.send(message)
+            # await self.send(message)
         elif MessageDeserializer.uninstall_app_response(data):
             await self.disconnect()
 

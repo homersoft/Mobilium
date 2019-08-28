@@ -11,6 +11,7 @@ import Network
 import SocketIO
 
 class MobiliumDriver: XCTestCase, StreamDelegate {
+    var app: XCUIApplication!
     var socket: SocketIOClient?
     var deserializer = MessageDeserializer()
     var keepAlive = true
@@ -32,8 +33,12 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         socket?.on("message") { [weak self] (data, ack) in
             guard let data = data as? [Data] else { return }
 
-            if let message = self?.deserializer.executeTestRequest(from: data) {
-                self?.executeTest(bundleId: message.bundleID)
+            if let message = self?.deserializer.launchAppRequest(from: data) {
+                self?.launchApp(bundleId: message.bundleID)
+            }
+
+            if let message = self?.deserializer.checkElementVisibility(from: data) {
+                self?.checkElementVisible(with: message.accessibilityID)
             }
         }
         socket?.connect()
@@ -41,20 +46,25 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         while keepAlive && RunLoop.main.run(mode: .default, before: .distantFuture) { }
     }
 
-    func executeTest(bundleId: String) {
+
+    func launchApp(bundleId: String) {
         continueAfterFailure = true
 
-        let app = XCUIApplication(bundleIdentifier: bundleId)
+        app = XCUIApplication(bundleIdentifier: bundleId)
         app.launch()
 
         Thread.sleep(forTimeInterval: 1.0)
 
-        app.terminate()
-        let data = MessageDataFactory.executeTestResponse()
+        let data = MessageDataFactory.appLaunchResponse()
         socket?.emit("message", with: [data])
+    }
 
-        Thread.sleep(forTimeInterval: 1.0)
-        socket?.disconnect()
+    func checkElementVisible(with accessibilityID: String) {
+        let element = app.descendants(matching: .any)[accessibilityID]
+        let elementExists = element.waitForExistence(timeout: 5)
+
+        let messageData = MessageDataFactory.elementVisiblityResponse(isVisible: elementExists)
+        socket?.emit("message", with: [messageData])
     }
 }
 
