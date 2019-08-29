@@ -38,7 +38,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             }
 
             if let message = self?.deserializer.isElementVisibileRequest(from: data) {
-                self?.checkElementVisible(with: message.accessibilityID)
+                self?.checkElementVisible(with: message.accessibilityID, timeout: TimeInterval(message.timeout))
             }
 
             if let _ = self?.deserializer.terminateAppRequest(from: data) {
@@ -70,11 +70,11 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         socket?.emit("message", with: [messageData])
     }
 
-    private func checkElementVisible(with accessibilityID: String) {
+    private func checkElementVisible(with accessibilityID: String, timeout: TimeInterval) {
         let element = app.descendants(matching: .any)[accessibilityID]
-        let elementExists = element.waitForExistence(timeout: 5)
+        let elementExists = element.waitForExistence(timeout: timeout)
 
-        let messageData = MessageDataFactory.elementVisiblityResponse(isVisible: elementExists)
+        let messageData = MessageDataFactory.isElementVisibleResponse(isVisible: elementExists)
         socket?.emit("message", with: [messageData])
     }
 }

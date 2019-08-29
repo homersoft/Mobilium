@@ -3,6 +3,9 @@ import asyncio
 
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
+from mobilium_proto_messages.proto.messages_pb2 import IsElementVisibleResponse
+from mobilium_client.exceptions import ElementNotVisibleException
+
 from socketio import AsyncClient, AsyncClientNamespace
 
 from mobilium_client import config
@@ -41,15 +44,7 @@ class MobiliumClientNamespace(AsyncClientNamespace):
             await self.send(message)
         elif MessageDeserializer.is_element_visible_response(data):
             response = MessageDeserializer.is_element_visible_response(data)
-            if response.is_visible:
-                self.check_element_index += 1
-            index = self.check_element_index
-            if index == len(self.visible_elements):
-                message = MessageDataFactory.terminate_app_request()
-                await self.send(message)
-            else:
-                message = MessageDataFactory.is_element_visible_request(self.visible_elements[index])
-                await self.send(message)
+            await self.__handle_is_visible_response(response)
         elif MessageDeserializer.terminate_app_response(data):
             message = MessageDataFactory.uninstall_app_request(self.device_udid, config.APP_BUNDLE_ID)
             await  self.send(message)
@@ -60,6 +55,18 @@ class MobiliumClientNamespace(AsyncClientNamespace):
         print('<<< {0}'.format(message))
         await super(MobiliumClientNamespace, self).send(message, namespace=namespace, callback=callback)
 
+    async def __handle_is_visible_response(self, response: IsElementVisibleResponse):
+        if response.is_visible:
+            self.check_element_index += 1
+        else:
+            raise ElementNotVisibleException
+        index = self.check_element_index
+        if index == len(self.visible_elements):
+            message = MessageDataFactory.terminate_app_request()
+            await self.send(message)
+        else:
+            message = MessageDataFactory.is_element_visible_request(self.visible_elements[index])
+            await self.send(message)
 
 async def start_client(address: str, port: int, device_udid: str):
     client = AsyncClient()

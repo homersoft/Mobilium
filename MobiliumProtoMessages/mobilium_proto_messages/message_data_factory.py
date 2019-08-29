@@ -47,9 +47,10 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(UninstallAppResponse())
 
     @staticmethod
-    def is_element_visible_request(accessibility_id: str) -> bytes:
+    def is_element_visible_request(accessibility_id: str, timeout: float = 0) -> bytes:
         message = IsElementVisibleRequest()
         message.accessibility_id = accessibility_id
+        message.timeout = timeout
         return MessageDataFactory.__data_with(message)
 
     @staticmethod

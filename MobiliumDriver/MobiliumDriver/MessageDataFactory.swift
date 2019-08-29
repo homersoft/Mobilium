@@ -22,7 +22,7 @@ class MessageDataFactory {
         })
     }
 
-    static func elementVisiblityResponse(isVisible: Bool) -> Data {
+    static func isElementVisibleResponse(isVisible: Bool) -> Data {
         return dataWith(populator: { populator in
             var response = IsElementVisibleResponse()
             response.isVisible = isVisible

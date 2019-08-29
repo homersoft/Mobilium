@@ -28,9 +28,10 @@ message TerminateAppResponse {}
 
 message IsElementVisibleRequest {
     string accessibility_id = 1;
+    float timeout = 2;
 }
+
 message IsElementVisibleResponse {
-    string accessibility_id = 1;
     bool is_visible = 2;
 }
 
