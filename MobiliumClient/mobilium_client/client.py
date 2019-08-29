@@ -3,12 +3,14 @@ import asyncio
 
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
+
 from socketio import AsyncClient, AsyncClientNamespace
 
 from mobilium_client import config
 
 
 class MobiliumClientNamespace(AsyncClientNamespace):
+
     def __init__(self, namespace: str, device_udid: str):
         super().__init__(namespace)
         self.device_udid = device_udid
@@ -26,11 +28,17 @@ class MobiliumClientNamespace(AsyncClientNamespace):
             message = MessageDataFactory.install_app_request(self.device_udid, config.APP_FILE_PATH)
             await self.send(message)
         elif MessageDeserializer.install_app_response(data):
-            message = MessageDataFactory.execute_test_request(config.APP_BUNDLE_ID)
+            message = MessageDataFactory.launch_app_request(config.APP_BUNDLE_ID)
             await self.send(message)
-        elif MessageDeserializer.execute_test_response(data):
+        elif MessageDeserializer.launch_app_response(data):
+            message = MessageDataFactory.is_element_visible_request("login_button")
+            await self.send(message)
+        elif MessageDeserializer.is_element_visible_response(data):
+            message = MessageDataFactory.terminate_app_request()
+            await self.send(message)
+        elif MessageDeserializer.terminate_app_response(data):
             message = MessageDataFactory.uninstall_app_request(self.device_udid, config.APP_BUNDLE_ID)
-            await self.send(message)
+            await  self.send(message)
         elif MessageDeserializer.uninstall_app_response(data):
             await self.disconnect()
 

@@ -14,8 +14,8 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def execute_test_request(bundle_id: str) -> bytes:
-        message = ExecuteTestRequest()
+    def launch_app_request(bundle_id: str) -> bytes:
+        message = LaunchAppRequest()
         message.bundle_id = bundle_id
         return MessageDataFactory.__data_with(message)
 
@@ -34,12 +34,24 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
+    def terminate_app_request() -> bytes:
+        message = TerminateAppRequest()
+        return MessageDataFactory.__data_with(message)
+
+    @staticmethod
     def install_app_response() -> bytes:
         return MessageDataFactory.__data_with(InstallAppResponse())
 
     @staticmethod
     def uninstall_app_response() -> bytes:
         return MessageDataFactory.__data_with(UninstallAppResponse())
+
+    @staticmethod
+    def is_element_visible_request(accessibility_id: str, timeout: float = 0) -> bytes:
+        message = IsElementVisibleRequest()
+        message.accessibility_id = accessibility_id
+        message.timeout = timeout
+        return MessageDataFactory.__data_with(message)
 
     @staticmethod
     def __data_with(message: Message) -> bytes:

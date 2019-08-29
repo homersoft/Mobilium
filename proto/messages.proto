@@ -17,10 +17,24 @@ message UninstallAppRequest {
 }
 message UninstallAppResponse {}
 
-message ExecuteTestRequest {
+message LaunchAppRequest {
     string bundle_id = 1;
 }
-message ExecuteTestResponse {}
+message LaunchAppResponse {}
+
+message TerminateAppRequest {}
+
+message TerminateAppResponse {}
+
+message IsElementVisibleRequest {
+    string accessibility_id = 1;
+    float timeout = 2;
+}
+
+message IsElementVisibleResponse {
+    string accessibility_id = 1;
+    bool is_visible = 2;
+}
 
 message MobiliumMessage {
     oneof message {
@@ -30,7 +44,11 @@ message MobiliumMessage {
         InstallAppResponse install_app_response = 4;
         UninstallAppRequest uninstall_app_request = 5;
         UninstallAppResponse uninstall_app_response = 6;
-        ExecuteTestRequest execute_test_request = 7;
-        ExecuteTestResponse execute_test_response = 8;
+        LaunchAppRequest launch_app_request = 7;
+        LaunchAppResponse launch_app_response = 8;
+        TerminateAppRequest terminate_app_request = 9;
+        TerminateAppResponse terminate_app_response = 10;
+        IsElementVisibleRequest is_element_visible_request = 11;
+        IsElementVisibleResponse is_element_visible_response = 12;
     }
 }

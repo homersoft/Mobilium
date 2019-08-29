@@ -33,8 +33,16 @@ class MessageDeserializer:
         return MessageDeserializer.__message(data, UninstallAppResponse)
 
     @staticmethod
-    def execute_test_response(data: bytes) -> Optional[ExecuteTestResponse]:
-        return MessageDeserializer.__message(data, ExecuteTestResponse)
+    def launch_app_response(data: bytes) -> Optional[LaunchAppResponse]:
+        return MessageDeserializer.__message(data, LaunchAppResponse)
+
+    @staticmethod
+    def is_element_visible_response(data: bytes) -> Optional[IsElementVisibleResponse]:
+        return MessageDeserializer.__message(data, IsElementVisibleResponse)
+
+    @staticmethod
+    def terminate_app_response(data: bytes) -> Optional[TerminateAppResponse]:
+        return MessageDeserializer.__message(data, TerminateAppResponse)
 
     @staticmethod
     def __message(data: bytes, type_of_meesage: Type[T]) -> Optional[T]:
