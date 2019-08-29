@@ -32,6 +32,7 @@ message IsElementVisibleRequest {
 }
 
 message IsElementVisibleResponse {
+    string accessibility_id = 1;
     bool is_visible = 2;
 }
 

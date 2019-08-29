@@ -74,7 +74,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         let element = app.descendants(matching: .any)[accessibilityID]
         let elementExists = element.waitForExistence(timeout: timeout)
 
-        let messageData = MessageDataFactory.isElementVisibleResponse(isVisible: elementExists)
+        let messageData = MessageDataFactory.isElementVisibleResponse(accessibilityId: accessibilityID, isVisible: elementExists)
         socket?.emit("message", with: [messageData])
     }
 }

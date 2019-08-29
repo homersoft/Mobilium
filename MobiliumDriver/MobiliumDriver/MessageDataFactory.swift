@@ -22,10 +22,11 @@ class MessageDataFactory {
         })
     }
 
-    static func isElementVisibleResponse(isVisible: Bool) -> Data {
+    static func isElementVisibleResponse(accessibilityId: String, isVisible: Bool) -> Data {
         return dataWith(populator: { populator in
             var response = IsElementVisibleResponse()
             response.isVisible = isVisible
+            response.accessibilityID = accessibilityId
             populator.message = .isElementVisibleResponse(response)
         })
     }
