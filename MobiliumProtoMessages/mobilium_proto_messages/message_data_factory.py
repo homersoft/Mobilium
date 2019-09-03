@@ -54,6 +54,12 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
+    def click_element_request(accessibility_id: str) -> bytes:
+        message = ClickElementRequest()
+        message.accessibility_id = accessibility_id
+        return MessageDataFactory.__data_with(message)
+
+    @staticmethod
     def __data_with(message: Message) -> bytes:
         class_name = message.__class__.__name__
         attribute_name = '_'.join(MessageDataFactory.__camel_case_split(class_name)).lower()

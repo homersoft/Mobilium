@@ -36,6 +36,13 @@ message IsElementVisibleResponse {
     bool is_visible = 2;
 }
 
+message ClickElementRequest {
+    string accessibility_id = 1;
+}
+message ClickElementResponse {
+    string accessibility_id = 1;
+}
+
 message MobiliumMessage {
     oneof message {
         StartDriverRequest start_driver_request = 1;
@@ -50,5 +57,7 @@ message MobiliumMessage {
         TerminateAppResponse terminate_app_response = 10;
         IsElementVisibleRequest is_element_visible_request = 11;
         IsElementVisibleResponse is_element_visible_response = 12;
+        ClickElementRequest click_element_request = 13;
+        ClickElementResponse click_element_response = 14;
     }
 }
