@@ -34,11 +34,14 @@ class MobiliumClientNamespace(AsyncClientNamespace):
             message = MessageDataFactory.is_element_visible_request("login_button")
             await self.send(message)
         elif MessageDeserializer.is_element_visible_response(data):
+            message = MessageDataFactory.click_element_request("login_button")
+            await self.send(message)
+        elif MessageDeserializer.click_element_response(data):
             message = MessageDataFactory.terminate_app_request()
             await self.send(message)
         elif MessageDeserializer.terminate_app_response(data):
             message = MessageDataFactory.uninstall_app_request(self.device_udid, config.APP_BUNDLE_ID)
-            await  self.send(message)
+            await self.send(message)
         elif MessageDeserializer.uninstall_app_response(data):
             await self.disconnect()
 

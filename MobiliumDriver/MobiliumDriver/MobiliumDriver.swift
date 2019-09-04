@@ -40,6 +40,10 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             if let message = self?.deserializer.isElementVisibileRequest(from: data) {
                 self?.checkElementVisible(with: message.accessibilityID, timeout: TimeInterval(message.timeout))
             }
+            
+            if let message = self?.deserializer.clickElementRequest(from: data) {
+                self?.clickElement(with: message.accessibilityID)
+            }
 
             if let _ = self?.deserializer.terminateAppRequest(from: data) {
                 self?.terminateApp()
@@ -77,5 +81,14 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         let messageData = MessageDataFactory.isElementVisibleResponse(accessibilityId: accessibilityID, isVisible: elementExists)
         socket?.emit("message", with: [messageData])
     }
+    
+    private func clickElement(with accessibilityID: String) {
+        let element = app.descendants(matching: .any)[accessibilityID]
+        if element.exists {
+            element.tap()
+        }
+        
+        let messageData = MessageDataFactory.clickElementResponse(accessibilityId: accessibilityID)
+        socket?.emit("message", with: [messageData])
+    }
 }
-
