@@ -54,6 +54,12 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
+    def get_value_of_element_request(accessibility_id: str) -> bytes:
+        message = GetValueOfElementRequest()
+        message.accessibility_id = accessibility_id
+        return MessageDataFactory.__data_with(message)
+
+    @staticmethod
     def click_element_request(accessibility_id: str) -> bytes:
         message = ClickElementRequest()
         message.accessibility_id = accessibility_id

@@ -39,8 +39,18 @@ message IsElementVisibleResponse {
 message ClickElementRequest {
     string accessibility_id = 1;
 }
+
 message ClickElementResponse {
     string accessibility_id = 1;
+}
+
+message GetValueOfElementRequest {
+    string accessibility_id = 1;
+}
+
+message GetValueOfElementResponse {
+    string accessibility_id = 1;
+    string value = 2;
 }
 
 message MobiliumMessage {
@@ -59,5 +69,7 @@ message MobiliumMessage {
         IsElementVisibleResponse is_element_visible_response = 12;
         ClickElementRequest click_element_request = 13;
         ClickElementResponse click_element_response = 14;
+        GetValueOfElementRequest get_value_of_element_request = 15;
+        GetValueOfElementResponse get_value_of_element_response = 16;
     }
 }

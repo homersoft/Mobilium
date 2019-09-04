@@ -34,6 +34,9 @@ class MobiliumClientNamespace(AsyncClientNamespace):
             message = MessageDataFactory.is_element_visible_request("login_button")
             await self.send(message)
         elif MessageDeserializer.is_element_visible_response(data):
+            message = MessageDataFactory.get_value_of_element_request("login_button")
+            await self.send(message)
+        elif MessageDeserializer.get_value_of_element_response(data):
             message = MessageDataFactory.click_element_request("login_button")
             await self.send(message)
         elif MessageDeserializer.click_element_response(data):
