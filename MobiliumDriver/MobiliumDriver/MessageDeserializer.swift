@@ -45,6 +45,15 @@ class MessageDeserializer {
         }
         return message as? ClickElementRequest
     }
+    
+    func getValueOfElementRequest(from data: [Data]) -> GetValueOfElementRequest? {
+        let message = extract(from: data) { oneOfMessage in
+            guard case .getValueOfElementRequest(let message) = oneOfMessage else { return nil }
+            
+            return message
+        }
+        return message as? GetValueOfElementRequest
+    }
 
     private func extract(from data: [Data], using extractor: (MobiliumMessage.OneOf_Message) -> Message?) -> Message? {
         guard let serializedData = data.first,

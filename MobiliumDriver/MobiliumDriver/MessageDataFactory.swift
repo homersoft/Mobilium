@@ -38,6 +38,15 @@ class MessageDataFactory {
             populator.message = .clickElementResponse(response)
         })
     }
+    
+    static func getValueOfElementResponse(accessibilityId: String, value: String?) -> Data {
+        return dataWith(populator: { populator in
+            var response = GetValueOfElementResponse()
+            response.accessibilityID = accessibilityId
+            response.value = value ?? ""
+            populator.message = .getValueOfElementResponse(response)
+        })
+    }
 
     static func terminateAppResponse() -> Data {
         return dataWith(populator: { populator in

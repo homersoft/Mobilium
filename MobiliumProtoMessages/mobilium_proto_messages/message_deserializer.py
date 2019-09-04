@@ -41,6 +41,10 @@ class MessageDeserializer:
         return MessageDeserializer.__message(data, IsElementVisibleResponse)
 
     @staticmethod
+    def get_value_of_element_response(data: bytes) -> Optional[GetValueOfElementResponse]:
+        return MessageDeserializer.__message(data, GetValueOfElementResponse)
+
+    @staticmethod
     def click_element_response(data: bytes) -> Optional[ClickElementResponse]:
         return MessageDeserializer.__message(data, ClickElementResponse)
 
