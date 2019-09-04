@@ -98,7 +98,10 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     
     private func readValueOfElement(with accessibilityID: String) {
         let element = app.descendants(matching: .any)[accessibilityID]
-        let value = element.value as? String ?? element.label
+        var value: String?
+        if element.exists {
+            value = element.value as? String ?? element.label
+        }
         let messageData = MessageDataFactory.getValueOfElementResponse(accessibilityId: accessibilityID, value: value)
         socket?.emit("message", messageData)
     }
