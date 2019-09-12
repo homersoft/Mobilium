@@ -1,6 +1,8 @@
 import argparse
 import asyncio
 
+from mobile_test_platform.utilities.wait import wait
+
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 
@@ -34,13 +36,22 @@ class MobiliumClientNamespace(AsyncClientNamespace):
             message = MessageDataFactory.is_element_visible_request("login_button")
             await self.send(message)
         elif MessageDeserializer.is_element_visible_response(data):
-            message = MessageDataFactory.get_value_of_element_request("login_button")
+            message = MessageDataFactory.set_value_of_element_request("login_field", "mobile-ci+mob1@silvair.com")
             await self.send(message)
+        elif MessageDeserializer.set_value_of_element_response(data):
+            accessibility_id = getattr(MessageDeserializer.set_value_of_element_response(data), 'accessibility_id')
+            if accessibility_id == "login_field":
+                message = MessageDataFactory.set_value_of_element_request("password_field", "homer123")
+                await self.send(message)
+            elif accessibility_id == "password_field":
+                message = MessageDataFactory.get_value_of_element_request("login_field")
+                await self.send(message)
         elif MessageDeserializer.get_value_of_element_response(data):
             message = MessageDataFactory.click_element_request("login_button")
             await self.send(message)
         elif MessageDeserializer.click_element_response(data):
             message = MessageDataFactory.terminate_app_request()
+            wait(3)
             await self.send(message)
         elif MessageDeserializer.terminate_app_response(data):
             message = MessageDataFactory.uninstall_app_request(self.device_udid, config.APP_BUNDLE_ID)

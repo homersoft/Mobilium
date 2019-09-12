@@ -45,6 +45,10 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
                 self?.readValueOfElement(with: message.accessibilityID)
             }
             
+            if let message = self?.deserializer.setValueOfElementRequest(from: data) {
+                self?.setValueOfElement(with: message.accessibilityID, to: message.value)
+            }
+            
             if let message = self?.deserializer.clickElementRequest(from: data) {
                 self?.clickElement(with: message.accessibilityID)
             }
@@ -79,7 +83,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     }
 
     private func checkElementVisible(with accessibilityID: String, timeout: TimeInterval) {
-        let element = app.descendants(matching: .any)[accessibilityID]
+        let element = app.element(with: accessibilityID)
         let elementExists = element.waitForExistence(timeout: timeout)
 
         let messageData = MessageDataFactory.isElementVisibleResponse(accessibilityId: accessibilityID, isVisible: elementExists)
@@ -87,7 +91,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     }
     
     private func clickElement(with accessibilityID: String) {
-        let element = app.descendants(matching: .any)[accessibilityID]
+        let element = app.element(with: accessibilityID)
         if element.exists {
             element.tap()
         }
@@ -97,12 +101,26 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     }
     
     private func readValueOfElement(with accessibilityID: String) {
-        let element = app.descendants(matching: .any)[accessibilityID]
+        let element = app.element(with: accessibilityID)
         var value: String?
+        
         if element.exists {
             value = element.value as? String ?? element.label
         }
         let messageData = MessageDataFactory.getValueOfElementResponse(accessibilityId: accessibilityID, value: value)
         socket?.emit("message", messageData)
     }
+    
+    private func setValueOfElement(with accessibilityID: String, to newValue: String) {
+        let element = app.element(with: accessibilityID)
+        if element.exists {
+            element.tap()
+            element.typeText(newValue)
+            app.hideKeyboard()
+        }
+        
+        let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: accessibilityID)
+        socket?.emit("message", messageData)
+    }
 }
+

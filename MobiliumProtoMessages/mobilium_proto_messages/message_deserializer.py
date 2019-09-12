@@ -45,6 +45,10 @@ class MessageDeserializer:
         return MessageDeserializer.__message(data, GetValueOfElementResponse)
 
     @staticmethod
+    def set_value_of_element_response(data: bytes) -> Optional[SetValueOfElementResponse]:
+        return MessageDeserializer.__message(data, SetValueOfElementResponse)
+
+    @staticmethod
     def click_element_response(data: bytes) -> Optional[ClickElementResponse]:
         return MessageDeserializer.__message(data, ClickElementResponse)
 

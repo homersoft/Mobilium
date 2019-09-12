@@ -53,6 +53,15 @@ message GetValueOfElementResponse {
     string value = 2;
 }
 
+message SetValueOfElementRequest {
+    string accessibility_id = 1;
+    string value = 2;
+}
+
+message SetValueOfElementResponse {
+    string accessibility_id = 1;
+}
+
 message MobiliumMessage {
     oneof message {
         StartDriverRequest start_driver_request = 1;
@@ -71,5 +80,7 @@ message MobiliumMessage {
         ClickElementResponse click_element_response = 14;
         GetValueOfElementRequest get_value_of_element_request = 15;
         GetValueOfElementResponse get_value_of_element_response = 16;
+        SetValueOfElementRequest set_value_of_element_request = 17;
+        SetValueOfElementResponse set_value_of_element_response = 18;
     }
 }
