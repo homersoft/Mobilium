@@ -9,15 +9,23 @@
 import XCTest
 
 extension XCUIApplication {
+    private var hideKeyboardButton: XCUIElement {
+        return keyboards.buttons["Hide keyboard"]
+    }
+    
+    private var dismissKeyboardButton: XCUIElement {
+        return keyboards.buttons["Dismiss"]
+    }
+    
     func element(with accessibilityID: String) -> XCUIElement {
         return descendants(matching: .any)[accessibilityID]
     }
     
     func hideKeyboard() {
-        if keyboards.buttons["Hide keyboard"].exists {
-            keyboards.buttons["Hide keyboard"].tap()
-        } else if keyboards.buttons["Dismiss"].exists {
-            keyboards.buttons["Dismiss"].tap()
+        if hideKeyboardButton.exists {
+            hideKeyboardButton.tap()
+        } else if dismissKeyboardButton.exists {
+            dismissKeyboardButton.tap()
         }
     }
 }
