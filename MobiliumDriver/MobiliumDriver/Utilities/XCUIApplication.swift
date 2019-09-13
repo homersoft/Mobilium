@@ -9,14 +9,6 @@
 import XCTest
 
 extension XCUIApplication {
-    private var hideKeyboardButton: XCUIElement {
-        return keyboards.buttons["Hide keyboard"]
-    }
-    
-    private var dismissKeyboardButton: XCUIElement {
-        return keyboards.buttons["Dismiss"]
-    }
-    
     func element(with accessibilityID: String) -> XCUIElement {
         return descendants(matching: .any)[accessibilityID]
     }

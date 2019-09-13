@@ -55,7 +55,9 @@ message GetValueOfElementResponse {
 
 message SetValueOfElementRequest {
     string accessibility_id = 1;
-    string value = 2;
+    string text = 2;
+    float position = 3;
+    bool selection = 4;
 }
 
 message SetValueOfElementResponse {
