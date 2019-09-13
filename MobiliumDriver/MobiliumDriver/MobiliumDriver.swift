@@ -163,10 +163,13 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         element.adjust(toPickerWheelValue: pickerValue)
     }
     
-    private func setSelectionOfCheckboxElement(_ element: XCUIElement, to newValue: Bool) {
-        guard element.exists, element.isSelected != newValue else { return }
+    private func setSelectionOfCheckboxElement(_ element: XCUIElement, to desirableSelectionState: Bool) {
+        guard element.exists, let currentValue = element.value as? String else { return }
         
-        element.tap()
+        let isSelected = Int(currentValue) == 1
+        if isSelected != desirableSelectionState {
+            element.tap()
+        }
     }
 }
 

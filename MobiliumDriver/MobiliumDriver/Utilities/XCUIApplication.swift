@@ -10,7 +10,7 @@ import XCTest
 
 extension XCUIApplication {
     func element(with accessibilityID: String) -> XCUIElement {
-        return descendants(matching: .any)[accessibilityID]
+        return descendants(matching: .any)[accessibilityID].firstMatch
     }
     
     func hideKeyboard() {
