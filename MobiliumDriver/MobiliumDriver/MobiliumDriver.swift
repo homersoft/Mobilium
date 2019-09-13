@@ -127,7 +127,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         
         switch message.value {
         case .text(let newTextValue)?:
-            setTextOnTextElement(element, to: newTextValue.text, withClearing: newTextValue.clearsPreviousText)
+            setTextOnTextElement(element, to: newTextValue.value, withClearing: newTextValue.clears)
         case .position(let newPosition)?:
             setSliderElementPosition(element, to: newPosition)
         case .selection(let newSelectionValue)?:

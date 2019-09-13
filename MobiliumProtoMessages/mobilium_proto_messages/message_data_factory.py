@@ -60,11 +60,11 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_text_of_element_request(accessibility_id: str, text: str, clears_previous_text: bool = True):
+    def set_text_of_element_request(accessibility_id: str, text: str, clears: bool = True):
         message = SetValueOfElementRequest()
         message.accessibility_id = accessibility_id
-        message.text.text = text
-        message.text.clears_previous_text = clears_previous_text
+        message.text.value = text
+        message.text.clears = clears
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
