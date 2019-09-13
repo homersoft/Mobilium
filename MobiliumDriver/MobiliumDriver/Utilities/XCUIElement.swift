@@ -24,10 +24,7 @@ extension XCUIElement {
     func clearText() {
         guard let text = value as? String else { return }
         
-        var clearString = ""
-        for _ in 0..<text.count {
-            clearString += XCUIKeyboardKey.delete.rawValue
-        }
+        let clearString = String(repeating: XCUIKeyboardKey.delete.rawValue, count: text.count)
         typeText(clearString)
     }
     

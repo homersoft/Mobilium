@@ -56,6 +56,13 @@ class MessageDataFactory {
         })
     }
     
+    static func hideKeyboardResponse() -> Data {
+        return dataWith(populator: { populator in
+            let response = HideKeyboardResponse()
+            populator.message = .hideKeyboardResponse(response)
+        })
+    }
+    
     static func terminateAppResponse() -> Data {
         return dataWith(populator: { populator in
             let response = TerminateAppResponse()

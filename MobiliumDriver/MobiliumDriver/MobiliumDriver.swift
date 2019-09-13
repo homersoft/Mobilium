@@ -49,6 +49,10 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
                 self?.setValueOfElementUsingMessage(message)
             }
             
+            if let message = self?.deserializer.hideKeyboardRequest(from: data) {
+                self?.hideKeyboard()
+            }
+            
             if let message = self?.deserializer.clickElementRequest(from: data) {
                 self?.clickElement(with: message.accessibilityID)
             }
@@ -80,6 +84,13 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
 
         let messageData = MessageDataFactory.terminateAppResponse()
         socket?.emit("message", with: [messageData])
+    }
+    
+    private func hideKeyboard() {
+        app.hideKeyboard()
+        
+        let messageData = MessageDataFactory.hideKeyboardResponse()
+        socket?.emit("message", messageData)
     }
 
     private func checkElementVisible(with accessibilityID: String, timeout: TimeInterval) {
@@ -113,15 +124,14 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     
     private func setValueOfElementUsingMessage(_ message: SetValueOfElementRequest) {
         let element = app.element(with: message.accessibilityID)
-        switch element.elementType {
-        case .checkBox:
-            setSelectionOfCheckboxElement(element, to: message.selection)
-        case .textField, .textView, .secureTextField:
-            setTextOnTextElement(element, to: message.text)
-        case .slider:
-            setSliderElementPosition(element, to: message.position)
-        case .pickerWheel:
-            setPickerWheelElementPosition(element, to: message.text)
+        
+        switch message.value {
+        case .text(let newTextValue)?:
+            setTextOnTextElement(element, to: newTextValue.text, withClearing: newTextValue.clearsPreviousText)
+        case .position(let newPosition)?:
+            setSliderElementPosition(element, to: newPosition)
+        case .selection(let newSelectionValue)?:
+            setSelectionOfCheckboxElement(element, to: newSelectionValue)
         default:
             break // emit error
         }
@@ -130,12 +140,15 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         socket?.emit("message", messageData)
     }
     
-    private func setTextOnTextElement(_ element: XCUIElement, to newText: String) {
+    private func setTextOnTextElement(_ element: XCUIElement, to newText: String, withClearing shouldClear: Bool) {
         guard element.exists else { return }
         
         element.tap()
-        element.replaceText(with: newText)
-        app.hideKeyboard()
+        if shouldClear {
+            element.replaceText(with: newText)
+        } else {
+            element.typeText(newText)
+        }
     }
     
     private func setSliderElementPosition(_ element: XCUIElement, to newPosition: Float) {

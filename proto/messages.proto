@@ -53,16 +53,26 @@ message GetValueOfElementResponse {
     string value = 2;
 }
 
+message NewTextValue {
+    string text = 1;
+    bool clears_previous_text = 2;
+}
+
 message SetValueOfElementRequest {
     string accessibility_id = 1;
-    string text = 2;
-    float position = 3;
-    bool selection = 4;
+    oneof value {
+        NewTextValue text = 2;
+        float position = 3;
+        bool selection = 4;
+    }
 }
 
 message SetValueOfElementResponse {
     string accessibility_id = 1;
 }
+
+message HideKeyboardRequest {}
+message HideKeyboardResponse {}
 
 message MobiliumMessage {
     oneof message {
@@ -84,5 +94,7 @@ message MobiliumMessage {
         GetValueOfElementResponse get_value_of_element_response = 16;
         SetValueOfElementRequest set_value_of_element_request = 17;
         SetValueOfElementResponse set_value_of_element_response = 18;
+        HideKeyboardRequest hide_keyboard_request = 19;
+        HideKeyboardResponse hide_keyboard_response = 20;
     }
 }
