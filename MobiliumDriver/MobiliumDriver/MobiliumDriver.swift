@@ -76,14 +76,14 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         Thread.sleep(forTimeInterval: 1.0)
 
         let data = MessageDataFactory.appLaunchResponse()
-        socket?.emit("message", with: [data])
+        socket?.send(message: data)
     }
 
     private func terminateApp() {
         app.terminate()
 
         let messageData = MessageDataFactory.terminateAppResponse()
-        socket?.emit("message", with: [messageData])
+        socket?.send(message: messageData)
     }
     
     private func hideKeyboard() {
@@ -98,7 +98,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         let elementExists = element.waitForExistence(timeout: timeout)
 
         let messageData = MessageDataFactory.isElementVisibleResponse(accessibilityId: accessibilityID, isVisible: elementExists)
-        socket?.emit("message", with: [messageData])
+        socket?.send(message: messageData)
     }
     
     private func clickElement(with accessibilityID: String) {
@@ -108,7 +108,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         }
         
         let messageData = MessageDataFactory.clickElementResponse(accessibilityId: accessibilityID)
-        socket?.emit("message", with: [messageData])
+        socket?.send(message: messageData)
     }
     
     private func readValueOfElement(with accessibilityID: String) {
@@ -119,7 +119,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             value = element.value as? String ?? element.label
         }
         let messageData = MessageDataFactory.getValueOfElementResponse(accessibilityId: accessibilityID, value: value)
-        socket?.emit("message", messageData)
+        socket?.send(message: messageData)
     }
     
     private func setValueOfElementUsingMessage(_ message: SetValueOfElementRequest) {

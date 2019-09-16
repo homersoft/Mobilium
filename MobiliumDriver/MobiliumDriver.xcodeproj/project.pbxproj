@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C36A6DD232F77DB00FF474E /* XCUIApplication+Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C36A6DC232F77DB00FF474E /* XCUIApplication+Element.swift */; };
+		1C36A6DF232F7C4700FF474E /* SocketIOClient+SendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C36A6DE232F7C4700FF474E /* SocketIOClient+SendMessage.swift */; };
 		808127EE229BE7F1002028AE /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 808127EC229BE7F1002028AE /* Starscream.framework */; };
 		808127EF229BE7F1002028AE /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 808127ED229BE7F1002028AE /* SocketIO.framework */; };
 		80C4ADB02294372000D1A11D /* MobiliumDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C4ADAF2294372000D1A11D /* MobiliumDriver.swift */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C36A6DC232F77DB00FF474E /* XCUIApplication+Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIApplication+Element.swift"; sourceTree = "<group>"; };
+		1C36A6DE232F7C4700FF474E /* SocketIOClient+SendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SocketIOClient+SendMessage.swift"; sourceTree = "<group>"; };
 		808127EC229BE7F1002028AE /* Starscream.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Starscream.framework; path = Carthage/Build/iOS/Starscream.framework; sourceTree = "<group>"; };
 		808127ED229BE7F1002028AE /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketIO.framework; path = Carthage/Build/iOS/SocketIO.framework; sourceTree = "<group>"; };
 		80C4ADAB2294372000D1A11D /* MobiliumDriver.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobiliumDriver.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,6 +50,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1C36A6DB232F77CB00FF474E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1C36A6DC232F77DB00FF474E /* XCUIApplication+Element.swift */,
+				1C36A6DE232F7C4700FF474E /* SocketIOClient+SendMessage.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		808127EB229BE7F1002028AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -76,6 +89,7 @@
 		80C4ADAE2294372000D1A11D /* MobiliumDriver */ = {
 			isa = PBXGroup;
 			children = (
+				1C36A6DB232F77CB00FF474E /* Extensions */,
 				A6EA4940232A75D900082988 /* Utilities */,
 				CE7EA33F22E9DC8B00BE4567 /* proto */,
 				80C4ADAF2294372000D1A11D /* MobiliumDriver.swift */,
@@ -201,6 +215,8 @@
 				A6EA4942232A75E700082988 /* XCUIApplication.swift in Sources */,
 				CE7EA34122E9DC8B00BE4567 /* messages.pb.swift in Sources */,
 				80C4ADB02294372000D1A11D /* MobiliumDriver.swift in Sources */,
+				1C36A6DF232F7C4700FF474E /* SocketIOClient+SendMessage.swift in Sources */,
+				1C36A6DD232F77DB00FF474E /* XCUIApplication+Element.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
