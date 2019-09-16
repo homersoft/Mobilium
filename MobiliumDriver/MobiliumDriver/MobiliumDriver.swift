@@ -103,11 +103,12 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     
     private func clickElement(with accessibilityID: String) {
         let element = app.element(with: accessibilityID)
-        if element.exists {
+        let elementExists = element.exists
+        if elementExists {
             element.tap()
         }
         
-        let messageData = MessageDataFactory.clickElementResponse(accessibilityId: accessibilityID)
+        let messageData = MessageDataFactory.clickElementResponse(accessibilityId: accessibilityID, exists: elementExists)
         socket?.send(message: messageData)
     }
     

@@ -31,10 +31,11 @@ class MessageDataFactory {
         })
     }
     
-    static func clickElementResponse(accessibilityId: String) -> Data {
+    static func clickElementResponse(accessibilityId: String, exists: Bool) -> Data {
         return dataWith(populator: { populator in
             var response = ClickElementResponse()
             response.accessibilityID = accessibilityId
+            response.status = exists ? .success(true) : .failure(.elementNotExists)
             populator.message = .clickElementResponse(response)
         })
     }
@@ -43,7 +44,11 @@ class MessageDataFactory {
         return dataWith(populator: { populator in
             var response = GetValueOfElementResponse()
             response.accessibilityID = accessibilityId
-            response.value = value ?? ""
+            if let value = value {
+                response.status = .value(value)
+            } else {
+                response.status = .failure(.elementNotExists)
+            }
             populator.message = .getValueOfElementResponse(response)
         })
     }

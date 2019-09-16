@@ -42,6 +42,10 @@ message ClickElementRequest {
 
 message ClickElementResponse {
     string accessibility_id = 1;
+    oneof status {
+        bool success = 2;
+        ElementError failure = 3;
+    }
 }
 
 message GetValueOfElementRequest {
@@ -50,7 +54,14 @@ message GetValueOfElementRequest {
 
 message GetValueOfElementResponse {
     string accessibility_id = 1;
-    string value = 2;
+    oneof status {
+        string value = 2;
+        ElementError failure = 3;
+    }
+}
+
+enum ElementError {
+    ELEMENT_NOT_EXISTS = 0;
 }
 
 message SetValueOfElementRequest {
