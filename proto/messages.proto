@@ -80,6 +80,10 @@ message SetValueOfElementRequest {
 
 message SetValueOfElementResponse {
     string accessibility_id = 1;
+    oneof status {
+        bool success = 2;
+        ElementError failure = 3;
+    }
 }
 
 message HideKeyboardRequest {}
