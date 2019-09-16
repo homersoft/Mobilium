@@ -45,8 +45,16 @@ class MessageDeserializer:
         return MessageDeserializer.__message(data, GetValueOfElementResponse)
 
     @staticmethod
+    def set_value_of_element_response(data: bytes) -> Optional[SetValueOfElementResponse]:
+        return MessageDeserializer.__message(data, SetValueOfElementResponse)
+
+    @staticmethod
     def click_element_response(data: bytes) -> Optional[ClickElementResponse]:
         return MessageDeserializer.__message(data, ClickElementResponse)
+
+    @staticmethod
+    def hide_keyboard_response(data: bytes) -> Optional[HideKeyboardResponse]:
+        return MessageDeserializer.__message(data, HideKeyboardResponse)
 
     @staticmethod
     def terminate_app_response(data: bytes) -> Optional[TerminateAppResponse]:

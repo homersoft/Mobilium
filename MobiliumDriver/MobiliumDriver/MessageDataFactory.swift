@@ -48,6 +48,21 @@ class MessageDataFactory {
         })
     }
 
+    static func setValueOfElementResponse(accessibilityId: String) -> Data {
+        return dataWith(populator: { populator in
+            var response = SetValueOfElementResponse()
+            response.accessibilityID = accessibilityId
+            populator.message = .setValueOfElementResponse(response)
+        })
+    }
+    
+    static func hideKeyboardResponse() -> Data {
+        return dataWith(populator: { populator in
+            let response = HideKeyboardResponse()
+            populator.message = .hideKeyboardResponse(response)
+        })
+    }
+    
     static func terminateAppResponse() -> Data {
         return dataWith(populator: { populator in
             let response = TerminateAppResponse()

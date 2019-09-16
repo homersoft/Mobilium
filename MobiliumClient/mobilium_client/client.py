@@ -34,7 +34,13 @@ class MobiliumClientNamespace(AsyncClientNamespace):
             message = MessageDataFactory.is_element_visible_request("login_button")
             await self.send(message)
         elif MessageDeserializer.is_element_visible_response(data):
-            message = MessageDataFactory.get_value_of_element_request("login_button")
+            message = MessageDataFactory.set_text_of_element_request("login_field", "mobile-ci+mob1@silvair.com")
+            await self.send(message)
+        elif MessageDeserializer.set_value_of_element_response(data):
+            message = MessageDataFactory.hide_keyboard_request()
+            await self.send(message)
+        elif MessageDeserializer.hide_keyboard_response(data):
+            message = MessageDataFactory.get_value_of_element_request("login_field")
             await self.send(message)
         elif MessageDeserializer.get_value_of_element_response(data):
             message = MessageDataFactory.click_element_request("login_button")

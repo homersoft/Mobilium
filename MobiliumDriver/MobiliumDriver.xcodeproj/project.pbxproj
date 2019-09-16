@@ -10,6 +10,8 @@
 		808127EE229BE7F1002028AE /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 808127EC229BE7F1002028AE /* Starscream.framework */; };
 		808127EF229BE7F1002028AE /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 808127ED229BE7F1002028AE /* SocketIO.framework */; };
 		80C4ADB02294372000D1A11D /* MobiliumDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C4ADAF2294372000D1A11D /* MobiliumDriver.swift */; };
+		A6EA4942232A75E700082988 /* XCUIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA4941232A75E700082988 /* XCUIApplication.swift */; };
+		A6EF2AA4232B73C9006DA427 /* XCUIElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EF2AA3232B73C9006DA427 /* XCUIElement.swift */; };
 		CE7EA34122E9DC8B00BE4567 /* messages.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7EA34022E9DC8B00BE4567 /* messages.pb.swift */; };
 		CE7EA34322E9DF9600BE4567 /* SwiftProtobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7EA34222E9DF9600BE4567 /* SwiftProtobuf.framework */; };
 		CE7EA34522EAFDE100BE4567 /* MessageDataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7EA34422EAFDE000BE4567 /* MessageDataFactory.swift */; };
@@ -22,6 +24,8 @@
 		80C4ADAB2294372000D1A11D /* MobiliumDriver.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobiliumDriver.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		80C4ADAF2294372000D1A11D /* MobiliumDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobiliumDriver.swift; sourceTree = "<group>"; };
 		80C4ADB12294372000D1A11D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A6EA4941232A75E700082988 /* XCUIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCUIApplication.swift; sourceTree = "<group>"; };
+		A6EF2AA3232B73C9006DA427 /* XCUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCUIElement.swift; sourceTree = "<group>"; };
 		CE7EA34022E9DC8B00BE4567 /* messages.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = messages.pb.swift; sourceTree = "<group>"; };
 		CE7EA34222E9DF9600BE4567 /* SwiftProtobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftProtobuf.framework; path = Carthage/Build/iOS/SwiftProtobuf.framework; sourceTree = "<group>"; };
 		CE7EA34422EAFDE000BE4567 /* MessageDataFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDataFactory.swift; sourceTree = "<group>"; };
@@ -72,6 +76,7 @@
 		80C4ADAE2294372000D1A11D /* MobiliumDriver */ = {
 			isa = PBXGroup;
 			children = (
+				A6EA4940232A75D900082988 /* Utilities */,
 				CE7EA33F22E9DC8B00BE4567 /* proto */,
 				80C4ADAF2294372000D1A11D /* MobiliumDriver.swift */,
 				CE7EA34422EAFDE000BE4567 /* MessageDataFactory.swift */,
@@ -79,6 +84,15 @@
 				80C4ADB12294372000D1A11D /* Info.plist */,
 			);
 			path = MobiliumDriver;
+			sourceTree = "<group>";
+		};
+		A6EA4940232A75D900082988 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				A6EA4941232A75E700082988 /* XCUIApplication.swift */,
+				A6EF2AA3232B73C9006DA427 /* XCUIElement.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		CE7EA33F22E9DC8B00BE4567 /* proto */ = {
@@ -182,7 +196,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE7EA34722EB01FA00BE4567 /* MessageDeserializer.swift in Sources */,
+				A6EF2AA4232B73C9006DA427 /* XCUIElement.swift in Sources */,
 				CE7EA34522EAFDE100BE4567 /* MessageDataFactory.swift in Sources */,
+				A6EA4942232A75E700082988 /* XCUIApplication.swift in Sources */,
 				CE7EA34122E9DC8B00BE4567 /* messages.pb.swift in Sources */,
 				80C4ADB02294372000D1A11D /* MobiliumDriver.swift in Sources */,
 			);
