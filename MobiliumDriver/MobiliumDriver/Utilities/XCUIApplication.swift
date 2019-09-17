@@ -20,4 +20,11 @@ extension XCUIApplication {
             dismissKeyboardButton.tap()
         }
     }
+
+    func performIfElementExists(with accessibilityId: String, action: (XCUIElement) -> Bool) -> Bool {
+        let element = app.element(with: accessibilityId)
+        guard element.exists else { return false }
+        
+        return action(element)
+    }
 }

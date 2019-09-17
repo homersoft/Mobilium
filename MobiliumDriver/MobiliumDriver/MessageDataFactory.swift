@@ -53,10 +53,15 @@ class MessageDataFactory {
         })
     }
 
-    static func setValueOfElementResponse(accessibilityId: String) -> Data {
+    static func setValueOfElementResponse(accessibilityId: String, error: ElementError?) -> Data {
         return dataWith(populator: { populator in
             var response = SetValueOfElementResponse()
             response.accessibilityID = accessibilityId
+            if let error = error {
+                response.status = .failure(error)
+            } else {
+                response.status = .success(true)
+            }
             populator.message = .setValueOfElementResponse(response)
         })
     }

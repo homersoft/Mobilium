@@ -90,7 +90,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         app.hideKeyboard()
         
         let messageData = MessageDataFactory.hideKeyboardResponse()
-        socket?.emit("message", messageData)
+        socket?.send(message: messageData)
     }
 
     private func checkElementVisible(with accessibilityID: String, timeout: TimeInterval) {
@@ -124,53 +124,29 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     }
     
     private func setValueOfElementUsingMessage(_ message: SetValueOfElementRequest) {
-        let element = app.element(with: message.accessibilityID)
-        
+        let accessibilityId = message.accessibilityID
+
+        let result: Bool
         switch message.value {
         case .text(let newTextValue)?:
-            setTextOnTextElement(element, to: newTextValue.value, withClearing: newTextValue.clears)
+            result = performIfElementExists(with: accessibilityId, action: { element in
+                element.setText(newTextValue.value, replace: newTextValue.clears)
+                return true
+            })
         case .position(let newPosition)?:
-            setSliderElementPosition(element, to: newPosition)
+            result = performIfElementExists(with: accessibilityId, action: { element in
+                element.adjust(toNormalizedSliderPosition: CGFloat(newPosition))
+                return true
+            })
         case .selection(let newSelectionValue)?:
-            setSelectionOfCheckboxElement(element, to: newSelectionValue)
+            result = performIfElementExists(with: accessibilityId, action: { element in
+                return element.setSelectionOfCheckbox(to: newSelectionValue)
+            })
         default:
-            break // emit error
+            result = false
         }
         
-        let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: message.accessibilityID)
-        socket?.emit("message", messageData)
-    }
-    
-    private func setTextOnTextElement(_ element: XCUIElement, to newText: String, withClearing shouldClear: Bool) {
-        guard element.exists else { return }
-        
-        element.tap()
-        if shouldClear {
-            element.replaceText(with: newText)
-        } else {
-            element.typeText(newText)
-        }
-    }
-    
-    private func setSliderElementPosition(_ element: XCUIElement, to newPosition: Float) {
-        guard element.exists else { return }
-        
-        element.adjust(toNormalizedSliderPosition: CGFloat(newPosition))
-    }
-    
-    private func setPickerWheelElementPosition(_ element: XCUIElement, to pickerValue: String) {
-        guard element.exists else { return }
-        
-        element.adjust(toPickerWheelValue: pickerValue)
-    }
-    
-    private func setSelectionOfCheckboxElement(_ element: XCUIElement, to desirableSelectionState: Bool) {
-        guard element.exists, let currentValue = element.value as? String else { return }
-        
-        let isSelected = Int(currentValue) == 1
-        if isSelected != desirableSelectionState {
-            element.tap()
-        }
+        let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: message.accessibilityID, error: result ? nil : .elementNotExists)
+        socket?.send(message: messageData)
     }
 }
-

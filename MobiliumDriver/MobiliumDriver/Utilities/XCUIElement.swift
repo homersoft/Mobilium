@@ -17,10 +17,9 @@ extension XCUIElement {
     var dismissKeyboardButton: XCUIElement {
         return keyboards.buttons["Dismiss"]
     }
-}
 
-// MARK: mutating methods
-extension XCUIElement {
+    // MARK: mutating methods
+
     func clearText() {
         guard let text = value as? String else { return }
         
@@ -31,5 +30,26 @@ extension XCUIElement {
     func replaceText(with newText: String) {
         clearText()
         typeText(newText)
+    }
+
+    // MARK: - Set Value
+
+    func setText(_ text: String, replace: Bool) {
+        tap()
+        if replace {
+            replaceText(with: text)
+        } else {
+            typeText(text)
+        }
+    }
+
+    func setSelectionOfCheckbox(to desirableSelectionState: Bool) -> Bool {
+        guard let currentValue = value as? String else { return false }
+
+        let isSelected = Int(currentValue) == 1
+        if isSelected != desirableSelectionState {
+            tap()
+        }
+        return true
     }
 }
