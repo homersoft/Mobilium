@@ -49,7 +49,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
                 self?.setValueOfElementUsingMessage(message)
             }
             
-            if let message = self?.deserializer.hideKeyboardRequest(from: data) {
+            if let _ = self?.deserializer.hideKeyboardRequest(from: data) {
                 self?.hideKeyboard()
             }
             
@@ -129,17 +129,17 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         let result: Bool
         switch message.value {
         case .text(let newTextValue)?:
-            result = performIfElementExists(with: accessibilityId, action: { element in
+            result = app.performIfElementExists(with: accessibilityId, action: { element in
                 element.setText(newTextValue.value, replace: newTextValue.clears)
                 return true
             })
         case .position(let newPosition)?:
-            result = performIfElementExists(with: accessibilityId, action: { element in
+            result = app.performIfElementExists(with: accessibilityId, action: { element in
                 element.adjust(toNormalizedSliderPosition: CGFloat(newPosition))
                 return true
             })
         case .selection(let newSelectionValue)?:
-            result = performIfElementExists(with: accessibilityId, action: { element in
+            result = app.performIfElementExists(with: accessibilityId, action: { element in
                 return element.setSelectionOfCheckbox(to: newSelectionValue)
             })
         default:
