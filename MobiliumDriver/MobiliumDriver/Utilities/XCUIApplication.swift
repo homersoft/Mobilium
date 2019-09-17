@@ -9,8 +9,8 @@
 import XCTest
 
 extension XCUIApplication {
-    func element(with accessibilityID: String) -> XCUIElement {
-        return descendants(matching: .any)[accessibilityID].firstMatch
+    func element(with accessibilityId: String) -> XCUIElement {
+        return descendants(matching: .any)[accessibilityId].firstMatch
     }
 
     func performIfElementExists(with accessibilityId: String, action: (XCUIElement) -> Bool) -> Bool {

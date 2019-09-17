@@ -82,33 +82,33 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         socket?.send(message: messageData)
     }
 
-    private func checkElementVisible(with accessibilityID: String, timeout: TimeInterval) {
-        let element = app.element(with: accessibilityID)
+    private func checkElementVisible(with accessibilityId: String, timeout: TimeInterval) {
+        let element = app.element(with: accessibilityId)
         let elementExists = element.waitForExistence(timeout: timeout)
 
-        let messageData = MessageDataFactory.isElementVisibleResponse(accessibilityId: accessibilityID, isVisible: elementExists)
+        let messageData = MessageDataFactory.isElementVisibleResponse(accessibilityId: accessibilityId, isVisible: elementExists)
         socket?.send(message: messageData)
     }
     
-    private func clickElement(with accessibilityID: String) {
-        let element = app.element(with: accessibilityID)
+    private func clickElement(with accessibilityId: String) {
+        let element = app.element(with: accessibilityId)
         let elementExists = element.exists
         if elementExists {
             element.tap()
         }
         
-        let messageData = MessageDataFactory.clickElementResponse(accessibilityId: accessibilityID, exists: elementExists)
+        let messageData = MessageDataFactory.clickElementResponse(accessibilityId: accessibilityId, exists: elementExists)
         socket?.send(message: messageData)
     }
     
-    private func readValueOfElement(with accessibilityID: String) {
-        let element = app.element(with: accessibilityID)
+    private func readValueOfElement(with accessibilityId: String) {
+        let element = app.element(with: accessibilityId)
         var value: String?
         
         if element.exists {
             value = element.value as? String ?? element.label
         }
-        let messageData = MessageDataFactory.getValueOfElementResponse(accessibilityId: accessibilityID, value: value)
+        let messageData = MessageDataFactory.getValueOfElementResponse(accessibilityId: accessibilityId, value: value)
         socket?.send(message: messageData)
     }
     
@@ -135,7 +135,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             result = false
         }
         
-        let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: message.accessibilityID,
+        let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: accessibilityId,
                                                                        success: result)
         socket?.send(message: messageData)
     }
