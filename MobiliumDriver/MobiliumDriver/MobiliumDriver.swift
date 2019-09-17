@@ -25,7 +25,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
 
         socket?.on(clientEvent: .connect) { [weak self] (data, ack) in
             let data = MessageDataFactory.startDriverResponse()
-            self?.socket?.emit("message", with: [data])
+            self?.socket?.send(message: data)
         }
         socket?.on(clientEvent: .disconnect) { [weak self] (data, ack) in
             self?.keepAlive = false
@@ -47,10 +47,6 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             
             if let message = self?.deserializer.setValueOfElementRequest(from: data) {
                 self?.setValueOfElementUsingMessage(message)
-            }
-            
-            if let _ = self?.deserializer.hideKeyboardRequest(from: data) {
-                self?.hideKeyboard()
             }
             
             if let message = self?.deserializer.clickElementRequest(from: data) {
@@ -83,13 +79,6 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         app.terminate()
 
         let messageData = MessageDataFactory.terminateAppResponse()
-        socket?.send(message: messageData)
-    }
-    
-    private func hideKeyboard() {
-        app.hideKeyboard()
-        
-        let messageData = MessageDataFactory.hideKeyboardResponse()
         socket?.send(message: messageData)
     }
 
@@ -146,7 +135,8 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             result = false
         }
         
-        let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: message.accessibilityID, error: result ? nil : .elementNotExists)
+        let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: message.accessibilityID,
+                                                                       success: result)
         socket?.send(message: messageData)
     }
 }

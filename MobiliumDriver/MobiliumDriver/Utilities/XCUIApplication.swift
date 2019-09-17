@@ -12,14 +12,6 @@ extension XCUIApplication {
     func element(with accessibilityID: String) -> XCUIElement {
         return descendants(matching: .any)[accessibilityID].firstMatch
     }
-    
-    func hideKeyboard() {
-        if hideKeyboardButton.exists {
-            hideKeyboardButton.tap()
-        } else if dismissKeyboardButton.exists {
-            dismissKeyboardButton.tap()
-        }
-    }
 
     func performIfElementExists(with accessibilityId: String, action: (XCUIElement) -> Bool) -> Bool {
         let element = self.element(with: accessibilityId)

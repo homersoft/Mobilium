@@ -82,11 +82,6 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def hide_keyboard_request() -> bytes:
-        message = HideKeyboardRequest()
-        return MessageDataFactory.__data_with(message)
-
-    @staticmethod
     def click_element_request(accessibility_id: str) -> bytes:
         message = ClickElementRequest()
         message.accessibility_id = accessibility_id

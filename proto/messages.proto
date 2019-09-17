@@ -86,9 +86,6 @@ message SetValueOfElementResponse {
     }
 }
 
-message HideKeyboardRequest {}
-message HideKeyboardResponse {}
-
 message MobiliumMessage {
     oneof message {
         StartDriverRequest start_driver_request = 1;
@@ -109,7 +106,5 @@ message MobiliumMessage {
         GetValueOfElementResponse get_value_of_element_response = 16;
         SetValueOfElementRequest set_value_of_element_request = 17;
         SetValueOfElementResponse set_value_of_element_response = 18;
-        HideKeyboardRequest hide_keyboard_request = 19;
-        HideKeyboardResponse hide_keyboard_response = 20;
     }
 }

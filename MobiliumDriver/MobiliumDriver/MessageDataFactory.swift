@@ -53,23 +53,12 @@ class MessageDataFactory {
         })
     }
 
-    static func setValueOfElementResponse(accessibilityId: String, error: ElementError?) -> Data {
+    static func setValueOfElementResponse(accessibilityId: String, success: Bool) -> Data {
         return dataWith(populator: { populator in
             var response = SetValueOfElementResponse()
             response.accessibilityID = accessibilityId
-            if let error = error {
-                response.status = .failure(error)
-            } else {
-                response.status = .success(true)
-            }
+            response.status = success ? .success(true) : .failure(.elementNotExists)
             populator.message = .setValueOfElementResponse(response)
-        })
-    }
-    
-    static func hideKeyboardResponse() -> Data {
-        return dataWith(populator: { populator in
-            let response = HideKeyboardResponse()
-            populator.message = .hideKeyboardResponse(response)
         })
     }
     

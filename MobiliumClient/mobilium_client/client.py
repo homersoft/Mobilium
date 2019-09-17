@@ -43,9 +43,6 @@ class MobiliumClientNamespace(AsyncClientNamespace):
             message = MessageDataFactory.click_element_request("login_field")
             await self.send(message)
         elif MessageDeserializer.click_element_response(data):
-            message = MessageDataFactory.hide_keyboard_request()
-            await self.send(message)
-        elif MessageDeserializer.hide_keyboard_response(data):
             message = MessageDataFactory.terminate_app_request()
             await self.send(message)
         elif MessageDeserializer.terminate_app_response(data):

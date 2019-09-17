@@ -8,18 +8,7 @@
 
 import XCTest
 
-// MARK: buttons
 extension XCUIElement {
-    var hideKeyboardButton: XCUIElement {
-        return keyboards.buttons["Hide keyboard"]
-    }
-    
-    var dismissKeyboardButton: XCUIElement {
-        return keyboards.buttons["Dismiss"]
-    }
-
-    // MARK: mutating methods
-
     func clearText() {
         guard let text = value as? String else { return }
         
@@ -31,8 +20,6 @@ extension XCUIElement {
         clearText()
         typeText(newText)
     }
-
-    // MARK: - Set Value
 
     func setText(_ text: String, replace: Bool) {
         tap()
