@@ -120,16 +120,14 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         case .text(let newTextValue)?:
             elementExists = app.performIfElementExists(with: accessibilityId, action: { element in
                 element.setText(newTextValue.value, replace: newTextValue.clears)
-                return true
             })
         case .position(let newPosition)?:
             elementExists = app.performIfElementExists(with: accessibilityId, action: { element in
                 element.adjust(toNormalizedSliderPosition: CGFloat(newPosition))
-                return true
             })
-        case .selection(let newSelectionValue)?:
+        case .switchSelection(let newSelectionValue)?:
             elementExists = app.performIfElementExists(with: accessibilityId, action: { element in
-                return element.setSelectionOfCheckbox(to: newSelectionValue)
+                element.setSwitchSelection(to: newSelectionValue)
             })
         default:
             elementExists = false

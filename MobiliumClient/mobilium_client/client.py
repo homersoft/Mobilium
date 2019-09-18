@@ -34,10 +34,10 @@ class MobiliumClientNamespace(AsyncClientNamespace):
             message = MessageDataFactory.is_element_visible_request("login_button")
             await self.send(message)
         elif MessageDeserializer.is_element_visible_response(data):
-            message = MessageDataFactory.set_text_of_element_request("password_field", "homer123\n")
+            message = MessageDataFactory.set_element_text_request("password_field", "homer123\n")
             await self.send(message)
         elif MessageDeserializer.set_value_of_element_response(data):
-            message = MessageDataFactory.get_value_of_element_request("password_field")
+            message = MessageDataFactory.get_element_value_request("password_field")
             await self.send(message)
         elif MessageDeserializer.get_value_of_element_response(data):
             message = MessageDataFactory.click_element_request("login_field")

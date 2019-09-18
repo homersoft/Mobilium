@@ -30,13 +30,12 @@ extension XCUIElement {
         }
     }
 
-    func setSelectionOfCheckbox(to desirableSelectionState: Bool) -> Bool {
-        guard let currentValue = value as? String else { return false }
+    func setSwitchSelection(to desirableSelectionState: Bool) {
+        guard let currentValue = value as? String else { return }
 
         let isSelected = Int(currentValue) == 1
         if isSelected != desirableSelectionState {
             tap()
         }
-        return true
     }
 }

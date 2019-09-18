@@ -13,10 +13,11 @@ extension XCUIApplication {
         return descendants(matching: .any)[accessibilityId].firstMatch
     }
 
-    func performIfElementExists(with accessibilityId: String, action: (XCUIElement) -> Bool) -> Bool {
+    func performIfElementExists(with accessibilityId: String, action: (XCUIElement) -> Void) -> Bool {
         let element = self.element(with: accessibilityId)
         guard element.exists else { return false }
         
-        return action(element)
+        action(element)
+        return true
     }
 }

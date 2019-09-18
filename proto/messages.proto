@@ -72,7 +72,7 @@ message SetValueOfElementRequest {
     oneof value {
         TextValue text = 2;
         float position = 3;
-        bool selection = 4;
+        bool switch_selection = 4;
     }
 }
 
