@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-enum ElementError {
-    ELEMENT_NOT_EXISTS = 0;
-}
+message ElementNotExists {}
 
 message StartDriverRequest {
     string udid = 1;
@@ -48,7 +46,7 @@ message ClickElementResponse {
     string accessibility_id = 1;
     oneof status {
         bool success = 2;
-        ElementError failure = 3;
+        ElementNotExists failure = 3;
     }
 }
 
@@ -60,7 +58,7 @@ message GetValueOfElementResponse {
     string accessibility_id = 1;
     oneof status {
         string value = 2;
-        ElementError failure = 3;
+        ElementNotExists failure = 3;
     }
 }
 
@@ -82,7 +80,7 @@ message SetValueOfElementResponse {
     string accessibility_id = 1;
     oneof status {
         bool success = 2;
-        ElementError failure = 3;
+        ElementNotExists failure = 3;
     }
 }
 

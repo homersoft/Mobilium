@@ -86,7 +86,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         let element = app.element(with: accessibilityId)
         let elementExists = element.waitForExistence(timeout: timeout)
 
-        let messageData = MessageDataFactory.isElementVisibleResponse(accessibilityId: accessibilityId, isVisible: elementExists)
+        let messageData = MessageDataFactory.isElementVisibleResponse(accessibilityId: accessibilityId, exists: elementExists)
         socket?.send(message: messageData)
     }
     
@@ -115,28 +115,28 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     private func setValueOfElementUsingMessage(_ message: SetValueOfElementRequest) {
         let accessibilityId = message.accessibilityID
 
-        let result: Bool
+        let elementExists: Bool
         switch message.value {
         case .text(let newTextValue)?:
-            result = app.performIfElementExists(with: accessibilityId, action: { element in
+            elementExists = app.performIfElementExists(with: accessibilityId, action: { element in
                 element.setText(newTextValue.value, replace: newTextValue.clears)
                 return true
             })
         case .position(let newPosition)?:
-            result = app.performIfElementExists(with: accessibilityId, action: { element in
+            elementExists = app.performIfElementExists(with: accessibilityId, action: { element in
                 element.adjust(toNormalizedSliderPosition: CGFloat(newPosition))
                 return true
             })
         case .selection(let newSelectionValue)?:
-            result = app.performIfElementExists(with: accessibilityId, action: { element in
+            elementExists = app.performIfElementExists(with: accessibilityId, action: { element in
                 return element.setSelectionOfCheckbox(to: newSelectionValue)
             })
         default:
-            result = false
+            elementExists = false
         }
         
         let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: accessibilityId,
-                                                                       success: result)
+                                                                       exists: elementExists)
         socket?.send(message: messageData)
     }
 }

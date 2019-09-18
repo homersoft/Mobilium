@@ -9,6 +9,7 @@
 import Foundation
 import SocketIO
 extension SocketIOClient {
+    
     func send(message data: Data) {
         emit("message", with: [data])
     }

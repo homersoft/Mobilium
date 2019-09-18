@@ -22,10 +22,10 @@ class MessageDataFactory {
         })
     }
 
-    static func isElementVisibleResponse(accessibilityId: String, isVisible: Bool) -> Data {
+    static func isElementVisibleResponse(accessibilityId: String, exists: Bool) -> Data {
         return dataWith(populator: { populator in
             var response = IsElementVisibleResponse()
-            response.isVisible = isVisible
+            response.isVisible = exists
             response.accessibilityID = accessibilityId
             populator.message = .isElementVisibleResponse(response)
         })
@@ -35,7 +35,7 @@ class MessageDataFactory {
         return dataWith(populator: { populator in
             var response = ClickElementResponse()
             response.accessibilityID = accessibilityId
-            response.status = exists ? .success(true) : .failure(.elementNotExists)
+            response.status = exists ? .success(true) : .failure(ElementNotExists())
             populator.message = .clickElementResponse(response)
         })
     }
@@ -47,17 +47,17 @@ class MessageDataFactory {
             if let value = value {
                 response.status = .value(value)
             } else {
-                response.status = .failure(.elementNotExists)
+                response.status = .failure(ElementNotExists())
             }
             populator.message = .getValueOfElementResponse(response)
         })
     }
 
-    static func setValueOfElementResponse(accessibilityId: String, success: Bool) -> Data {
+    static func setValueOfElementResponse(accessibilityId: String, exists: Bool) -> Data {
         return dataWith(populator: { populator in
             var response = SetValueOfElementResponse()
             response.accessibilityID = accessibilityId
-            response.status = success ? .success(true) : .failure(.elementNotExists)
+            response.status = exists ? .success(true) : .failure(ElementNotExists())
             populator.message = .setValueOfElementResponse(response)
         })
     }
