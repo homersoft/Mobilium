@@ -113,28 +113,27 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     }
     
     private func setValueOfElementUsingMessage(_ message: SetValueOfElementRequest) {
-        let accessibilityId = message.accessibilityID
+        let element = app.element(with: message.accessibilityID)
+        guard element.exists else {
+            let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: message.accessibilityID,
+                                                                           exists: false)
+            socket?.send(message: messageData)
+            return
+        }
 
-        let elementExists: Bool
         switch message.value {
         case .text(let newTextValue)?:
-            elementExists = app.performIfElementExists(with: accessibilityId, action: { element in
-                element.setText(newTextValue.value, replace: newTextValue.clears)
-            })
+            element.setText(newTextValue.value, replace: newTextValue.clears)
         case .position(let newPosition)?:
-            elementExists = app.performIfElementExists(with: accessibilityId, action: { element in
-                element.adjust(toNormalizedSliderPosition: CGFloat(newPosition))
-            })
-        case .switchSelection(let newSelectionValue)?:
-            elementExists = app.performIfElementExists(with: accessibilityId, action: { element in
-                element.setSwitchSelection(to: newSelectionValue)
-            })
+            element.adjust(toNormalizedSliderPosition: CGFloat(newPosition))
+        case .selection(let newValue)?:
+            element.setSelection(to: newValue)
         default:
-            fatalError("Invalid message send to Mobilium Driver. Message: \(String(describing: message))")
+            print("Invalid message send to driver. Message: \(String(describing: message))")
         }
         
-        let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: accessibilityId,
-                                                                       exists: elementExists)
+        let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: message.accessibilityID,
+                                                                       exists: true)
         socket?.send(message: messageData)
     }
 }

@@ -68,17 +68,17 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_slider_position_request(accessibility_id: str, position: float):
+    def set_position_request(accessibility_id: str, position: float):
         message = SetValueOfElementRequest()
         message.accessibility_id = accessibility_id
         message.position = position
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_switch_selection_request(accessibility_id: str, selection: bool):
+    def set_selection_request(accessibility_id: str, selection: bool):
         message = SetValueOfElementRequest()
         message.accessibility_id = accessibility_id
-        message.switch_selection = selection
+        message.selection = selection
         return MessageDataFactory.__data_with(message)
 
     @staticmethod

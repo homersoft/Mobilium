@@ -35,7 +35,7 @@ class MessageDataFactory {
         return dataWith(populator: { populator in
             var response = ClickElementResponse()
             response.accessibilityID = accessibilityId
-            response.status = exists ? .success(true) : .failure(ElementNotExists())
+            response.status = exists ? .success(true) : .failure(.elementNotExists)
             populator.message = .clickElementResponse(response)
         })
     }
@@ -47,7 +47,7 @@ class MessageDataFactory {
             if let value = value {
                 response.status = .value(value)
             } else {
-                response.status = .failure(ElementNotExists())
+                response.status = .failure(.elementNotExists)
             }
             populator.message = .getValueOfElementResponse(response)
         })
@@ -57,7 +57,7 @@ class MessageDataFactory {
         return dataWith(populator: { populator in
             var response = SetValueOfElementResponse()
             response.accessibilityID = accessibilityId
-            response.status = exists ? .success(true) : .failure(ElementNotExists())
+            response.status = exists ? .success(true) : .failure(.elementNotExists)
             populator.message = .setValueOfElementResponse(response)
         })
     }

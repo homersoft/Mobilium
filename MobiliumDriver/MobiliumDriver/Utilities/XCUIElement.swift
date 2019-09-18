@@ -30,7 +30,7 @@ extension XCUIElement {
         }
     }
 
-    func setSwitchSelection(to desirableSelectionState: Bool) {
+    func setSelection(to desirableSelectionState: Bool) {
         guard let currentValue = value as? String else { return }
 
         let isSelected = Int(currentValue) == 1

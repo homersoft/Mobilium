@@ -12,12 +12,4 @@ extension XCUIApplication {
     func element(with accessibilityId: String) -> XCUIElement {
         return descendants(matching: .any)[accessibilityId].firstMatch
     }
-
-    func performIfElementExists(with accessibilityId: String, action: (XCUIElement) -> Void) -> Bool {
-        let element = self.element(with: accessibilityId)
-        guard element.exists else { return false }
-        
-        action(element)
-        return true
-    }
 }

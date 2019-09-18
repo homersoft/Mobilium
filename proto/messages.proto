@@ -2,6 +2,12 @@ syntax = "proto3";
 
 message ElementNotExists {}
 
+message ElementError {
+    oneof reason {
+        ElementNotExists elementNotExists = 1;
+    }
+}
+
 message StartDriverRequest {
     string udid = 1;
 }
@@ -46,7 +52,7 @@ message ClickElementResponse {
     string accessibility_id = 1;
     oneof status {
         bool success = 2;
-        ElementNotExists failure = 3;
+        ElementError failure = 3;
     }
 }
 
@@ -58,7 +64,7 @@ message GetValueOfElementResponse {
     string accessibility_id = 1;
     oneof status {
         string value = 2;
-        ElementNotExists failure = 3;
+        ElementError failure = 3;
     }
 }
 
@@ -72,7 +78,7 @@ message SetValueOfElementRequest {
     oneof value {
         TextValue text = 2;
         float position = 3;
-        bool switch_selection = 4;
+        bool selection = 4;
     }
 }
 
@@ -80,7 +86,7 @@ message SetValueOfElementResponse {
     string accessibility_id = 1;
     oneof status {
         bool success = 2;
-        ElementNotExists failure = 3;
+        ElementError failure = 3;
     }
 }
 
