@@ -9,15 +9,7 @@
 import XCTest
 
 extension XCUIApplication {
-    func element(with accessibilityID: String) -> XCUIElement {
-        return descendants(matching: .any)[accessibilityID].firstMatch
-    }
-    
-    func hideKeyboard() {
-        if hideKeyboardButton.exists {
-            hideKeyboardButton.tap()
-        } else if dismissKeyboardButton.exists {
-            dismissKeyboardButton.tap()
-        }
+    func element(with accessibilityId: String) -> XCUIElement {
+        return descendants(matching: .any)[accessibilityId].firstMatch
     }
 }

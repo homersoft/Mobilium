@@ -54,13 +54,13 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def get_value_of_element_request(accessibility_id: str) -> bytes:
+    def get_element_value_request(accessibility_id: str) -> bytes:
         message = GetValueOfElementRequest()
         message.accessibility_id = accessibility_id
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_text_of_element_request(accessibility_id: str, text: str, clears: bool = True):
+    def set_element_text_request(accessibility_id: str, text: str, clears: bool = True):
         message = SetValueOfElementRequest()
         message.accessibility_id = accessibility_id
         message.text.value = text
@@ -68,22 +68,17 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_position_of_slider_request(accessibility_id: str, position: float):
+    def set_position_request(accessibility_id: str, position: float):
         message = SetValueOfElementRequest()
         message.accessibility_id = accessibility_id
         message.position = position
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_selection_of_checkbox_request(accessibility_id: str, selection: bool):
+    def set_selection_request(accessibility_id: str, selection: bool):
         message = SetValueOfElementRequest()
         message.accessibility_id = accessibility_id
         message.selection = selection
-        return MessageDataFactory.__data_with(message)
-
-    @staticmethod
-    def hide_keyboard_request() -> bytes:
-        message = HideKeyboardRequest()
         return MessageDataFactory.__data_with(message)
 
     @staticmethod

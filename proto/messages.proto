@@ -1,5 +1,13 @@
 syntax = "proto3";
 
+message ElementNotExists {}
+
+message ElementError {
+    oneof reason {
+        ElementNotExists elementNotExists = 1;
+    }
+}
+
 message StartDriverRequest {
     string udid = 1;
 }
@@ -42,6 +50,10 @@ message ClickElementRequest {
 
 message ClickElementResponse {
     string accessibility_id = 1;
+    oneof status {
+        bool success = 2;
+        ElementError failure = 3;
+    }
 }
 
 message GetValueOfElementRequest {
@@ -50,7 +62,10 @@ message GetValueOfElementRequest {
 
 message GetValueOfElementResponse {
     string accessibility_id = 1;
-    string value = 2;
+    oneof status {
+        string value = 2;
+        ElementError failure = 3;
+    }
 }
 
 message SetValueOfElementRequest {
@@ -69,10 +84,11 @@ message SetValueOfElementRequest {
 
 message SetValueOfElementResponse {
     string accessibility_id = 1;
+    oneof status {
+        bool success = 2;
+        ElementError failure = 3;
+    }
 }
-
-message HideKeyboardRequest {}
-message HideKeyboardResponse {}
 
 message MobiliumMessage {
     oneof message {
@@ -94,7 +110,5 @@ message MobiliumMessage {
         GetValueOfElementResponse get_value_of_element_response = 16;
         SetValueOfElementRequest set_value_of_element_request = 17;
         SetValueOfElementResponse set_value_of_element_response = 18;
-        HideKeyboardRequest hide_keyboard_request = 19;
-        HideKeyboardResponse hide_keyboard_response = 20;
     }
 }

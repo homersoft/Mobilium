@@ -22,44 +22,43 @@ class MessageDataFactory {
         })
     }
 
-    static func isElementVisibleResponse(accessibilityId: String, isVisible: Bool) -> Data {
+    static func isElementVisibleResponse(accessibilityId: String, exists: Bool) -> Data {
         return dataWith(populator: { populator in
             var response = IsElementVisibleResponse()
-            response.isVisible = isVisible
+            response.isVisible = exists
             response.accessibilityID = accessibilityId
             populator.message = .isElementVisibleResponse(response)
         })
     }
     
-    static func clickElementResponse(accessibilityId: String) -> Data {
+    static func clickElementResponse(accessibilityId: String, exists: Bool) -> Data {
         return dataWith(populator: { populator in
             var response = ClickElementResponse()
             response.accessibilityID = accessibilityId
+            response.status = exists ? .success(true) : .failure(.elementNotExists)
             populator.message = .clickElementResponse(response)
         })
     }
     
-    static func getValueOfElementResponse(accessibilityId: String, value: String?) -> Data {
+    static func getValueOfElementResponse(accessibilityId: String, exists: Bool, value: String?) -> Data {
         return dataWith(populator: { populator in
             var response = GetValueOfElementResponse()
             response.accessibilityID = accessibilityId
-            response.value = value ?? ""
+            if exists {
+                response.status = .value(value ?? "")
+            } else {
+                response.status = .failure(.elementNotExists)
+            }
             populator.message = .getValueOfElementResponse(response)
         })
     }
 
-    static func setValueOfElementResponse(accessibilityId: String) -> Data {
+    static func setValueOfElementResponse(accessibilityId: String, exists: Bool) -> Data {
         return dataWith(populator: { populator in
             var response = SetValueOfElementResponse()
             response.accessibilityID = accessibilityId
+            response.status = exists ? .success(true) : .failure(.elementNotExists)
             populator.message = .setValueOfElementResponse(response)
-        })
-    }
-    
-    static func hideKeyboardResponse() -> Data {
-        return dataWith(populator: { populator in
-            let response = HideKeyboardResponse()
-            populator.message = .hideKeyboardResponse(response)
         })
     }
     

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C36A6DF232F7C4700FF474E /* SocketIOClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C36A6DE232F7C4700FF474E /* SocketIOClient.swift */; };
+		1C36A6E523322AB800FF474E /* ElementError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C36A6E423322AB800FF474E /* ElementError.swift */; };
 		808127EE229BE7F1002028AE /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 808127EC229BE7F1002028AE /* Starscream.framework */; };
 		808127EF229BE7F1002028AE /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 808127ED229BE7F1002028AE /* SocketIO.framework */; };
 		80C4ADB02294372000D1A11D /* MobiliumDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C4ADAF2294372000D1A11D /* MobiliumDriver.swift */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C36A6DE232F7C4700FF474E /* SocketIOClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOClient.swift; sourceTree = "<group>"; };
+		1C36A6E423322AB800FF474E /* ElementError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementError.swift; sourceTree = "<group>"; };
 		808127EC229BE7F1002028AE /* Starscream.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Starscream.framework; path = Carthage/Build/iOS/Starscream.framework; sourceTree = "<group>"; };
 		808127ED229BE7F1002028AE /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketIO.framework; path = Carthage/Build/iOS/SocketIO.framework; sourceTree = "<group>"; };
 		80C4ADAB2294372000D1A11D /* MobiliumDriver.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobiliumDriver.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,8 +93,10 @@
 		A6EA4940232A75D900082988 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				1C36A6DE232F7C4700FF474E /* SocketIOClient.swift */,
 				A6EA4941232A75E700082988 /* XCUIApplication.swift */,
 				A6EF2AA3232B73C9006DA427 /* XCUIElement.swift */,
+				1C36A6E423322AB800FF474E /* ElementError.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -196,11 +202,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE7EA34722EB01FA00BE4567 /* MessageDeserializer.swift in Sources */,
+				1C36A6E523322AB800FF474E /* ElementError.swift in Sources */,
 				A6EF2AA4232B73C9006DA427 /* XCUIElement.swift in Sources */,
 				CE7EA34522EAFDE100BE4567 /* MessageDataFactory.swift in Sources */,
 				A6EA4942232A75E700082988 /* XCUIApplication.swift in Sources */,
 				CE7EA34122E9DC8B00BE4567 /* messages.pb.swift in Sources */,
 				80C4ADB02294372000D1A11D /* MobiliumDriver.swift in Sources */,
+				1C36A6DF232F7C4700FF474E /* SocketIOClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,7 +266,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -313,7 +321,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
