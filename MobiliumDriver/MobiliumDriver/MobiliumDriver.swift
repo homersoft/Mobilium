@@ -130,7 +130,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
                 element.setSwitchSelection(to: newSelectionValue)
             })
         default:
-            elementExists = false
+            fatalError("Invalid message send to Mobilium Driver. Message: \(String(describing: message))")
         }
         
         let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: accessibilityId,
