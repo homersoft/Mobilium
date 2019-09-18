@@ -40,12 +40,12 @@ class MessageDataFactory {
         })
     }
     
-    static func getValueOfElementResponse(accessibilityId: String, value: String?) -> Data {
+    static func getValueOfElementResponse(accessibilityId: String, exists: Bool, value: String?) -> Data {
         return dataWith(populator: { populator in
             var response = GetValueOfElementResponse()
             response.accessibilityID = accessibilityId
-            if let value = value {
-                response.status = .value(value)
+            if exists {
+                response.status = .value(value ?? "")
             } else {
                 response.status = .failure(.elementNotExists)
             }

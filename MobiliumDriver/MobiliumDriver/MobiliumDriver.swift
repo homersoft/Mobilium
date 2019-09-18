@@ -103,12 +103,16 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     
     private func readValueOfElement(with accessibilityId: String) {
         let element = app.element(with: accessibilityId)
-        var value: String?
-        
-        if element.exists {
-            value = element.value as? String ?? element.label
+        guard element.exists else {
+            let messageData = MessageDataFactory.getValueOfElementResponse(accessibilityId: accessibilityId,
+                                                                           exists: false, value: nil)
+            socket?.send(message: messageData)
+            return
         }
-        let messageData = MessageDataFactory.getValueOfElementResponse(accessibilityId: accessibilityId, value: value)
+
+        let value = element.value as? String ?? element.label
+        let messageData = MessageDataFactory.getValueOfElementResponse(accessibilityId: accessibilityId,
+                                                                       exists: true, value: value)
         socket?.send(message: messageData)
     }
     
