@@ -34,4 +34,4 @@ def validate_element_not_exists(data: bytes, parser):
 def __validate(data: bytes, parser, validator):
     message = parser(data)
     if not validator(message):
-        print("Invalid message: %s" % message)
+        print("Message validation failed. Message %s" % message)
