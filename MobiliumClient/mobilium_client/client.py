@@ -21,9 +21,13 @@ class MobiliumClientNamespace(AsyncClientNamespace):
         await self.send(message)
 
     async def on_disconnect(self):
-        print('Disconnected')
+        print('Disconnected, device_id %s' % self.device_udid)
 
     async def on_message(self, data):
+        response = MessageDeserializer.mobilium_message_response(data)
+        if hasattr(response, 'failure') and response.HasField('failure'):
+            print("Received message with error %s" % response.failure)
+
         if MessageDeserializer.start_driver_response(data):
             message = MessageDataFactory.install_app_request(self.device_udid, config.APP_FILE_PATH)
             await self.send(message)

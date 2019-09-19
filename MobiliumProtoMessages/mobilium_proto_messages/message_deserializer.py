@@ -57,6 +57,12 @@ class MessageDeserializer:
         return MessageDeserializer.__message(data, TerminateAppResponse)
 
     @staticmethod
+    def mobilium_message_response(data: bytes) -> MobiliumMessage:
+        mobilium_message: Message = MobiliumMessage().FromString(data)
+        message = getattr(mobilium_message, mobilium_message.WhichOneof('message'))
+        return message
+
+    @staticmethod
     def __message(data: bytes, type_of_meesage: Type[T]) -> Optional[T]:
         mobilium_message: Message = MobiliumMessage().FromString(data)
         message = getattr(mobilium_message, mobilium_message.WhichOneof('message'))
