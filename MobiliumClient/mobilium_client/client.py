@@ -61,8 +61,6 @@ class MobiliumClientNamespace(AsyncClientNamespace):
         print('<<< {0}'.format(message))
         await super(MobiliumClientNamespace, self).send(message, namespace=namespace, callback=callback)
 
-    def message_validator(self, data, parser, validation):
-        assert validation(parser(data)), "Message not valid!"
 
 async def start_client(address: str, port: int, device_udid: str):
     client = AsyncClient()
