@@ -1,5 +1,5 @@
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
-from mobilium_proto_messages.proto.messages_pb2 import ElementNotExists
+
 
 class MessageValidator:
     def validate_is_element_visible_response(self, data: bytes, is_visible: bool):
@@ -31,4 +31,3 @@ class MessageValidator:
         message = parser(data)
         if not validator(message):
             print("Invalid message: %s" % message)
-

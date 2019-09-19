@@ -4,7 +4,6 @@ import asyncio
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 
-
 from socketio import AsyncClient, AsyncClientNamespace
 
 from mobilium_client import config
