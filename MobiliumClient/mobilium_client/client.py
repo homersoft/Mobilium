@@ -4,9 +4,11 @@ import asyncio
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 
+
 from socketio import AsyncClient, AsyncClientNamespace
 
 from mobilium_client import config
+from mobilium_client.message_validator import MessageValidator
 
 
 class MobiliumClientNamespace(AsyncClientNamespace):
@@ -14,6 +16,7 @@ class MobiliumClientNamespace(AsyncClientNamespace):
     def __init__(self, namespace: str, device_udid: str):
         super().__init__(namespace)
         self.device_udid = device_udid
+        self.message_validator = MessageValidator()
 
     async def on_connect(self):
         print('Connected')
@@ -34,15 +37,19 @@ class MobiliumClientNamespace(AsyncClientNamespace):
             message = MessageDataFactory.is_element_visible_request("login_button")
             await self.send(message)
         elif MessageDeserializer.is_element_visible_response(data):
+            self.message_validator.validate_is_element_visible_response(data=data, is_visible=True)
             message = MessageDataFactory.set_element_text_request("password_field", "homer123\n")
             await self.send(message)
         elif MessageDeserializer.set_value_of_element_response(data):
-            message = MessageDataFactory.get_element_value_request("password_field")
+            self.message_validator.validate_set_value_of_element_response(data=data, success=True)
+            message = MessageDataFactory.get_element_value_request("not_existing_element")
             await self.send(message)
         elif MessageDeserializer.get_value_of_element_response(data):
+            self.message_validator.validate_element_not_exists(data, MessageDeserializer.get_value_of_element_response)
             message = MessageDataFactory.click_element_request("login_field")
             await self.send(message)
         elif MessageDeserializer.click_element_response(data):
+            self.message_validator.validate_click_element_response(data=data, success=True)
             message = MessageDataFactory.terminate_app_request()
             await self.send(message)
         elif MessageDeserializer.terminate_app_response(data):
@@ -55,6 +62,8 @@ class MobiliumClientNamespace(AsyncClientNamespace):
         print('<<< {0}'.format(message))
         await super(MobiliumClientNamespace, self).send(message, namespace=namespace, callback=callback)
 
+    def message_validator(self, data, parser, validation):
+        assert validation(parser(data)), "Message not valid!"
 
 async def start_client(address: str, port: int, device_udid: str):
     client = AsyncClient()
