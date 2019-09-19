@@ -3,4 +3,3 @@
 ./MobiliumServer
 
 setuptools>=30.0.0
-python-socketio==4.0.3
