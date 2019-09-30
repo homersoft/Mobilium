@@ -29,7 +29,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             self?.socket?.send(message: data)
         }
         socket?.on(clientEvent: .disconnect) { [weak self] (data, ack) in
-            print("Driver spclet disconnected!")
+            print("Driver socket disconnected!")
             self?.keepAlive = false
         }
         socket?.on("message") { [weak self] (data, ack) in
@@ -64,6 +64,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         socket?.connect()
 
         while keepAlive && RunLoop.main.run(mode: .default, before: .distantFuture) { }
+        XCTAssertTrue(true)
     }
 
 

@@ -16,6 +16,7 @@ class StartDriverProcessor(MessageProcessor):
         super().__init__(message_sender, successor)
         self.address = address
         self.port = port
+        self.shell_executor = ShellExecutor()
 
     async def _process(self, data: bytes):
         message = MessageDeserializer.start_driver_request(data)
@@ -25,4 +26,4 @@ class StartDriverProcessor(MessageProcessor):
     def start_driver(self, udid: str):
         command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test' \
             .format(StartDriverProcessor.PROJECT, StartDriverProcessor.SCHEME, udid, self.address, self.port)
-        ShellExecutor.execute(command, track_output=True, waits_for_termination=False)
+        self.shell_executor.execute(command, track_output=True, waits_for_termination=False)

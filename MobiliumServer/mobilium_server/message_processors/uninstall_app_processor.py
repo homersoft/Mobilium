@@ -13,6 +13,6 @@ class UninstallAppProcessor(MessageProcessor):
 
     async def uninstall_app(self, udid: str, bundle_id: str):
         command = 'ideviceinstaller -u {0} -U {1}'.format(udid, bundle_id)
-        ShellExecutor.execute(command)
+        ShellExecutor().execute(command)
         message = MessageDataFactory.uninstall_app_response()
         await self.message_sender.send(message)
