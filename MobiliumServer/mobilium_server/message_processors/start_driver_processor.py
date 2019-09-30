@@ -25,4 +25,4 @@ class StartDriverProcessor(MessageProcessor):
     def start_driver(self, udid: str):
         command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test' \
             .format(StartDriverProcessor.PROJECT, StartDriverProcessor.SCHEME, udid, self.address, self.port)
-        ShellExecutor.execute(command, waits_for_termination=False)
+        ShellExecutor.execute(command, track_output=True, waits_for_termination=False)

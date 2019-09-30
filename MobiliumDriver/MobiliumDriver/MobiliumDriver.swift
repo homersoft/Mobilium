@@ -24,13 +24,16 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         socket = manager.socket(forNamespace: "/driver")
 
         socket?.on(clientEvent: .connect) { [weak self] (data, ack) in
+            print("Driver socket connected!")
             let data = MessageDataFactory.startDriverResponse()
             self?.socket?.send(message: data)
         }
         socket?.on(clientEvent: .disconnect) { [weak self] (data, ack) in
+            print("Driver spclet disconnected!")
             self?.keepAlive = false
         }
         socket?.on("message") { [weak self] (data, ack) in
+            print("Driver did receive message")
             guard let data = data as? [Data] else { return }
 
             if let message = self?.deserializer.launchAppRequest(from: data) {
@@ -57,6 +60,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
                 self?.terminateApp()
             }
         }
+        print("Driver socket connection attempt")
         socket?.connect()
 
         while keepAlive && RunLoop.main.run(mode: .default, before: .distantFuture) { }
