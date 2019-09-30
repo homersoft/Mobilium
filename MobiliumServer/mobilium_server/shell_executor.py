@@ -17,8 +17,8 @@ class ShellExecutor:
         process = Popen(command, stdin=DEVNULL, stdout=PIPE, stderr=DEVNULL, shell=True)
 
         if track_output:
-            t = threading.Thread(target=ShellExecutor.output_reader, args=(process,))
-            t.start()
+            thread = threading.Thread(target=ShellExecutor.output_reader, args=(process,))
+            thread.start()
 
         if waits_for_termination:
             process.wait()
