@@ -16,6 +16,9 @@ class ShellExecutor:
 
     def execute(self, command: str, track_output: bool = False, waits_for_termination: bool = True):
         print('Run: %s', command)
+        if self.process is not None and self.process.poll() is None:
+            print("Killing already running process")
+            self.process.kill()
         self.process = Popen(command, stdin=DEVNULL, stdout=PIPE, stderr=DEVNULL, shell=True)
 
         if track_output:
