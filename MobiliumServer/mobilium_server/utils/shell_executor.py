@@ -19,7 +19,7 @@ class ShellExecutor:
         if self.process is not None and self.process.poll() is None:
             print("Killing already running process")
             self.process.kill()
-        self.process = Popen(command, stdin=DEVNULL, stdout=PIPE, stderr=DEVNULL, shell=True)
+        self.process = Popen(command, stdin=DEVNULL, stdout=PIPE, stderr=PIPE, shell=True)
 
         if track_output:
             self.thread = threading.Thread(target=self.output_reader)
