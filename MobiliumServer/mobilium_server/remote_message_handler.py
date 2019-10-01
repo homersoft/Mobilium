@@ -1,9 +1,11 @@
+# pylint: disable=W0613
 from socketio import AsyncNamespace
 
 from mobilium_server.message_handler import MessageHandler
 
 
 class RemoteMessageHandler(MessageHandler, AsyncNamespace):
+
     def __init__(self, name: str):
         MessageHandler.__init__(self, name)
         AsyncNamespace.__init__(self, name)

@@ -1,10 +1,10 @@
 from typing import Optional
 
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
-from mobilium_server.message_processors.shell_message_processor import ShellMessageProcessor
 from mobilium_proto_messages.message_sender import MessageSender
 from mobilium_proto_messages.message_processor import MessageProcessor
 from mobilium_server.utils.shell_executor import ShellExecutor
+from mobilium_server.message_processors.shell_message_processor import ShellMessageProcessor
 
 
 class StartDriverProcessor(ShellMessageProcessor):
