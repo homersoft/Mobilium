@@ -64,7 +64,6 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         socket?.connect()
 
         while keepAlive && RunLoop.main.run(mode: .default, before: .distantFuture) { }
-        XCTAssertTrue(true)
     }
 
 
