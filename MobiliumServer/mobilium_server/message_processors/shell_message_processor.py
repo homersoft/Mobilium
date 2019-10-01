@@ -2,7 +2,7 @@ from typing import Optional
 from abc import abstractmethod
 
 from mobilium_proto_messages.message_processor import MessageProcessor
-from mobilium_server.shell_executor import ShellExecutor
+from mobilium_server.utils.shell_executor import ShellExecutor
 from mobilium_proto_messages.message_sender import MessageSender
 
 

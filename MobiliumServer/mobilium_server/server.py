@@ -9,6 +9,7 @@ from mobilium_server.message_processors.processor_factory import ProcessorFactor
 from mobilium_server.message_broker import MessageBroker
 from mobilium_server.message_handler import MessageHandler
 from mobilium_server.remote_message_handler import RemoteMessageHandler
+from mobilium_server.utils.shell_executor_pool import ShellExecutorPool
 
 
 class Server(MessageHandler, MessageSender):
@@ -22,7 +23,8 @@ class Server(MessageHandler, MessageSender):
         self.socket.attach(self.app)
         self.broker = MessageBroker()
         self.broker.register_message_handler(self)
-        self.processor = ProcessorFactory.make(self, address, port)
+        self.shell_executor_pool = ShellExecutorPool()
+        self.processor = ProcessorFactory.make(self, self.shell_executor_pool, address, port)
 
     async def process_message(self, data: bytes):
         await self.processor.process(data)
