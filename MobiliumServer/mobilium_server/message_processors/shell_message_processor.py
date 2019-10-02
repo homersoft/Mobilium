@@ -1,0 +1,18 @@
+from typing import Optional
+from abc import abstractmethod
+
+from mobilium_proto_messages.message_processor import MessageProcessor
+from mobilium_proto_messages.message_sender import MessageSender
+from mobilium_server.utils.shell_executor import ShellExecutor
+
+
+class ShellMessageProcessor(MessageProcessor):
+
+    def __init__(self, shell_excecutor: ShellExecutor, message_sender: MessageSender,
+                 successor: Optional['MessageProcessor'] = None):
+        super().__init__(message_sender, successor)
+        self.shell_executor = shell_excecutor
+
+    @abstractmethod
+    async def _process(self, data: bytes):
+        pass

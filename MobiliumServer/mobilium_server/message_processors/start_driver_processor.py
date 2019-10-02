@@ -1,19 +1,20 @@
 from typing import Optional
 
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
-from mobilium_proto_messages.message_processor import MessageProcessor
 from mobilium_proto_messages.message_sender import MessageSender
-from mobilium_server.shell_executor import ShellExecutor
+from mobilium_proto_messages.message_processor import MessageProcessor
+from mobilium_server.utils.shell_executor import ShellExecutor
+from mobilium_server.message_processors.shell_message_processor import ShellMessageProcessor
 
 
-class StartDriverProcessor(MessageProcessor):
+class StartDriverProcessor(ShellMessageProcessor):
 
     PROJECT = '../MobiliumDriver/MobiliumDriver.xcodeproj'
     SCHEME = 'MobiliumDriver'
 
-    def __init__(self, message_sender: MessageSender, address: str, port: int,
+    def __init__(self, shell_executor: ShellExecutor, message_sender: MessageSender, address: str, port: int,
                  successor: Optional[MessageProcessor] = None):
-        super().__init__(message_sender, successor)
+        super().__init__(shell_executor, message_sender, successor)
         self.address = address
         self.port = port
 
@@ -25,4 +26,4 @@ class StartDriverProcessor(MessageProcessor):
     def start_driver(self, udid: str):
         command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test' \
             .format(StartDriverProcessor.PROJECT, StartDriverProcessor.SCHEME, udid, self.address, self.port)
-        ShellExecutor.execute(command, waits_for_termination=False)
+        self.shell_executor.execute(command, track_output=True, waits_for_termination=False)
