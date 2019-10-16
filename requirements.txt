@@ -3,3 +3,4 @@
 ./MobiliumServer
 
 setuptools>=30.0.0
+requests>=2.22.0

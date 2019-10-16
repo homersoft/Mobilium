@@ -1,70 +1,69 @@
 import argparse
-import asyncio
 
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 
-from socketio import AsyncClient, AsyncClientNamespace
+from socketio import Client, ClientNamespace
 
 from mobilium_client import config
 
 
-class MobiliumClientNamespace(AsyncClientNamespace):
+class MobiliumClientNamespace(ClientNamespace):
 
     def __init__(self, namespace: str, device_udid: str):
         super().__init__(namespace)
         self.device_udid = device_udid
 
-    async def on_connect(self):
+    def on_connect(self):
         print('Connected')
         message = MessageDataFactory.start_driver_request(self.device_udid)
-        await self.send(message)
+        self.send(message)
 
-    async def on_disconnect(self):
+    def on_disconnect(self):
         print('Disconnected, device_id %s' % self.device_udid)
 
-    async def on_message(self, data):
+    def on_message(self, data):
         response = MessageDeserializer.mobilium_message_response(data)
         if hasattr(response, 'failure') and response.HasField('failure'):
             print("Received message with error %s" % response.failure)
 
         if MessageDeserializer.start_driver_response(data):
             message = MessageDataFactory.install_app_request(self.device_udid, config.APP_FILE_PATH)
-            await self.send(message)
+            self.send(message)
         elif MessageDeserializer.install_app_response(data):
             message = MessageDataFactory.launch_app_request(config.APP_BUNDLE_ID)
-            await self.send(message)
+            self.send(message)
         elif MessageDeserializer.launch_app_response(data):
             message = MessageDataFactory.is_element_visible_request("login_button")
-            await self.send(message)
+            self.send(message)
         elif MessageDeserializer.is_element_visible_response(data):
             message = MessageDataFactory.set_element_text_request("password_field", "homer123\n")
-            await self.send(message)
+            self.send(message)
         elif MessageDeserializer.set_value_of_element_response(data):
             message = MessageDataFactory.get_element_value_request("password_field")
-            await self.send(message)
+            self.send(message)
         elif MessageDeserializer.get_value_of_element_response(data):
             message = MessageDataFactory.click_element_request("login_field")
-            await self.send(message)
+            self.send(message)
         elif MessageDeserializer.click_element_response(data):
             message = MessageDataFactory.terminate_app_request()
-            await self.send(message)
+            self.send(message)
         elif MessageDeserializer.terminate_app_response(data):
             message = MessageDataFactory.uninstall_app_request(self.device_udid, config.APP_BUNDLE_ID)
-            await self.send(message)
+            self.send(message)
         elif MessageDeserializer.uninstall_app_response(data):
-            await self.disconnect()
+            self.disconnect()
 
-    async def send(self, message, namespace=None, callback=None):
+    def send(self, message, room=None, skip_sid=None, namespace=None, callback=None):
         print('<<< {0}'.format(message))
-        await super(MobiliumClientNamespace, self).send(message, namespace=namespace, callback=callback)
+        super(MobiliumClientNamespace, self).send(message, room=room, skip_sid=skip_sid, namespace=namespace, callback=callback)
 
 
-async def start_client(address: str, port: int, device_udid: str):
-    client = AsyncClient()
+def start_client(address: str, port: int, device_udid: str):
+    client = Client()
     client.register_namespace(MobiliumClientNamespace('/client', device_udid))
-    await client.connect('tcp://{0}:{1}'.format(address, port))
-    await client.wait()
+    client.connect('tcp://{0}:{1}'.format(address, port))
+    client.wait()
 
 
 def main():
@@ -73,8 +72,7 @@ def main():
     parser.add_argument("-p", "--port", help="Mobilium Server port. Default: 65432", default=65432)
     parser.add_argument("-u", "--udid", help="UDID of iOS device on which tests are run", required=True)
     arguments = parser.parse_args()
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(start_client(arguments.address, arguments.port, arguments.udid))
+    start_client(arguments.address, arguments.port, arguments.udid)
 
 
 if __name__ == '__main__':
