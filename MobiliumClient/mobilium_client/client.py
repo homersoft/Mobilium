@@ -1,69 +1,95 @@
 import argparse
+from functools import partial
+from typing import Optional, Callable, Any
 
-from mobilium_proto_messages.message_data_factory import MessageDataFactory
+from common.wait import wait_until
+from mobilium_client import config
+from mobilium_client.client_namespace import MobiliumClientNamespace
+from mobilium_proto_messages.message_data_factory import MessageDataFactory, StartDriverResponse, InstallAppResponse, \
+    UninstallAppResponse, TerminateAppResponse, LaunchAppResponse
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 
-from socketio import Client, ClientNamespace
-
-from mobilium_client import config
+from socketio import Client
 
 
-class MobiliumClientNamespace(ClientNamespace):
+class MobiliumClient:
 
-    def __init__(self, namespace: str, device_udid: str):
-        super().__init__(namespace)
-        self.device_udid = device_udid
+    def __init__(self, ):
+        super().__init__()
+        self.__client = Client()
+        self.__namespace = '/client'
+        self.__client_namespace = None
+        self.__device_udid = None
 
-    def on_connect(self):
-        print('Connected')
-        message = MessageDataFactory.start_driver_request(self.device_udid)
-        self.send(message)
+    def connect(self, device_udid: str, address: str, port: int):
+        print("Connect, device_id %s" % device_udid)
+        self.__device_udid = device_udid
+        self.__client_namespace = MobiliumClientNamespace(self.__namespace, device_udid)
+        self.__client.register_namespace(self.__client_namespace)
+        self.__client.connect('tcp://{0}:{1}'.format(address, port))
+        self.__wait_for_connected()
 
-    def on_disconnect(self):
-        print('Disconnected, device_id %s' % self.device_udid)
+    def disconnect(self):
+        self.__client.disconnect()
+        self.__wait_for_disconnected()
 
-    def on_message(self, data):
-        response = MessageDeserializer.mobilium_message_response(data)
-        if hasattr(response, 'failure') and response.HasField('failure'):
-            print("Received message with error %s" % response.failure)
+    def start_driver(self) -> Optional[StartDriverResponse]:
+        print("Start driver")
+        message = MessageDataFactory.start_driver_request(self.__device_udid)
+        return self.send(message, MessageDeserializer.start_driver_response)
 
-        if MessageDeserializer.start_driver_response(data):
-            message = MessageDataFactory.install_app_request(self.device_udid, config.APP_FILE_PATH)
-            self.send(message)
-        elif MessageDeserializer.install_app_response(data):
-            message = MessageDataFactory.launch_app_request(config.APP_BUNDLE_ID)
-            self.send(message)
-        elif MessageDeserializer.launch_app_response(data):
-            message = MessageDataFactory.is_element_visible_request("login_button")
-            self.send(message)
-        elif MessageDeserializer.is_element_visible_response(data):
-            message = MessageDataFactory.set_element_text_request("password_field", "homer123\n")
-            self.send(message)
-        elif MessageDeserializer.set_value_of_element_response(data):
-            message = MessageDataFactory.get_element_value_request("password_field")
-            self.send(message)
-        elif MessageDeserializer.get_value_of_element_response(data):
-            message = MessageDataFactory.click_element_request("login_field")
-            self.send(message)
-        elif MessageDeserializer.click_element_response(data):
-            message = MessageDataFactory.terminate_app_request()
-            self.send(message)
-        elif MessageDeserializer.terminate_app_response(data):
-            message = MessageDataFactory.uninstall_app_request(self.device_udid, config.APP_BUNDLE_ID)
-            self.send(message)
-        elif MessageDeserializer.uninstall_app_response(data):
-            self.disconnect()
+    def install_app(self) -> Optional[InstallAppResponse]:
+        print("Install application")
+        message = MessageDataFactory.install_app_request(self.__device_udid, config.APP_FILE_PATH)
+        return self.send(message, MessageDeserializer.install_app_response)
 
-    def send(self, message, room=None, skip_sid=None, namespace=None, callback=None):
+    def launch_app(self) -> Optional[LaunchAppResponse]:
+        print("Launch application")
+        message = MessageDataFactory.launch_app_request(config.APP_BUNDLE_ID)
+        return self.send(message, MessageDeserializer.launch_app_response)
+
+    def uninstall_app(self) -> Optional[UninstallAppResponse]:
+        print("Uninstall application")
+        message = MessageDataFactory.uninstall_app_request(self.__device_udid, config.APP_BUNDLE_ID)
+        return self.send(message, MessageDeserializer.uninstall_app_response)
+
+    def terminate_app(self) -> Optional[TerminateAppResponse]:
+        print("Terminate application")
+        message = MessageDataFactory.terminate_app_request()
+        return self.send(message, MessageDeserializer.terminate_app_response)
+
+    def send(self, message: bytes, deserialize: Callable[[bytes], bool]) -> Optional[Any]:
         print('<<< {0}'.format(message))
-        super(MobiliumClientNamespace, self).send(message, room=room, skip_sid=skip_sid, namespace=namespace, callback=callback)
+        self.__client.send(message, namespace=self.__namespace)
+        self.__wait_for_response(deserialize)
+        response = self.__read_response(deserialize)
+        self.__reset_response_data()
+        return response
 
+    def __is_connected(self) -> bool:
+        return self.__client_namespace.is_connected
 
-def start_client(address: str, port: int, device_udid: str):
-    client = Client()
-    client.register_namespace(MobiliumClientNamespace('/client', device_udid))
-    client.connect('tcp://{0}:{1}'.format(address, port))
-    client.wait()
+    def __is_not_connected(self) -> bool:
+        return not self.__is_connected()
+
+    def __read_response(self, deserialize: Callable[[bytes], bool]) -> Optional[Any]:
+        return self.__client_namespace.read_response(deserialize)
+
+    def __response_received(self, deserialize: Callable[[bytes], bool]) -> bool:
+        return self.__read_response(deserialize) is not None
+
+    def __reset_response_data(self):
+        self.__client_namespace.reset_response_data()
+
+    def __wait_for_response(self, deserialize: Callable[[bytes], bool]):
+        response_received = partial(self.__response_received, deserialize)
+        wait_until(response_received)
+
+    def __wait_for_connected(self):
+        wait_until(self.__is_connected)
+
+    def __wait_for_disconnected(self):
+        wait_until(self.__is_not_connected)
 
 
 def main():
@@ -72,7 +98,34 @@ def main():
     parser.add_argument("-p", "--port", help="Mobilium Server port. Default: 65432", default=65432)
     parser.add_argument("-u", "--udid", help="UDID of iOS device on which tests are run", required=True)
     arguments = parser.parse_args()
-    start_client(arguments.address, arguments.port, arguments.udid)
+
+    mobilium_client = MobiliumClient()
+    mobilium_client.connect(device_udid=arguments.udid, address=arguments.address, port=arguments.port)
+    print("main: did connect")
+    mobilium_client.start_driver()
+    print("main: did start driver")
+    mobilium_client.install_app()
+    print("main: did install app")
+    mobilium_client.launch_app()
+    print("main: did launch app")
+    mobilium_client.send(MessageDataFactory.is_element_visible_request("login_button"),
+                         MessageDeserializer.is_element_visible_response)
+    print("main: did is element visible")
+    mobilium_client.send(MessageDataFactory.set_element_text_request("password_field", "homer123\n"),
+                         MessageDeserializer.set_value_of_element_response)
+    print("main: did set text")
+    response = mobilium_client.send(MessageDataFactory.get_element_value_request("password_field"),
+                                    MessageDeserializer.get_value_of_element_response)
+    print("main: did get element {}".format(response.value))
+    mobilium_client.send(MessageDataFactory.click_element_request("login_field"),
+                         MessageDeserializer.click_element_response)
+    print("main: did click")
+    mobilium_client.terminate_app()
+    print("main: did terminate")
+    mobilium_client.uninstall_app()
+    print("main: did uninstall")
+    mobilium_client.disconnect()
+    print("main: did disconnect")
 
 
 if __name__ == '__main__':
