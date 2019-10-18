@@ -1,5 +1,5 @@
 import time
-from typing import Callable
+from typing import Callable, Any, Optional
 
 
 class TimeoutException(Exception):
@@ -11,13 +11,23 @@ class TimeoutException(Exception):
         return self.msg
 
 
-def wait_until(valid: Callable[[], bool], timeout: int = 30, timeout_message: str = None, interval: int = 1):
+def wait_until_true(action: Callable[[], bool], timeout: int = 30, interval: int = 1):
+    def get_result():
+        is_valid = action()
+        if is_valid is None or is_valid is False:
+            return None
+        else:
+            return True
+    wait_until_not_none(get_result, timeout=timeout, interval=interval)
+
+
+def wait_until_not_none(action: Callable[[], Any], timeout: int = 30, interval: int = 1) -> Optional[Any]:
     end_time = time.time() + timeout
     while time.time() < end_time:
-        if not valid():
+        result = action()
+        if result is None:
             time.sleep(interval)
         else:
-            return
-    if timeout_message is None:
-        timeout_message = '{} is False after {} seconds"'.format(valid.__name__, timeout)
+            return result
+    timeout_message = 'Timeout for {} after {} seconds"'.format(action.__name__, timeout)
     raise TimeoutException(timeout_message)
