@@ -6,9 +6,8 @@ from common.wait import wait_until_true, wait_until_not_none
 from mobilium_client import config
 from mobilium_client.client_namespace import MobiliumClientNamespace
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
-from mobilium_proto_messages.message_deserializer import MessageDeserializer
-from mobilium_proto_messages.proto.messages_pb2 import StartDriverResponse, InstallAppResponse, LaunchAppResponse, \
-    UninstallAppResponse, TerminateAppResponse
+from mobilium_proto_messages.message_deserializer import MessageDeserializer, StartDriverResponse, InstallAppResponse, \
+    LaunchAppResponse, UninstallAppResponse, TerminateAppResponse
 
 from socketio import Client
 
@@ -28,36 +27,36 @@ class MobiliumClient:
         self.__client_namespace = MobiliumClientNamespace(self.__namespace, device_udid)
         self.__client.register_namespace(self.__client_namespace)
         self.__client.connect('tcp://{0}:{1}'.format(address, port))
-        self.__wait_for_connected()
+        self.__wait_until_connected()
 
     def disconnect(self):
         print("Disconnect device_id %s" % self.__device_udid)
         self.__client.disconnect()
-        self.__wait_for_disconnected()
+        self.__wait_until_disconnected()
 
     def start_driver(self) -> Optional[StartDriverResponse]:
-        message = MessageDataFactory.start_driver_request(self.__device_udid)
-        return self.send(message, MessageDeserializer.start_driver_response)
+        request = MessageDataFactory.start_driver_request(self.__device_udid)
+        return self.send(request, MessageDeserializer.start_driver_response)
 
     def install_app(self) -> Optional[InstallAppResponse]:
-        message = MessageDataFactory.install_app_request(self.__device_udid, config.APP_FILE_PATH)
-        return self.send(message, MessageDeserializer.install_app_response)
+        request = MessageDataFactory.install_app_request(self.__device_udid, config.APP_FILE_PATH)
+        return self.send(request, MessageDeserializer.install_app_response)
 
     def launch_app(self) -> Optional[LaunchAppResponse]:
-        message = MessageDataFactory.launch_app_request(config.APP_BUNDLE_ID)
-        return self.send(message, MessageDeserializer.launch_app_response)
+        request = MessageDataFactory.launch_app_request(config.APP_BUNDLE_ID)
+        return self.send(request, MessageDeserializer.launch_app_response)
 
     def uninstall_app(self) -> Optional[UninstallAppResponse]:
-        message = MessageDataFactory.uninstall_app_request(self.__device_udid, config.APP_BUNDLE_ID)
-        return self.send(message, MessageDeserializer.uninstall_app_response)
+        request = MessageDataFactory.uninstall_app_request(self.__device_udid, config.APP_BUNDLE_ID)
+        return self.send(request, MessageDeserializer.uninstall_app_response)
 
     def terminate_app(self) -> Optional[TerminateAppResponse]:
-        message = MessageDataFactory.terminate_app_request()
-        return self.send(message, MessageDeserializer.terminate_app_response)
+        request = MessageDataFactory.terminate_app_request()
+        return self.send(request, MessageDeserializer.terminate_app_response)
 
-    def send(self, message: bytes, deserialize: Callable[[bytes], Optional[Any]]) -> Optional[Any]:
-        print("Send message, waiting for response {0}\n{1}".format(deserialize.__name__, message))
-        self.__client.send(message, namespace=self.__namespace)
+    def send(self, request: bytes, deserialize: Callable[[bytes], Optional[Any]]) -> Optional[Any]:
+        print("Send message, waiting for response {0}\n{1}".format(deserialize.__name__, request))
+        self.__client.send(request, namespace=self.__namespace)
         response = self.__wait_for_first_matching_response(deserialize)
         print("Did receive response {0}\n{1}".format(deserialize.__name__, response))
         return response
@@ -65,7 +64,7 @@ class MobiliumClient:
     def __is_connected(self) -> bool:
         return self.__client_namespace.is_connected
 
-    def __is_not_connected(self) -> bool:
+    def __is_disconnected(self) -> bool:
         return not self.__is_connected()
 
     def __wait_for_first_matching_response(self, deserialize: Callable[[bytes], bool]) -> Optional[Any]:
@@ -74,11 +73,11 @@ class MobiliumClient:
         self.__client_namespace.reset_responses_buffor()
         return response
 
-    def __wait_for_connected(self):
+    def __wait_until_connected(self):
         wait_until_true(self.__is_connected)
 
-    def __wait_for_disconnected(self):
-        wait_until_true(self.__is_not_connected)
+    def __wait_until_disconnected(self):
+        wait_until_true(self.__is_disconnected)
 
 
 def main():
