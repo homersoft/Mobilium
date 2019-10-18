@@ -13,15 +13,12 @@ class TimeoutException(Exception):
 
 
 def wait_until_true(action: Callable[[], bool], timeout: int = 30, interval: int = 1):
-    def get_result():
-        is_valid = action()
-        if is_valid is None or is_valid is False:
-            return None
-        return True
+    def get_result() -> Optional[bool]:
+        return True if action() else None
     wait_until_not_none(get_result, timeout=timeout, interval=interval)
 
 
-def wait_until_not_none(action: Callable[[], Any], timeout: int = 30, interval: int = 1) -> Optional[Any]:
+def wait_until_not_none(action: Callable[[], Optional[Any]], timeout: int = 30, interval: int = 1) -> Optional[Any]:
     end_time = time.time() + timeout
     while time.time() < end_time:
         result = action()
