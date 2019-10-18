@@ -3,7 +3,7 @@ import argparse
 from typing import Optional, Callable, Any
 
 from common.named_partial import named_partial
-from common.wait import wait_until_true, wait_until_not_none
+from common.wait import wait_until_true, wait_until_value
 from mobilium_client import config
 from mobilium_client.client_namespace import MobiliumClientNamespace
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
@@ -88,7 +88,7 @@ class MobiliumClient:
 
     def __wait_for_first_matching_response(self, deserialize: Callable[[bytes], bool]) -> Optional[Any]:
         partial = named_partial(self.__client_namespace.read_first_matching_response, deserialize)
-        response = wait_until_not_none(partial)
+        response = wait_until_value(partial)
         self.__client_namespace.reset_responses_buffor()
         return response
 
