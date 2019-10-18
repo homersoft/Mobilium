@@ -39,41 +39,41 @@ class MobiliumClient:
 
     def start_driver(self) -> Optional[StartDriverResponse]:
         request = MessageDataFactory.start_driver_request(self.__device_udid)
-        return self.send(request, MessageDeserializer.start_driver_response)
+        return self.__send(request, MessageDeserializer.start_driver_response)
 
     def install_app(self) -> Optional[InstallAppResponse]:
         request = MessageDataFactory.install_app_request(self.__device_udid, config.APP_FILE_PATH)
-        return self.send(request, MessageDeserializer.install_app_response)
+        return self.__send(request, MessageDeserializer.install_app_response)
 
     def launch_app(self) -> Optional[LaunchAppResponse]:
         request = MessageDataFactory.launch_app_request(config.APP_BUNDLE_ID)
-        return self.send(request, MessageDeserializer.launch_app_response)
+        return self.__send(request, MessageDeserializer.launch_app_response)
 
     def uninstall_app(self) -> Optional[UninstallAppResponse]:
         request = MessageDataFactory.uninstall_app_request(self.__device_udid, config.APP_BUNDLE_ID)
-        return self.send(request, MessageDeserializer.uninstall_app_response)
+        return self.__send(request, MessageDeserializer.uninstall_app_response)
 
     def terminate_app(self) -> Optional[TerminateAppResponse]:
         request = MessageDataFactory.terminate_app_request()
-        return self.send(request, MessageDeserializer.terminate_app_response)
+        return self.__send(request, MessageDeserializer.terminate_app_response)
 
     def is_element_visible(self, accessibility_id: str) -> Optional[IsElementVisibleResponse]:
         request = MessageDataFactory.is_element_visible_request(accessibility_id)
-        return self.send(request, MessageDeserializer.is_element_visible_response)
+        return self.__send(request, MessageDeserializer.is_element_visible_response)
 
     def set_element_text(self, accessibility_id: str, text: str, clears: bool = True) -> Optional[SetValueOfElementResponse]:
         request = MessageDataFactory.set_element_text_request(accessibility_id, text, clears)
-        return self.send(request, MessageDeserializer.set_value_of_element_response)
+        return self.__send(request, MessageDeserializer.set_value_of_element_response)
 
     def get_element_value(self, accessibility_id: str) -> Optional[GetValueOfElementResponse]:
         request = MessageDataFactory.get_element_value_request(accessibility_id)
-        return self.send(request, MessageDeserializer.get_value_of_element_response)
+        return self.__send(request, MessageDeserializer.get_value_of_element_response)
 
     def click_element(self, accessibility_id: str) -> Optional[ClickElementResponse]:
         request = MessageDataFactory.click_element_request(accessibility_id)
-        return self.send(request, MessageDeserializer.click_element_response)
+        return self.__send(request, MessageDeserializer.click_element_response)
 
-    def send(self, request: bytes, deserialize: Callable[[bytes], Optional[Any]]) -> Optional[Any]:
+    def __send(self, request: bytes, deserialize: Callable[[bytes], Optional[Any]]) -> Optional[Any]:
         print("Send message, waiting for response {0}\n{1}".format(deserialize.__name__, request))
         self.__client.send(request, namespace=self.__namespace)
         response = self.__wait_for_first_matching_response(deserialize)
