@@ -6,8 +6,7 @@ from common.wait import wait_until_true, wait_until_not_none
 from mobilium_client import config
 from mobilium_client.client_namespace import MobiliumClientNamespace
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
-from mobilium_proto_messages.message_deserializer import MessageDeserializer
-from mobilium_proto_messages.proto.messages_pb2 import *
+from mobilium_proto_messages.message_deserializer import *
 
 from socketio import Client
 
