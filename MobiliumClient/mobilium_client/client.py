@@ -9,8 +9,8 @@ from mobilium_client.client_namespace import MobiliumClientNamespace
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from mobilium_proto_messages.proto.messages_pb2 import StartDriverResponse, InstallAppResponse, LaunchAppResponse, \
-    UninstallAppResponse, TerminateAppResponse
-
+    UninstallAppResponse, TerminateAppResponse, IsElementVisibleResponse, SetValueOfElementResponse, \
+    GetValueOfElementResponse, ClickElementResponse
 
 from socketio import Client
 
@@ -57,6 +57,22 @@ class MobiliumClient:
         request = MessageDataFactory.terminate_app_request()
         return self.send(request, MessageDeserializer.terminate_app_response)
 
+    def is_element_visible(self, accessibility_id: str) -> Optional[IsElementVisibleResponse]:
+        request = MessageDataFactory.is_element_visible_request(accessibility_id)
+        return self.send(request, MessageDeserializer.is_element_visible_response)
+
+    def set_element_text(self, accessibility_id: str, text: str, clears: bool = True) -> Optional[SetValueOfElementResponse]:
+        request = MessageDataFactory.set_element_text_request(accessibility_id, text, clears)
+        return self.send(request, MessageDeserializer.set_value_of_element_response)
+
+    def get_element_value(self, accessibility_id: str) -> Optional[GetValueOfElementResponse]:
+        request = MessageDataFactory.get_element_value_request(accessibility_id)
+        return self.send(request, MessageDeserializer.get_value_of_element_response)
+
+    def click_element(self, accessibility_id: str) -> Optional[ClickElementResponse]:
+        request = MessageDataFactory.click_element_request(accessibility_id)
+        return self.send(request, MessageDeserializer.click_element_response)
+
     def send(self, request: bytes, deserialize: Callable[[bytes], Optional[Any]]) -> Optional[Any]:
         print("Send message, waiting for response {0}\n{1}".format(deserialize.__name__, request))
         self.__client.send(request, namespace=self.__namespace)
@@ -95,14 +111,10 @@ def main():
     mobilium_client.start_driver()
     mobilium_client.install_app()
     mobilium_client.launch_app()
-    mobilium_client.send(MessageDataFactory.is_element_visible_request("login_button"),
-                         MessageDeserializer.is_element_visible_response)
-    mobilium_client.send(MessageDataFactory.set_element_text_request("password_field", "homer123\n"),
-                         MessageDeserializer.set_value_of_element_response)
-    mobilium_client.send(MessageDataFactory.get_element_value_request("password_field"),
-                         MessageDeserializer.get_value_of_element_response)
-    mobilium_client.send(MessageDataFactory.click_element_request("login_field"),
-                         MessageDeserializer.click_element_response)
+    mobilium_client.is_element_visible("login_button")
+    mobilium_client.set_element_text("password_field", "homer123\n")
+    mobilium_client.get_element_value("password_field")
+    mobilium_client.click_element("login_field")
     mobilium_client.terminate_app()
     mobilium_client.uninstall_app()
     mobilium_client.disconnect()
