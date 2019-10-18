@@ -1,3 +1,4 @@
+# pylint: disable=E0611
 import argparse
 from typing import Optional, Callable, Any
 
