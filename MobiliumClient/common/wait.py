@@ -6,6 +6,7 @@ class TimeoutException(Exception):
 
     def __init__(self, msg=None):
         self.msg = msg
+        super().__init__()
 
     def __str__(self):
         return self.msg
@@ -16,8 +17,7 @@ def wait_until_true(action: Callable[[], bool], timeout: int = 30, interval: int
         is_valid = action()
         if is_valid is None or is_valid is False:
             return None
-        else:
-            return True
+        return True
     wait_until_not_none(get_result, timeout=timeout, interval=interval)
 
 

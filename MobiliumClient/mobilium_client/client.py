@@ -5,9 +5,10 @@ from common.named_partial import named_partial
 from common.wait import wait_until_true, wait_until_not_none
 from mobilium_client import config
 from mobilium_client.client_namespace import MobiliumClientNamespace
-from mobilium_proto_messages.message_data_factory import MessageDataFactory, StartDriverResponse, InstallAppResponse, \
-    UninstallAppResponse, TerminateAppResponse, LaunchAppResponse
+from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
+from mobilium_proto_messages.proto.messages_pb2 import StartDriverResponse, InstallAppResponse, LaunchAppResponse, \
+    UninstallAppResponse, TerminateAppResponse
 
 from socketio import Client
 
@@ -55,10 +56,10 @@ class MobiliumClient:
         return self.send(message, MessageDeserializer.terminate_app_response)
 
     def send(self, message: bytes, deserialize: Callable[[bytes], Optional[Any]]) -> Optional[Any]:
-        print("Send message [{0}]\n{1}".format(deserialize.__name__, message))
+        print("Send message, waiting for response {0}\n{1}".format(deserialize.__name__, message))
         self.__client.send(message, namespace=self.__namespace)
         response = self.__wait_for_first_matching_response(deserialize)
-        print("Did receive response [{0}]\n{1}".format(deserialize.__name__, response))
+        print("Did receive response {0}\n{1}".format(deserialize.__name__, response))
         return response
 
     def __is_connected(self) -> bool:

@@ -17,8 +17,7 @@ class MobiliumClientNamespace(ClientNamespace):
             response = deserialize(data)
             if response is None:
                 continue
-            else:
-                return response
+            return response
         return None
 
     def reset_responses_buffor(self):
