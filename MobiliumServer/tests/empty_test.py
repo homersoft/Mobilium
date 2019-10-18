@@ -3,4 +3,4 @@ from unittest import TestCase
 
 class EmptyTest(TestCase):
     def test_pass(self):
-        self.assertTrue()
+        self.assertTrue(True)
