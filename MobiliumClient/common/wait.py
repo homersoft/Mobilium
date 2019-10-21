@@ -1,5 +1,5 @@
 import time
-from typing import Callable, Any, Optional
+from typing import Callable, Optional, TypeVar
 
 
 class TimeoutException(Exception):
@@ -12,13 +12,16 @@ class TimeoutException(Exception):
         return self.message
 
 
+T = TypeVar('T')
+
+
 def wait_until_true(action: Callable[[], bool], timeout: int = 30, interval: int = 1):
     def get_result() -> Optional[bool]:
         return True if action() else None
     wait_until_value(get_result, timeout=timeout, interval=interval)
 
 
-def wait_until_value(action: Callable[[], Optional[Any]], timeout: int = 30, interval: int = 1) -> Any:
+def wait_until_value(action: Callable[[], Optional[T]], timeout: int = 30, interval: int = 1) -> T:
     end_time = time.time() + timeout
     while time.time() < end_time:
         result = action()

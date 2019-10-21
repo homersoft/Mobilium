@@ -1,6 +1,6 @@
 # pylint: disable=E0611, E0401
 import argparse
-from typing import Optional, Callable, Any
+from typing import Optional, Callable, TypeVar
 
 from common.named_partial import named_partial
 from common.wait import wait_until_true, wait_until_value
@@ -16,6 +16,8 @@ from socketio import Client
 
 
 class MobiliumClient:
+
+    T = TypeVar('T')
 
     def __init__(self):
         super().__init__()
@@ -73,7 +75,7 @@ class MobiliumClient:
         request = MessageDataFactory.click_element_request(accessibility_id)
         return self.__send(request, MessageDeserializer.click_element_response)
 
-    def __send(self, request: bytes, deserialize: Callable[[bytes], Optional[Any]]) -> Any:
+    def __send(self, request: bytes, deserialize: Callable[[bytes], Optional[T]]) -> T:
         print("Send message, waiting for response {0}\n{1}".format(deserialize.__name__, request))
         self.__client.send(request, namespace=self.__namespace)
         response = self.__wait_for_first_matching_response(deserialize)
@@ -86,7 +88,7 @@ class MobiliumClient:
     def __is_disconnected(self) -> bool:
         return not self.__is_connected()
 
-    def __wait_for_first_matching_response(self, deserialize: Callable[[bytes], Optional[Any]]) -> Any:
+    def __wait_for_first_matching_response(self, deserialize: Callable[[bytes], Optional[T]]) -> T:
         partial = named_partial(self.__client_namespace.read_first_matching_response, deserialize)
         response = wait_until_value(partial)
         self.__client_namespace.reset_responses_buffor()
