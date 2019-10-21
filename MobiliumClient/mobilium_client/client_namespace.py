@@ -4,9 +4,10 @@ from socketio import ClientNamespace
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 
 
-class MobiliumClientNamespace(ClientNamespace):
+T = TypeVar('T')
 
-    T = TypeVar('T')
+
+class MobiliumClientNamespace(ClientNamespace):
 
     def __init__(self, namespace: str, device_udid: str):
         super().__init__(namespace)

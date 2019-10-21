@@ -15,9 +15,10 @@ from mobilium_proto_messages.proto.messages_pb2 import StartDriverResponse, Inst
 from socketio import Client
 
 
-class MobiliumClient:
+T = TypeVar('T')
 
-    T = TypeVar('T')
+
+class MobiliumClient:
 
     def __init__(self):
         super().__init__()
@@ -63,7 +64,8 @@ class MobiliumClient:
         request = MessageDataFactory.is_element_visible_request(accessibility_id)
         return self.__send(request, MessageDeserializer.is_element_visible_response)
 
-    def set_element_text(self, accessibility_id: str, text: str, clears: bool = True) -> Optional[SetValueOfElementResponse]:
+    def set_element_text(self, accessibility_id: str, text: str,
+                         clears: bool = True) -> Optional[SetValueOfElementResponse]:
         request = MessageDataFactory.set_element_text_request(accessibility_id, text, clears)
         return self.__send(request, MessageDeserializer.set_value_of_element_response)
 

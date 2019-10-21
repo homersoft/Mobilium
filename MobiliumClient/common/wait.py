@@ -2,6 +2,9 @@ import time
 from typing import Callable, Optional, TypeVar
 
 
+T = TypeVar('T')
+
+
 class TimeoutException(Exception):
 
     def __init__(self, message: Optional[str] = None):
@@ -10,9 +13,6 @@ class TimeoutException(Exception):
 
     def __str__(self):
         return self.message
-
-
-T = TypeVar('T')
 
 
 def wait_until_true(action: Callable[[], bool], timeout: int = 30, interval: int = 1):
