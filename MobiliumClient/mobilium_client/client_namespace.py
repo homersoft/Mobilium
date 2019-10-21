@@ -4,7 +4,7 @@ from socketio import ClientNamespace
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 
 
-T = TypeVar('T')
+MessageResponse = TypeVar('MessageResponse')
 
 
 class MobiliumClientNamespace(ClientNamespace):
@@ -15,7 +15,7 @@ class MobiliumClientNamespace(ClientNamespace):
         self.is_connected = False
         self.__response_data_list = []
 
-    def read_first_matching_response(self, deserialize: Callable[[bytes], Optional[T]]) -> Optional[T]:
+    def read_first_matching_response(self, deserialize: Callable[[bytes], Optional[MessageResponse]]) -> Optional[MessageResponse]:
         for data in self.__response_data_list:
             response = deserialize(data)
             if response is None:
