@@ -15,7 +15,8 @@ class MobiliumClientNamespace(ClientNamespace):
         self.is_connected = False
         self.__response_data_list = []
 
-    def read_first_matching_response(self, deserialize: Callable[[bytes], Optional[MessageResponse]]) -> Optional[MessageResponse]:
+    def read_first_matching_response(self, deserialize: Callable[[bytes], Optional[MessageResponse]]) \
+            -> Optional[MessageResponse]:
         for data in self.__response_data_list:
             response = deserialize(data)
             if response is None:

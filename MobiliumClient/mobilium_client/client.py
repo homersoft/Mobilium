@@ -90,7 +90,8 @@ class MobiliumClient:
     def __is_disconnected(self) -> bool:
         return not self.__is_connected()
 
-    def __wait_for_first_matching_response(self, deserialize: Callable[[bytes], Optional[MessageResponse]]) -> MessageResponse:
+    def __wait_for_first_matching_response(self, deserialize: Callable[[bytes], Optional[MessageResponse]]) \
+            -> MessageResponse:
         partial = named_partial(self.__client_namespace.read_first_matching_response, deserialize)
         response = wait_until_value(partial)
         self.__client_namespace.reset_responses_buffor()
