@@ -17,7 +17,7 @@ from socketio import Client
 
 class MobiliumClient:
 
-    def __init__(self, ):
+    def __init__(self):
         super().__init__()
         self.__client = Client()
         self.__namespace = '/client'
@@ -73,7 +73,7 @@ class MobiliumClient:
         request = MessageDataFactory.click_element_request(accessibility_id)
         return self.__send(request, MessageDeserializer.click_element_response)
 
-    def __send(self, request: bytes, deserialize: Callable[[bytes], Optional[Any]]) -> Optional[Any]:
+    def __send(self, request: bytes, deserialize: Callable[[bytes], Optional[Any]]) -> Any:
         print("Send message, waiting for response {0}\n{1}".format(deserialize.__name__, request))
         self.__client.send(request, namespace=self.__namespace)
         response = self.__wait_for_first_matching_response(deserialize)
@@ -86,7 +86,7 @@ class MobiliumClient:
     def __is_disconnected(self) -> bool:
         return not self.__is_connected()
 
-    def __wait_for_first_matching_response(self, deserialize: Callable[[bytes], bool]) -> Optional[Any]:
+    def __wait_for_first_matching_response(self, deserialize: Callable[[bytes], Optional[Any]]) -> Any:
         partial = named_partial(self.__client_namespace.read_first_matching_response, deserialize)
         response = wait_until_value(partial)
         self.__client_namespace.reset_responses_buffor()
