@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1C36A6DF232F7C4700FF474E /* SocketIOClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C36A6DE232F7C4700FF474E /* SocketIOClient.swift */; };
 		1C36A6E523322AB800FF474E /* ElementError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C36A6E423322AB800FF474E /* ElementError.swift */; };
+		63072E9E23717D160010E7C3 /* Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63072E9D23717D160010E7C3 /* Accessibility.swift */; };
 		808127EE229BE7F1002028AE /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 808127EC229BE7F1002028AE /* Starscream.framework */; };
 		808127EF229BE7F1002028AE /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 808127ED229BE7F1002028AE /* SocketIO.framework */; };
 		80C4ADB02294372000D1A11D /* MobiliumDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C4ADAF2294372000D1A11D /* MobiliumDriver.swift */; };
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		1C36A6DE232F7C4700FF474E /* SocketIOClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOClient.swift; sourceTree = "<group>"; };
 		1C36A6E423322AB800FF474E /* ElementError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementError.swift; sourceTree = "<group>"; };
+		63072E9D23717D160010E7C3 /* Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessibility.swift; sourceTree = "<group>"; };
 		808127EC229BE7F1002028AE /* Starscream.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Starscream.framework; path = Carthage/Build/iOS/Starscream.framework; sourceTree = "<group>"; };
 		808127ED229BE7F1002028AE /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketIO.framework; path = Carthage/Build/iOS/SocketIO.framework; sourceTree = "<group>"; };
 		80C4ADAB2294372000D1A11D /* MobiliumDriver.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobiliumDriver.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +99,7 @@
 				A6EA4941232A75E700082988 /* XCUIApplication.swift */,
 				A6EF2AA3232B73C9006DA427 /* XCUIElement.swift */,
 				1C36A6E423322AB800FF474E /* ElementError.swift */,
+				63072E9D23717D160010E7C3 /* Accessibility.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 				A6EA4942232A75E700082988 /* XCUIApplication.swift in Sources */,
 				CE7EA34122E9DC8B00BE4567 /* messages.pb.swift in Sources */,
 				80C4ADB02294372000D1A11D /* MobiliumDriver.swift in Sources */,
+				63072E9E23717D160010E7C3 /* Accessibility.swift in Sources */,
 				1C36A6DF232F7C4700FF474E /* SocketIOClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,6 +8,13 @@ message ElementError {
     }
 }
 
+message ElementIndicator {
+    oneof type {
+        string id = 1;
+        string xpath = 2;
+    }
+}
+
 message StartDriverRequest {
     string udid = 1;
 }
@@ -35,21 +42,21 @@ message TerminateAppRequest {}
 message TerminateAppResponse {}
 
 message IsElementVisibleRequest {
-    string accessibility_id = 1;
+    ElementIndicator element_indicator = 1;
     float timeout = 2;
 }
 
 message IsElementVisibleResponse {
-    string accessibility_id = 1;
+    ElementIndicator element_indicator = 1;
     bool is_visible = 2;
 }
 
 message ClickElementRequest {
-    string accessibility_id = 1;
+    ElementIndicator element_indicator = 1;
 }
 
 message ClickElementResponse {
-    string accessibility_id = 1;
+    ElementIndicator element_indicator = 1;
     oneof status {
         bool success = 2;
         ElementError failure = 3;
@@ -57,11 +64,11 @@ message ClickElementResponse {
 }
 
 message GetValueOfElementRequest {
-    string accessibility_id = 1;
+    ElementIndicator element_indicator = 1;
 }
 
 message GetValueOfElementResponse {
-    string accessibility_id = 1;
+    ElementIndicator element_indicator = 1;
     oneof status {
         string value = 2;
         ElementError failure = 3;
@@ -74,7 +81,7 @@ message SetValueOfElementRequest {
         bool clears = 2;
     }
 
-    string accessibility_id = 1;
+    ElementIndicator element_indicator = 1;
     oneof value {
         TextValue text = 2;
         float position = 3;
@@ -83,7 +90,7 @@ message SetValueOfElementRequest {
 }
 
 message SetValueOfElementResponse {
-    string accessibility_id = 1;
+    ElementIndicator element_indicator = 1;
     oneof status {
         bool success = 2;
         ElementError failure = 3;

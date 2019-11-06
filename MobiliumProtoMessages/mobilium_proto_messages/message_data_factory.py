@@ -2,6 +2,7 @@
 import re
 
 from google.protobuf.message import Message
+from mobilium_proto_messages.accessibility import Accessibility
 from mobilium_proto_messages.proto.messages_pb2 import *
 
 
@@ -47,44 +48,44 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(UninstallAppResponse())
 
     @staticmethod
-    def is_element_visible_request(accessibility_id: str, timeout: float = 0) -> bytes:
+    def is_element_visible_request(accessibility: Accessibility, timeout: float = 0) -> bytes:
         message = IsElementVisibleRequest()
-        message.accessibility_id = accessibility_id
+        message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
         message.timeout = timeout
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def get_element_value_request(accessibility_id: str) -> bytes:
+    def get_element_value_request(accessibility: Accessibility) -> bytes:
         message = GetValueOfElementRequest()
-        message.accessibility_id = accessibility_id
+        message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_element_text_request(accessibility_id: str, text: str, clears: bool = True):
+    def set_element_text_request(accessibility: Accessibility, text: str, clears: bool = True):
         message = SetValueOfElementRequest()
-        message.accessibility_id = accessibility_id
+        message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
         message.text.value = text
         message.text.clears = clears
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_position_request(accessibility_id: str, position: float):
+    def set_position_request(accessibility: Accessibility, position: float):
         message = SetValueOfElementRequest()
-        message.accessibility_id = accessibility_id
+        message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
         message.position = position
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_selection_request(accessibility_id: str, selection: bool):
+    def set_selection_request(accessibility: Accessibility, selection: bool):
         message = SetValueOfElementRequest()
-        message.accessibility_id = accessibility_id
+        message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
         message.selection = selection
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def click_element_request(accessibility_id: str) -> bytes:
+    def click_element_request(accessibility: Accessibility) -> bytes:
         message = ClickElementRequest()
-        message.accessibility_id = accessibility_id
+        message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
@@ -98,3 +99,9 @@ class MessageDataFactory:
     @staticmethod
     def __camel_case_split(text: str) -> [str]:
         return re.findall(r'[A-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))', text)
+
+    @staticmethod
+    def __element_indicator(accessibility: Accessibility) -> ElementIndicator:
+        element_indicator = ElementIndicator()
+        element_indicator.id = accessibility.value
+        return element_indicator

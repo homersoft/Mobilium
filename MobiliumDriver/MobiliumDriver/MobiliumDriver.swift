@@ -40,20 +40,23 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
                 self?.launchApp(bundleId: message.bundleID)
             }
 
-            if let message = self?.deserializer.isElementVisibileRequest(from: data) {
-                self?.checkElementVisible(with: message.accessibilityID, timeout: TimeInterval(message.timeout))
+            if let message = self?.deserializer.isElementVisibileRequest(from: data),
+                let accessibility = message.elementIndicator.toAccessibility() {
+                self?.checkElementVisible(with: accessibility, timeout: TimeInterval(message.timeout))
             }
             
-            if let message = self?.deserializer.getValueOfElementRequest(from: data) {
-                self?.readValueOfElement(with: message.accessibilityID)
+            if let message = self?.deserializer.getValueOfElementRequest(from: data),
+                let accessibility = message.elementIndicator.toAccessibility() {
+                self?.readValueOfElement(with: accessibility)
             }
             
             if let message = self?.deserializer.setValueOfElementRequest(from: data) {
                 self?.setValueOfElementUsingMessage(message)
             }
             
-            if let message = self?.deserializer.clickElementRequest(from: data) {
-                self?.clickElement(with: message.accessibilityID)
+            if let message = self?.deserializer.clickElementRequest(from: data),
+                let accessibility = message.elementIndicator.toAccessibility(){
+                self?.clickElement(with: accessibility)
             }
             
             if let _ = self?.deserializer.terminateAppRequest(from: data) {
@@ -86,44 +89,53 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         socket?.send(message: messageData)
     }
 
-    private func checkElementVisible(with accessibilityId: String, timeout: TimeInterval) {
+    private func checkElementVisible(with accessibility: Accessibility, timeout: TimeInterval) {
+        guard let accessibilityId = accessibility.id else { return }
+
         let element = app.element(with: accessibilityId)
         let elementExists = element.waitForExistence(timeout: timeout)
 
-        let messageData = MessageDataFactory.isElementVisibleResponse(accessibilityId: accessibilityId, exists: elementExists)
+        let messageData = MessageDataFactory.isElementVisibleResponse(accessibility: accessibility, exists: elementExists)
         socket?.send(message: messageData)
     }
     
-    private func clickElement(with accessibilityId: String) {
+    private func clickElement(with accessibility: Accessibility) {
+        guard let accessibilityId = accessibility.id else { return }
+
         let element = app.element(with: accessibilityId)
         let elementExists = element.exists
         if elementExists {
             element.tap()
         }
         
-        let messageData = MessageDataFactory.clickElementResponse(accessibilityId: accessibilityId, exists: elementExists)
+        let messageData = MessageDataFactory.clickElementResponse(accessibility: accessibility, exists: elementExists)
         socket?.send(message: messageData)
     }
     
-    private func readValueOfElement(with accessibilityId: String) {
+    private func readValueOfElement(with accessibility: Accessibility) {
+        guard let accessibilityId = accessibility.id else { return }
+
         let element = app.element(with: accessibilityId)
         guard element.exists else {
-            let messageData = MessageDataFactory.getValueOfElementResponse(accessibilityId: accessibilityId,
+            let messageData = MessageDataFactory.getValueOfElementResponse(accessibility: accessibility,
                                                                            exists: false, value: nil)
             socket?.send(message: messageData)
             return
         }
 
         let value = element.value as? String ?? element.label
-        let messageData = MessageDataFactory.getValueOfElementResponse(accessibilityId: accessibilityId,
+        let messageData = MessageDataFactory.getValueOfElementResponse(accessibility: accessibility,
                                                                        exists: true, value: value)
         socket?.send(message: messageData)
     }
     
     private func setValueOfElementUsingMessage(_ message: SetValueOfElementRequest) {
-        let element = app.element(with: message.accessibilityID)
+        guard let accessibility = message.elementIndicator.toAccessibility(),
+            let accessibilityId = accessibility.id else { return }
+
+        let element = app.element(with: accessibilityId)
         guard element.exists else {
-            let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: message.accessibilityID,
+            let messageData = MessageDataFactory.setValueOfElementResponse(accessibility: accessibility,
                                                                            exists: false)
             socket?.send(message: messageData)
             return
@@ -140,7 +152,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             print("Invalid message send to driver. Message: \(String(describing: message))")
         }
         
-        let messageData = MessageDataFactory.setValueOfElementResponse(accessibilityId: message.accessibilityID,
+        let messageData = MessageDataFactory.setValueOfElementResponse(accessibility: accessibility,
                                                                        exists: true)
         socket?.send(message: messageData)
     }
