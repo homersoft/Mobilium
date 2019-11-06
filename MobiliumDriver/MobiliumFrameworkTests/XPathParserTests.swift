@@ -16,4 +16,12 @@ class XPathParserTests: XCTestCase {
 
         XCTAssertTrue(result.isEmpty)
     }
+
+    func testParseCellXPath() {
+        let result = XPathParser.parse("//XCUIElementTypeCell")
+
+        let expected = [Path(elementType: .cell)]
+
+        XCTAssertEqual(result, expected)
+    }
 }
