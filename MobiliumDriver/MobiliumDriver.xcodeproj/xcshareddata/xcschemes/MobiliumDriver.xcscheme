@@ -10,21 +10,9 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "NO"
       systemAttachmentLifetime = "keepNever"
-      userAttachmentLifetime = "keepAlways"
-      shouldUseLaunchSchemeArgsEnv = "NO">
-      <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "80C4ADAA2294372000D1A11D"
-               BuildableName = "MobiliumDriver.xctest"
-               BlueprintName = "MobiliumDriver"
-               ReferencedContainer = "container:MobiliumDriver.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-      </Testables>
+      userAttachmentLifetime = "keepAlways">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -46,8 +34,18 @@
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
-      <AdditionalOptions>
-      </AdditionalOptions>
+      <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "80C4ADAA2294372000D1A11D"
+               BuildableName = "MobiliumDriver.xctest"
+               BlueprintName = "MobiliumDriver"
+               ReferencedContainer = "container:MobiliumDriver.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -59,8 +57,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

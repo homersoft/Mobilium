@@ -9,6 +9,7 @@
 import XCTest
 import Network
 import SocketIO
+import MobiliumFramework
 
 class MobiliumDriver: XCTestCase, StreamDelegate {
     var app: XCUIApplication!

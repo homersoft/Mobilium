@@ -2,7 +2,7 @@
 import re
 
 from google.protobuf.message import Message
-from mobilium_proto_messages.accessibility import Accessibility
+from mobilium_proto_messages.accessibility import Accessibility, AccessibilityById, AccessibilityByXpath
 from mobilium_proto_messages.proto.messages_pb2 import *
 
 
@@ -103,5 +103,8 @@ class MessageDataFactory:
     @staticmethod
     def __element_indicator(accessibility: Accessibility) -> ElementIndicator:
         element_indicator = ElementIndicator()
-        element_indicator.id = accessibility.value
+        if accessibility is AccessibilityById:
+            element_indicator.id = accessibility.value
+        elif accessibility is AccessibilityByXpath:
+            element_indicator.xpath = accessibility.value
         return element_indicator
