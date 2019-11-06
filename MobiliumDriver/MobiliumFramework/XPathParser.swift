@@ -17,16 +17,46 @@ class XPathParser {
     }
 
     private static func path(from group: [String]) -> Path? {
+        guard group.count>=1 else { return nil }
+
         let rawElementType = group[1]
         guard let elementType = elementType(raw: rawElementType) else { return nil }
 
-        return Path(elementType: elementType)
+        return Path(elementType: elementType, condition: condition(from: group))
+    }
+
+    private static func condition(from group: [String]) -> PathCondition? {
+        guard group.count >= 5,
+        let conditionType = conditionType(raw: group[2]),
+        let parameterType = parameterType(raw: group[3]) else { return nil }
+
+        return PathCondition(type: conditionType, parameterType: parameterType, value: group[4])
     }
 
     private static func elementType(raw: String) -> Path.ElementType? {
         switch raw {
         case "XCUIElementTypeCell":
             return .cell
+        case "XCUIElementTypeButton":
+            return .button
+        default:
+            return nil
+        }
+    }
+
+    private static func conditionType(raw: String) -> PathCondition.ConditionType? {
+        switch raw {
+        case "contains":
+            return .contains
+        default:
+            return nil
+        }
+    }
+
+    private static func parameterType(raw: String) -> PathCondition.ParameterType? {
+        switch raw {
+        case "label":
+            return .label
         default:
             return nil
         }
@@ -49,7 +79,12 @@ class XPathParser {
 
 struct Path: Equatable {
     let elementType: ElementType
-    let condition: PathCondition? = nil
+    let condition: PathCondition?
+
+    init(elementType: ElementType, condition: PathCondition? = nil) {
+        self.elementType = elementType
+        self.condition = condition
+    }
 
     enum ElementType {
         case cell

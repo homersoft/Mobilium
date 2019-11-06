@@ -17,10 +17,19 @@ class XPathParserTests: XCTestCase {
         XCTAssertTrue(result.isEmpty)
     }
 
-    func testParseCellXPath() {
+    func testParseCell() {
         let result = XPathParser.parse("//XCUIElementTypeCell")
 
         let expected = [Path(elementType: .cell)]
+
+        XCTAssertEqual(result, expected)
+    }
+
+    func testParseElementWithCondition() {
+        let result = XPathParser.parse("//XCUIElementTypeButton[contains(@label, 'menu')]")
+
+        let expectedCondition = PathCondition(type: .contains, parameterType: .label, value: "menu")
+        let expected = [Path(elementType: .button, condition: expectedCondition)]
 
         XCTAssertEqual(result, expected)
     }
