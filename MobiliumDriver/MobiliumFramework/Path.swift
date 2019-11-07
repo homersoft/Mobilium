@@ -6,16 +6,16 @@
 //  Copyright © 2019 Silvair. All rights reserved.
 //
 
-struct Path: Equatable {
-    let elementType: ElementType
-    let condition: PathCondition?
+public struct Path: Equatable {
+    public let elementType: ElementType
+    public let condition: PathCondition?
 
     init(elementType: ElementType, condition: PathCondition? = nil) {
         self.elementType = elementType
         self.condition = condition
     }
 
-    enum ElementType {
+    public enum ElementType {
         case cell
         case button
         case navigationBar
@@ -24,17 +24,17 @@ struct Path: Equatable {
     }
 }
 
-struct PathCondition: Equatable {
-    let type: ConditionType
-    let parameterType: ParameterType
-    let value: String
+public struct PathCondition: Equatable {
+    public let type: ConditionType
+    public let parameterType: ParameterType
+    public let value: String
 
-    enum ParameterType {
-        case label
-        case value
+    public enum ParameterType: String {
+        case label = "label"
+        case value = "value"
     }
 
-    enum ConditionType {
+    public enum ConditionType {
         case contains
     }
 }

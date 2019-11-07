@@ -8,10 +8,10 @@
 
 import Foundation
 
-class XPathParser {
-    static let xPathRegex = "(\\w+)(?:(?:\\[(\\w+)\\(@(\\w+),\\s*'([^']+)'\\)\\])?)"
+public class XPathParser {
+    private static let xPathRegex = "(\\w+)(?:(?:\\[(\\w+)\\(@(\\w+),\\s*'([^']+)'\\)\\])?)"
 
-    static func parse(_ xpath: String) -> [Path] {
+    public static func parse(_ xpath: String) -> [Path] {
         let groups = XPathParser.groups(of: xpath, for: xPathRegex)
         return groups.compactMap(path(from:))
     }
