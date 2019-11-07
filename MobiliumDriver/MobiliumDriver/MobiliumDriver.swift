@@ -91,9 +91,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     }
 
     private func checkElementVisible(with accessibility: Accessibility, timeout: TimeInterval) {
-        guard let accessibilityId = accessibility.id else { return }
-
-        let element = app.element(with: accessibilityId)
+        let element = self.element(by: accessibility)
         let elementExists = element.waitForExistence(timeout: timeout)
 
         let messageData = MessageDataFactory.isElementVisibleResponse(accessibility: accessibility, exists: elementExists)
@@ -101,9 +99,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     }
     
     private func clickElement(with accessibility: Accessibility) {
-        guard let accessibilityId = accessibility.id else { return }
-
-        let element = app.element(with: accessibilityId)
+        let element = self.element(by: accessibility)
         let elementExists = element.exists
         if elementExists {
             element.tap()
@@ -114,9 +110,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     }
     
     private func readValueOfElement(with accessibility: Accessibility) {
-        guard let accessibilityId = accessibility.id else { return }
-
-        let element = app.element(with: accessibilityId)
+        let element = self.element(by: accessibility)
         guard element.exists else {
             let messageData = MessageDataFactory.getValueOfElementResponse(accessibility: accessibility,
                                                                            exists: false, value: nil)
@@ -131,10 +125,9 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     }
     
     private func setValueOfElementUsingMessage(_ message: SetValueOfElementRequest) {
-        guard let accessibility = message.elementIndicator.toAccessibility(),
-            let accessibilityId = accessibility.id else { return }
+        guard let accessibility = message.elementIndicator.toAccessibility() else { return }
 
-        let element = app.element(with: accessibilityId)
+        let element = self.element(by: accessibility)
         guard element.exists else {
             let messageData = MessageDataFactory.setValueOfElementResponse(accessibility: accessibility,
                                                                            exists: false)
@@ -156,5 +149,15 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         let messageData = MessageDataFactory.setValueOfElementResponse(accessibility: accessibility,
                                                                        exists: true)
         socket?.send(message: messageData)
+    }
+
+    private func element(by accessibility: Accessibility) -> XCUIElement {
+        switch accessibility {
+        case .id(let accessibilityId):
+            return app.element(with: accessibilityId)
+        case .xpath(let xpath):
+            let query = ElementQueryCreator.create(from: xpath, provider: app)
+            return query?.firstMatch ?? app.firstMatch
+        }
     }
 }

@@ -9,15 +9,15 @@
 import Foundation
 
 enum Accessibility {
-    case id(value: String)
-    case xpath(value: String)
+    case id(accessibilityId: String)
+    case xpath(xpath: String)
 }
 
 extension Accessibility {
     var id: String? {
-        guard case let .id(value) = self else { return nil }
+        guard case let .id(accessibilityId) = self else { return nil }
 
-        return value
+        return accessibilityId
     }
 }
 
@@ -25,10 +25,10 @@ extension Accessibility {
     func toElementIdicator() -> ElementIndicator{
         var elementIdicator = ElementIndicator()
         switch self {
-        case .id(let value):
-            elementIdicator.id = value
-        case .xpath(let value):
-            elementIdicator.xpath = value
+        case .id(let accessibilityId):
+            elementIdicator.id = accessibilityId
+        case .xpath(let xpath):
+            elementIdicator.xpath = xpath
         }
         return elementIdicator
     }
@@ -37,10 +37,10 @@ extension Accessibility {
 extension ElementIndicator {
     func toAccessibility() -> Accessibility? {
         switch self.type {
-        case .id(let value):
-            return .id(value: value)
-        case .xpath(let value):
-            return .xpath(value: value)
+        case .id(let accessibilityId):
+            return .id(accessibilityId: accessibilityId)
+        case .xpath(let xpath):
+            return .xpath(xpath: xpath)
         default:
             return nil
         }
