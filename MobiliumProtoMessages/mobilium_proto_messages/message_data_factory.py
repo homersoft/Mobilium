@@ -103,8 +103,8 @@ class MessageDataFactory:
     @staticmethod
     def __element_indicator(accessibility: Accessibility) -> ElementIndicator:
         element_indicator = ElementIndicator()
-        if accessibility is AccessibilityById:
+        if isinstance(accessibility, AccessibilityById):
             element_indicator.id = accessibility.value
-        elif accessibility is AccessibilityByXpath:
+        elif isinstance(accessibility, AccessibilityByXpath):
             element_indicator.xpath = accessibility.value
         return element_indicator

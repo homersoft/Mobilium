@@ -17,6 +17,7 @@
 		63C4A6F423731479009552D3 /* XPathParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63072EAE2372F2CC0010E7C3 /* XPathParserTests.swift */; };
 		63C4A6F62374004F009552D3 /* Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C4A6F52374004F009552D3 /* Path.swift */; };
 		63C4A6FA2374045A009552D3 /* ElementQueryCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C4A6F92374045A009552D3 /* ElementQueryCreator.swift */; };
+		63C4A6FD2374179F009552D3 /* MobiliumFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 63072EB523730DDF0010E7C3 /* MobiliumFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		808127EE229BE7F1002028AE /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 808127EC229BE7F1002028AE /* Starscream.framework */; };
 		808127EF229BE7F1002028AE /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 808127ED229BE7F1002028AE /* SocketIO.framework */; };
 		80C4ADB02294372000D1A11D /* MobiliumDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C4ADAF2294372000D1A11D /* MobiliumDriver.swift */; };
@@ -37,6 +38,19 @@
 			remoteInfo = MobiliumFramework;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		63C4A6FC23741790009552D3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				63C4A6FD2374179F009552D3 /* MobiliumFramework.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1C36A6DE232F7C4700FF474E /* SocketIOClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOClient.swift; sourceTree = "<group>"; };
@@ -237,6 +251,7 @@
 				80C4ADA82294372000D1A11D /* Frameworks */,
 				80C4ADA92294372000D1A11D /* Resources */,
 				808127F0229BE8F5002028AE /* ShellScript */,
+				63C4A6FC23741790009552D3 /* CopyFiles */,
 			);
 			buildRules = (
 			);
