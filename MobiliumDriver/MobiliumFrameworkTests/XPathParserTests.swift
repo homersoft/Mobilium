@@ -38,6 +38,13 @@ class XPathParserTests: XCTestCase {
         XCTAssertEqual(result, expected)
     }
 
+    func testParseTextField() {
+        let result = XPathParser.parse("//XCUIElementTypeTextField")
+
+        let expected = [Path(elementType: .textField)]
+        XCTAssertEqual(result, expected)
+    }
+
     func testParseTextView() {
         let result = XPathParser.parse("//XCUIElementTypeTextView")
 

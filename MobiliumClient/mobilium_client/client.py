@@ -6,7 +6,7 @@ from common.named_partial import named_partial
 from common.wait import wait_until_true, wait_until_value
 from mobilium_client import config
 from mobilium_client.client_namespace import MobiliumClientNamespace
-from mobilium_proto_messages.accessibility import Accessibility, AccessibilityById
+from mobilium_proto_messages.accessibility import Accessibility, AccessibilityById, AccessibilityByXpath
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from mobilium_proto_messages.proto.messages_pb2 import StartDriverResponse, InstallAppResponse, LaunchAppResponse, \
@@ -118,6 +118,8 @@ def main():
     mobilium_client.install_app()
     mobilium_client.launch_app()
     mobilium_client.is_element_visible(AccessibilityById("login_button"))
+    mobilium_client.set_element_text(AccessibilityByXpath("//XCUIElementTypeTextField"
+                                                          "[contains(@label, 'Email address')]"), "xpath\n")
     mobilium_client.set_element_text(AccessibilityById("password_field"), "homer123\n")
     mobilium_client.get_element_value(AccessibilityById("password_field"))
     mobilium_client.click_element(AccessibilityById("login_field"))

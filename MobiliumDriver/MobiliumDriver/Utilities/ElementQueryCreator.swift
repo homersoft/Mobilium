@@ -34,6 +34,8 @@ class ElementQueryCreator {
             return provider.buttons
         case .navigationBar:
             return provider.navigationBars
+        case .textField:
+            return provider.textFields
         case .textView:
             return provider.textViews
         case .switchButton:

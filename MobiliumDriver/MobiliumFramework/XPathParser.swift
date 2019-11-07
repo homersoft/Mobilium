@@ -41,6 +41,8 @@ public class XPathParser {
             return .button
         case "XCUIElementTypeNavigationBar":
             return .navigationBar
+        case "XCUIElementTypeTextField":
+            return .textField
         case "XCUIElementTypeTextView":
             return .textView
         case "XCUIElementTypeSwitch":

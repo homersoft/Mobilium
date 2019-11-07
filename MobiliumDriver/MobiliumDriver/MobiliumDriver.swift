@@ -156,8 +156,12 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         case .id(let accessibilityId):
             return app.element(with: accessibilityId)
         case .xpath(let xpath):
-            let query = ElementQueryCreator.create(from: xpath, provider: app)
-            return query?.firstMatch ?? app.firstMatch
+            guard let query = ElementQueryCreator.create(from: xpath, provider: app) else {
+                print("Cannot build query from xpath!")
+                return app.firstMatch
+            }
+
+            return query.firstMatch
         }
     }
 }

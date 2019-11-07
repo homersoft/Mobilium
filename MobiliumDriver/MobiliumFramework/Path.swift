@@ -19,6 +19,7 @@ public struct Path: Equatable {
         case cell
         case button
         case navigationBar
+        case textField
         case textView
         case switchButton
     }
