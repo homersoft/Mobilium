@@ -9,7 +9,7 @@
 import Foundation
 
 class XPathParser {
-    static let xPathRegex = "(\\w+)(?:(?:\\[(\\w+)\\(@(\\w+),\\s*'([\\w|\\d]+)'\\)\\])?)"
+    static let xPathRegex = "(\\w+)(?:(?:\\[(\\w+)\\(@(\\w+),\\s*'([^']+)'\\)\\])?)"
 
     static func parse(_ xpath: String) -> [Path] {
         let groups = XPathParser.groups(of: xpath, for: xPathRegex)
@@ -39,6 +39,12 @@ class XPathParser {
             return .cell
         case "XCUIElementTypeButton":
             return .button
+        case "XCUIElementTypeNavigationBar":
+            return .navigationBar
+        case "XCUIElementTypeTextView":
+            return .textView
+        case "XCUIElementTypeSwitch":
+            return .switchButton
         default:
             return nil
         }
@@ -57,6 +63,8 @@ class XPathParser {
         switch raw {
         case "label":
             return .label
+        case "value":
+            return .value
         default:
             return nil
         }
@@ -74,34 +82,5 @@ class XPathParser {
                 return String(text[range])
             }
         }
-    }
-}
-
-struct Path: Equatable {
-    let elementType: ElementType
-    let condition: PathCondition?
-
-    init(elementType: ElementType, condition: PathCondition? = nil) {
-        self.elementType = elementType
-        self.condition = condition
-    }
-
-    enum ElementType {
-        case cell
-        case button
-    }
-}
-
-struct PathCondition: Equatable {
-    let type: ConditionType
-    let parameterType: ParameterType
-    let value: String
-
-    enum ParameterType {
-        case label
-    }
-
-    enum ConditionType {
-        case contains
     }
 }
