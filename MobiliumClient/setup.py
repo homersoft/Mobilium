@@ -13,7 +13,7 @@ setup(name='mobilium-client',
           'pytest'
       ],
       install_requires=[
-          'python-socketio == 4.0.3',
+          'python-socketio[client] == 4.0.3',
           'aiohttp == 3.5.4',
           'websockets == 7.0',
           'mobilium-proto-messages == 0.0.1'
