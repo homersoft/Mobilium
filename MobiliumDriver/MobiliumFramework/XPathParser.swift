@@ -37,14 +37,18 @@ public class XPathParser {
         let regex = try? NSRegularExpression(pattern: regexPattern)
         guard let matches = regex?.matches(in: text, range: NSRange(text.startIndex..., in: text)) else { return [] }
 
-        return matches.map { match in
-            return (0..<match.numberOfRanges).compactMap {
-                let rangeBounds = match.range(at: $0)
-                guard let range = Range(rangeBounds, in: text) else { return nil }
+        return matches.map { group(in: $0, of: text) }
+    }
 
-                return String(text[range])
-            }
-        }
+    private static func group(in match: NSTextCheckingResult, of text: String) -> [String] {
+        return (0..<match.numberOfRanges).compactMap { groupResult(at: $0, in: match, of: text) }
+    }
+
+    private static func groupResult(at index: Int, in match: NSTextCheckingResult, of text: String) -> String? {
+        let rangeBounds = match.range(at: index)
+        guard let range = Range(rangeBounds, in: text) else { return nil }
+
+        return String(text[range])
     }
 }
 

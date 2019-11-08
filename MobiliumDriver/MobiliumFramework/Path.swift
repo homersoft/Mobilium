@@ -31,8 +31,8 @@ public struct PathCondition: Equatable {
     public let value: String
 
     public enum ParameterType: String {
-        case label = "label"
-        case value = "value"
+        case label
+        case value
     }
 
     public enum ConditionType {
