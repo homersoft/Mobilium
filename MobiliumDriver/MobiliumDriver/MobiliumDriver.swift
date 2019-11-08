@@ -92,7 +92,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
 
     private func checkElementVisible(with accessibility: Accessibility, timeout: TimeInterval) {
         let element = self.element(by: accessibility)
-        let elementExists = element.waitForExistence(timeout: timeout)
+        let elementExists = element?.waitForExistence(timeout: timeout) ?? false
 
         let messageData = MessageDataFactory.isElementVisibleResponse(accessibility: accessibility, exists: elementExists)
         socket?.send(message: messageData)
@@ -100,9 +100,9 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     
     private func clickElement(with accessibility: Accessibility) {
         let element = self.element(by: accessibility)
-        let elementExists = element.exists
+        let elementExists = element?.exists ?? false
         if elementExists {
-            element.tap()
+            element?.tap()
         }
         
         let messageData = MessageDataFactory.clickElementResponse(accessibility: accessibility, exists: elementExists)
@@ -111,14 +111,14 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     
     private func readValueOfElement(with accessibility: Accessibility) {
         let element = self.element(by: accessibility)
-        guard element.exists else {
+        guard element?.exists == true else {
             let messageData = MessageDataFactory.getValueOfElementResponse(accessibility: accessibility,
                                                                            exists: false, value: nil)
             socket?.send(message: messageData)
             return
         }
 
-        let value = element.value as? String ?? element.label
+        let value = element?.value as? String ?? element?.label
         let messageData = MessageDataFactory.getValueOfElementResponse(accessibility: accessibility,
                                                                        exists: true, value: value)
         socket?.send(message: messageData)
@@ -128,7 +128,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         guard let accessibility = message.elementIndicator.toAccessibility() else { return }
 
         let element = self.element(by: accessibility)
-        guard element.exists else {
+        guard element?.exists == true else {
             let messageData = MessageDataFactory.setValueOfElementResponse(accessibility: accessibility,
                                                                            exists: false)
             socket?.send(message: messageData)
@@ -137,11 +137,11 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
 
         switch message.value {
         case .text(let newTextValue)?:
-            element.setText(newTextValue.value, replace: newTextValue.clears)
+            element?.setText(newTextValue.value, replace: newTextValue.clears)
         case .position(let newPosition)?:
-            element.adjust(toNormalizedSliderPosition: CGFloat(newPosition))
+            element?.adjust(toNormalizedSliderPosition: CGFloat(newPosition))
         case .selection(let newValue)?:
-            element.setSelection(to: newValue)
+            element?.setSelection(to: newValue)
         default:
             print("Invalid message send to driver. Message: \(String(describing: message))")
         }
@@ -151,14 +151,14 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         socket?.send(message: messageData)
     }
 
-    private func element(by accessibility: Accessibility) -> XCUIElement {
+    private func element(by accessibility: Accessibility) -> XCUIElement? {
         switch accessibility {
         case .id(let accessibilityId):
             return app.element(with: accessibilityId)
         case .xpath(let xpath):
             guard let query = ElementQueryCreator.create(from: xpath, provider: app) else {
                 print("Cannot build query from xpath!")
-                return app.firstMatch
+                return nil
             }
 
             return query.firstMatch

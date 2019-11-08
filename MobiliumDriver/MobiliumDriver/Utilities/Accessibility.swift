@@ -9,8 +9,8 @@
 import Foundation
 
 enum Accessibility {
-    case id(accessibilityId: String)
-    case xpath(xpath: String)
+    case id(String)
+    case xpath(String)
 }
 
 extension Accessibility {
@@ -38,9 +38,9 @@ extension ElementIndicator {
     func toAccessibility() -> Accessibility? {
         switch self.type {
         case .id(let accessibilityId):
-            return .id(accessibilityId: accessibilityId)
+            return .id(accessibilityId)
         case .xpath(let xpath):
-            return .xpath(xpath: xpath)
+            return .xpath(xpath)
         default:
             return nil
         }

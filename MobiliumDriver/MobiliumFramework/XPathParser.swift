@@ -12,64 +12,25 @@ public class XPathParser {
     private static let xPathRegex = "(\\w+)(?:(?:\\[(\\w+)\\(@(\\w+),\\s*'([^']+)'\\)\\])?)"
 
     public static func parse(_ xpath: String) -> [Path] {
-        let groups = XPathParser.groups(of: xpath, for: xPathRegex)
+        let groups = self.groups(of: xpath, for: xPathRegex)
         return groups.compactMap(path(from:))
     }
 
     private static func path(from group: [String]) -> Path? {
-        guard group.count>=1 else { return nil }
+        guard group.count > 1 else { return nil }
 
-        let rawElementType = group[1]
-        guard let elementType = elementType(raw: rawElementType) else { return nil }
+        let xpathElement = group[1]
+        guard let elementType = Path.ElementType(xpathElement: xpathElement) else { return nil }
 
         return Path(elementType: elementType, condition: condition(from: group))
     }
 
     private static func condition(from group: [String]) -> PathCondition? {
         guard group.count >= 5,
-        let conditionType = conditionType(raw: group[2]),
-        let parameterType = parameterType(raw: group[3]) else { return nil }
+            let conditionType = PathCondition.ConditionType(xpathCondition: group[2]),
+            let parameterType = PathCondition.ParameterType(xpathParameter: group[3]) else { return nil }
 
         return PathCondition(type: conditionType, parameterType: parameterType, value: group[4])
-    }
-
-    private static func elementType(raw: String) -> Path.ElementType? {
-        switch raw {
-        case "XCUIElementTypeCell":
-            return .cell
-        case "XCUIElementTypeButton":
-            return .button
-        case "XCUIElementTypeNavigationBar":
-            return .navigationBar
-        case "XCUIElementTypeTextField":
-            return .textField
-        case "XCUIElementTypeTextView":
-            return .textView
-        case "XCUIElementTypeSwitch":
-            return .switchButton
-        default:
-            return nil
-        }
-    }
-
-    private static func conditionType(raw: String) -> PathCondition.ConditionType? {
-        switch raw {
-        case "contains":
-            return .contains
-        default:
-            return nil
-        }
-    }
-
-    private static func parameterType(raw: String) -> PathCondition.ParameterType? {
-        switch raw {
-        case "label":
-            return .label
-        case "value":
-            return .value
-        default:
-            return nil
-        }
     }
 
     private static func groups(of text: String, for regexPattern: String) -> [[String]] {
@@ -83,6 +44,51 @@ public class XPathParser {
 
                 return String(text[range])
             }
+        }
+    }
+}
+
+private extension Path.ElementType {
+    init?(xpathElement: String) {
+        switch xpathElement {
+        case "XCUIElementTypeCell":
+            self = .cell
+        case "XCUIElementTypeButton":
+            self = .button
+        case "XCUIElementTypeNavigationBar":
+            self = .navigationBar
+        case "XCUIElementTypeTextField":
+            self = .textField
+        case "XCUIElementTypeTextView":
+            self = .textView
+        case "XCUIElementTypeSwitch":
+            self = .switchButton
+        default:
+            return nil
+        }
+    }
+}
+
+private extension PathCondition.ConditionType {
+    init?(xpathCondition: String) {
+        switch xpathCondition {
+        case "contains":
+            self = .contains
+        default:
+            return nil
+        }
+    }
+}
+
+private extension PathCondition.ParameterType {
+    init?(xpathParameter: String) {
+        switch xpathParameter {
+        case "label":
+            self = .label
+        case "value":
+            self = .value
+        default:
+            return nil
         }
     }
 }
