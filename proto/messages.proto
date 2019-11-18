@@ -97,6 +97,16 @@ message SetValueOfElementResponse {
     }
 }
 
+message GetElementsCountRequest {
+    ElementIndicator element_indicator = 1;
+    float timeout = 2;
+}
+
+message GetElementsCountResponse {
+    ElementIndicator element_indicator = 1;
+    int64 count = 2;
+}
+
 message MobiliumMessage {
     oneof message {
         StartDriverRequest start_driver_request = 1;
@@ -117,5 +127,7 @@ message MobiliumMessage {
         GetValueOfElementResponse get_value_of_element_response = 16;
         SetValueOfElementRequest set_value_of_element_request = 17;
         SetValueOfElementResponse set_value_of_element_response = 18;
+        GetElementsCountRequest get_elements_count_request = 19;
+        GetElementsCountResponse get_elements_count_response = 20;
     }
 }

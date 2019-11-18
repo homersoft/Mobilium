@@ -61,6 +61,15 @@ class MessageDataFactory {
             populator.message = .setValueOfElementResponse(response)
         })
     }
+
+    static func getElementsCountResponse(accessibility: Accessibility, count: Int) -> Data {
+        return dataWith(populator: { populator in
+            var response = GetElementsCountResponse()
+            response.elementIndicator = accessibility.toElementIdicator()
+            response.count = Int64(count)
+            populator.message = .getElementsCountResponse(response)
+        })
+    }
     
     static func terminateAppResponse() -> Data {
         return dataWith(populator: { populator in
