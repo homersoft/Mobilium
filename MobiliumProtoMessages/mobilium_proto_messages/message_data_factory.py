@@ -89,9 +89,8 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def get_elements_count_request(accessibility: Accessibility, timeout: float = 0) -> bytes:
+    def get_elements_count_request(accessibility: Accessibility) -> bytes:
         message = GetElementsCountRequest()
-        message.timeout = timeout
         message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
         return MessageDataFactory.__data_with(message)
 

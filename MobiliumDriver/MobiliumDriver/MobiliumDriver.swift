@@ -159,7 +159,6 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         guard let accessibility = message.elementIndicator.toAccessibility() else { return }
 
         let elements = self.elementQuery(by: accessibility)
-        _ = elements?.firstMatch.waitForExistence(timeout: TimeInterval(message.timeout))
         let count = elements?.count ?? 0
 
         let response = MessageDataFactory.getElementsCountResponse(accessibility: accessibility, count: count)
@@ -183,7 +182,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     private func elementQuery(by accessibility: Accessibility) -> XCUIElementQuery? {
         switch accessibility {
         case .id(let accessibilityId):
-            return app.cells.matching(identifier: accessibilityId)
+            return app.descendants(matching: .any).matching(identifier: accessibilityId)
         case .xpath(let xpath):
             guard let query = ElementQueryCreator.create(from: xpath, provider: app) else {
                 print("Cannot build query from xpath!")

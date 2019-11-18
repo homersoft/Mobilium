@@ -99,7 +99,6 @@ message SetValueOfElementResponse {
 
 message GetElementsCountRequest {
     ElementIndicator element_indicator = 1;
-    float timeout = 2;
 }
 
 message GetElementsCountResponse {
