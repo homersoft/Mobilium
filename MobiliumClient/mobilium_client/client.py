@@ -127,6 +127,8 @@ def main():
     mobilium_client.set_element_text(AccessibilityByXpath("//XCUIElementTypeTextField"
                                                           "[contains(@label, 'Email address')]"), "xpath\n")
     mobilium_client.set_element_text(AccessibilityById("password_field"), "homer123\n")
+    mobilium_client.get_element_value(AccessibilityById("password_field"))
+    mobilium_client.click_element(AccessibilityById("login_field"))
 
     mobilium_client.get_elements_count(AccessibilityById("password_field"))
     mobilium_client.get_elements_count(AccessibilityByXpath("//XCUIElementTypeTextField[contains(@value" 
