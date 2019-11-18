@@ -60,7 +60,8 @@ class MobiliumClient:
         request = MessageDataFactory.terminate_app_request()
         return self.__send(request, MessageDeserializer.terminate_app_response)
 
-    def is_element_visible(self, accessibility: Accessibility, timeout: float = 0) -> Optional[IsElementVisibleResponse]:
+    def is_element_visible(self, accessibility: Accessibility, timeout: float = 0) \
+            -> Optional[IsElementVisibleResponse]:
         request = MessageDataFactory.is_element_visible_request(accessibility, timeout)
         return self.__send(request, MessageDeserializer.is_element_visible_response)
 
@@ -77,7 +78,8 @@ class MobiliumClient:
         request = MessageDataFactory.click_element_request(accessibility)
         return self.__send(request, MessageDeserializer.click_element_response)
 
-    def get_elements_count(self, accessibility: Accessibility, timeout: float = 0) -> Optional[GetElementsCountResponse]:
+    def get_elements_count(self, accessibility: Accessibility, timeout: float = 0) \
+            -> Optional[GetElementsCountResponse]:
         request = MessageDataFactory.get_elements_count_request(accessibility, timeout)
         return self.__send(request, MessageDeserializer.get_elements_count_response)
 
@@ -123,11 +125,13 @@ def main():
 
     mobilium_client.is_element_visible(AccessibilityById("login_button"))
     mobilium_client.set_element_text(AccessibilityByXpath("//XCUIElementTypeTextField"
-                                                          "[contains(@label, 'Email address')]"), "grzegorz.przybyla+test@silvair.com\n")
+                                                          "[contains(@label, 'Email address')]"),
+                                     "grzegorz.przybyla+test@silvair.com\n")
     mobilium_client.set_element_text(AccessibilityById("password_field"), "homer123\n")
 
     mobilium_client.get_elements_count(AccessibilityById("project_cell"), 5.0)
-    mobilium_client.get_elements_count(AccessibilityByXpath("//XCUIElementTypeCell[contains(@value, 'Project_1')]"), 5.0)
+    mobilium_client.get_elements_count(AccessibilityByXpath("//XCUIElementTypeCell[contains(@value, 'Project_1')]"),
+                                       5.0)
 
     mobilium_client.terminate_app()
     mobilium_client.uninstall_app()
