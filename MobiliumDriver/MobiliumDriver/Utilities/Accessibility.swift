@@ -22,7 +22,7 @@ extension Accessibility {
 }
 
 extension Accessibility {
-    func toElementIdicator() -> ElementIndicator{
+    func toElementIndicator() -> ElementIndicator {
         var elementIdicator = ElementIndicator()
         switch self {
         case .id(let accessibilityId):

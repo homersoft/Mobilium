@@ -1,4 +1,4 @@
-# pylint: disable=W0613
+# pylint: disable=W0613, W0233
 from socketio import AsyncNamespace
 
 from mobilium_server.message_handler import MessageHandler

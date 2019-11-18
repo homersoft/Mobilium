@@ -53,6 +53,10 @@ class MessageDeserializer:
         return MessageDeserializer.__message(data, ClickElementResponse)
 
     @staticmethod
+    def get_elements_count_response(data: bytes) -> Optional[GetElementsCountResponse]:
+        return MessageDeserializer.__message(data, GetElementsCountResponse)
+
+    @staticmethod
     def terminate_app_response(data: bytes) -> Optional[TerminateAppResponse]:
         return MessageDeserializer.__message(data, TerminateAppResponse)
 

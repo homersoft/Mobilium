@@ -56,8 +56,12 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             }
             
             if let message = self?.deserializer.clickElementRequest(from: data),
-                let accessibility = message.elementIndicator.toAccessibility(){
+                let accessibility = message.elementIndicator.toAccessibility() {
                 self?.clickElement(with: accessibility)
+            }
+
+            if let message = self?.deserializer.getElementsCountRequest(from: data) {
+                self?.getElementsCountUsingMessage(message)
             }
             
             if let _ = self?.deserializer.terminateAppRequest(from: data) {
@@ -151,6 +155,16 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         socket?.send(message: messageData)
     }
 
+    private func getElementsCountUsingMessage(_ message: GetElementsCountRequest) {
+        guard let accessibility = message.elementIndicator.toAccessibility() else { return }
+
+        let elements = self.elementQuery(by: accessibility)
+        let count = elements?.count ?? 0
+
+        let response = MessageDataFactory.getElementsCountResponse(accessibility: accessibility, count: count)
+        socket?.send(message: response)
+    }
+
     private func element(by accessibility: Accessibility) -> XCUIElement? {
         switch accessibility {
         case .id(let accessibilityId):
@@ -162,6 +176,19 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             }
 
             return query.firstMatch
+        }
+    }
+
+    private func elementQuery(by accessibility: Accessibility) -> XCUIElementQuery? {
+        switch accessibility {
+        case .id(let accessibilityId):
+            return app.descendants(matching: .any).matching(identifier: accessibilityId)
+        case .xpath(let xpath):
+            guard let query = ElementQueryCreator.create(from: xpath, provider: app) else {
+                print("Cannot build query from xpath!")
+                return nil
+            }
+            return query
         }
     }
 }

@@ -1,7 +1,6 @@
 # pylint: disable=E0611, E0401
 import argparse
 from typing import Optional, Callable, TypeVar
-
 from common.named_partial import named_partial
 from common.wait import wait_until_true, wait_until_value
 from mobilium_client import config
@@ -11,7 +10,7 @@ from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from mobilium_proto_messages.proto.messages_pb2 import StartDriverResponse, InstallAppResponse, LaunchAppResponse, \
     UninstallAppResponse, TerminateAppResponse, IsElementVisibleResponse, SetValueOfElementResponse, \
-    GetValueOfElementResponse, ClickElementResponse
+    GetValueOfElementResponse, ClickElementResponse, GetElementsCountResponse
 
 from socketio import Client
 
@@ -61,8 +60,9 @@ class MobiliumClient:
         request = MessageDataFactory.terminate_app_request()
         return self.__send(request, MessageDeserializer.terminate_app_response)
 
-    def is_element_visible(self, accessibility: Accessibility) -> Optional[IsElementVisibleResponse]:
-        request = MessageDataFactory.is_element_visible_request(accessibility)
+    def is_element_visible(self, accessibility: Accessibility, timeout: float = 0) \
+            -> Optional[IsElementVisibleResponse]:
+        request = MessageDataFactory.is_element_visible_request(accessibility, timeout)
         return self.__send(request, MessageDeserializer.is_element_visible_response)
 
     def set_element_text(self, accessibility: Accessibility, text: str,
@@ -77,6 +77,11 @@ class MobiliumClient:
     def click_element(self, accessibility: Accessibility) -> Optional[ClickElementResponse]:
         request = MessageDataFactory.click_element_request(accessibility)
         return self.__send(request, MessageDeserializer.click_element_response)
+
+    def get_elements_count(self, accessibility: Accessibility) \
+            -> Optional[GetElementsCountResponse]:
+        request = MessageDataFactory.get_elements_count_request(accessibility)
+        return self.__send(request, MessageDeserializer.get_elements_count_response)
 
     def __send(self, request: bytes, deserialize: Callable[[bytes], Optional[MessageResponse]]) -> MessageResponse:
         print("Send message, waiting for response {0}\n{1}".format(deserialize.__name__, request))
@@ -117,12 +122,18 @@ def main():
     mobilium_client.start_driver()
     mobilium_client.install_app()
     mobilium_client.launch_app()
+
     mobilium_client.is_element_visible(AccessibilityById("login_button"))
     mobilium_client.set_element_text(AccessibilityByXpath("//XCUIElementTypeTextField"
                                                           "[contains(@label, 'Email address')]"), "xpath\n")
     mobilium_client.set_element_text(AccessibilityById("password_field"), "homer123\n")
     mobilium_client.get_element_value(AccessibilityById("password_field"))
     mobilium_client.click_element(AccessibilityById("login_field"))
+
+    mobilium_client.get_elements_count(AccessibilityById("password_field"))
+    mobilium_client.get_elements_count(AccessibilityByXpath("//XCUIElementTypeTextField[contains(@value" 
+                                                            "Email address')]"))
+
     mobilium_client.terminate_app()
     mobilium_client.uninstall_app()
     mobilium_client.disconnect()

@@ -26,7 +26,7 @@ class MessageDataFactory {
         return dataWith(populator: { populator in
             var response = IsElementVisibleResponse()
             response.isVisible = exists
-            response.elementIndicator = accessibility.toElementIdicator()
+            response.elementIndicator = accessibility.toElementIndicator()
             populator.message = .isElementVisibleResponse(response)
         })
     }
@@ -34,7 +34,7 @@ class MessageDataFactory {
     static func clickElementResponse(accessibility: Accessibility, exists: Bool) -> Data {
         return dataWith(populator: { populator in
             var response = ClickElementResponse()
-            response.elementIndicator = accessibility.toElementIdicator()
+            response.elementIndicator = accessibility.toElementIndicator()
             response.status = exists ? .success(true) : .failure(.elementNotExists)
             populator.message = .clickElementResponse(response)
         })
@@ -43,7 +43,7 @@ class MessageDataFactory {
     static func getValueOfElementResponse(accessibility: Accessibility, exists: Bool, value: String?) -> Data {
         return dataWith(populator: { populator in
             var response = GetValueOfElementResponse()
-            response.elementIndicator = accessibility.toElementIdicator()
+            response.elementIndicator = accessibility.toElementIndicator()
             if exists {
                 response.status = .value(value ?? "")
             } else {
@@ -56,9 +56,18 @@ class MessageDataFactory {
     static func setValueOfElementResponse(accessibility: Accessibility, exists: Bool) -> Data {
         return dataWith(populator: { populator in
             var response = SetValueOfElementResponse()
-            response.elementIndicator = accessibility.toElementIdicator()
+            response.elementIndicator = accessibility.toElementIndicator()
             response.status = exists ? .success(true) : .failure(.elementNotExists)
             populator.message = .setValueOfElementResponse(response)
+        })
+    }
+
+    static func getElementsCountResponse(accessibility: Accessibility, count: Int) -> Data {
+        return dataWith(populator: { populator in
+            var response = GetElementsCountResponse()
+            response.elementIndicator = accessibility.toElementIndicator()
+            response.count = Int64(count)
+            populator.message = .getElementsCountResponse(response)
         })
     }
     

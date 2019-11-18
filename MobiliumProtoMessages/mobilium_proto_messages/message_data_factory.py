@@ -89,6 +89,12 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
+    def get_elements_count_request(accessibility: Accessibility) -> bytes:
+        message = GetElementsCountRequest()
+        message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
+        return MessageDataFactory.__data_with(message)
+
+    @staticmethod
     def __data_with(message: Message) -> bytes:
         class_name = message.__class__.__name__
         attribute_name = '_'.join(MessageDataFactory.__camel_case_split(class_name)).lower()
