@@ -43,7 +43,8 @@ message TerminateAppResponse {}
 
 message IsElementVisibleRequest {
     ElementIndicator element_indicator = 1;
-    float timeout = 2;
+    uint32 index = 2;
+    float timeout = 3;
 }
 
 message IsElementVisibleResponse {
@@ -53,6 +54,7 @@ message IsElementVisibleResponse {
 
 message ClickElementRequest {
     ElementIndicator element_indicator = 1;
+    uint32 index = 2;
 }
 
 message ClickElementResponse {
@@ -65,6 +67,7 @@ message ClickElementResponse {
 
 message GetValueOfElementRequest {
     ElementIndicator element_indicator = 1;
+    uint32 index= 2;
 }
 
 message GetValueOfElementResponse {
@@ -82,10 +85,11 @@ message SetValueOfElementRequest {
     }
 
     ElementIndicator element_indicator = 1;
+    uint32 index = 2;
     oneof value {
-        TextValue text = 2;
-        float position = 3;
-        bool selection = 4;
+        TextValue text = 3;
+        float position = 4;
+        bool selection = 5;
     }
 }
 

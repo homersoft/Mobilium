@@ -9,7 +9,7 @@
 import XCTest
 
 extension XCUIApplication {
-    func element(with accessibilityId: String) -> XCUIElement {
-        return descendants(matching: .any)[accessibilityId].firstMatch
+    func element(with accessibilityId: String, index: Int) -> XCUIElement {
+        return descendants(matching: .any).matching(identifier: accessibilityId).element(boundBy: index)
     }
 }
