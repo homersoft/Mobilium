@@ -48,44 +48,50 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(UninstallAppResponse())
 
     @staticmethod
-    def is_element_visible_request(accessibility: Accessibility, timeout: float = 0) -> bytes:
+    def is_element_visible_request(accessibility: Accessibility, index: int, timeout: float = 0) -> bytes:
         message = IsElementVisibleRequest()
         message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
+        message.index = index
         message.timeout = timeout
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def get_element_value_request(accessibility: Accessibility) -> bytes:
+    def get_element_value_request(accessibility: Accessibility, index: int) -> bytes:
         message = GetValueOfElementRequest()
         message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
+        message.index = index
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_element_text_request(accessibility: Accessibility, text: str, clears: bool = True):
+    def set_element_text_request(accessibility: Accessibility, text: str, index: int, clears: bool = True):
         message = SetValueOfElementRequest()
         message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
+        message.index = index
         message.text.value = text
         message.text.clears = clears
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_position_request(accessibility: Accessibility, position: float):
+    def set_position_request(accessibility: Accessibility, index: int, position: float):
         message = SetValueOfElementRequest()
         message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
+        message.index = index
         message.position = position
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_selection_request(accessibility: Accessibility, selection: bool):
+    def set_selection_request(accessibility: Accessibility, index: int, selection: bool):
         message = SetValueOfElementRequest()
         message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
+        message.index = index
         message.selection = selection
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def click_element_request(accessibility: Accessibility) -> bytes:
+    def click_element_request(accessibility: Accessibility, index: int) -> bytes:
         message = ClickElementRequest()
         message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
+        message.index = index
         return MessageDataFactory.__data_with(message)
 
     @staticmethod

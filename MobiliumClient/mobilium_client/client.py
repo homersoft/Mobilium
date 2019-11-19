@@ -60,22 +60,22 @@ class MobiliumClient:
         request = MessageDataFactory.terminate_app_request()
         return self.__send(request, MessageDeserializer.terminate_app_response)
 
-    def is_element_visible(self, accessibility: Accessibility, timeout: float = 0) \
+    def is_element_visible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) \
             -> Optional[IsElementVisibleResponse]:
-        request = MessageDataFactory.is_element_visible_request(accessibility, timeout)
+        request = MessageDataFactory.is_element_visible_request(accessibility, index=index, timeout=timeout)
         return self.__send(request, MessageDeserializer.is_element_visible_response)
 
-    def set_element_text(self, accessibility: Accessibility, text: str,
+    def set_element_text(self, accessibility: Accessibility, text: str, index: int = 0,
                          clears: bool = True) -> Optional[SetValueOfElementResponse]:
-        request = MessageDataFactory.set_element_text_request(accessibility, text, clears)
+        request = MessageDataFactory.set_element_text_request(accessibility, text=text, index=index, clears=clears)
         return self.__send(request, MessageDeserializer.set_value_of_element_response)
 
-    def get_element_value(self, accessibility: Accessibility) -> Optional[GetValueOfElementResponse]:
-        request = MessageDataFactory.get_element_value_request(accessibility)
+    def get_element_value(self, accessibility: Accessibility, index: int = 0) -> Optional[GetValueOfElementResponse]:
+        request = MessageDataFactory.get_element_value_request(accessibility, index=index)
         return self.__send(request, MessageDeserializer.get_value_of_element_response)
 
-    def click_element(self, accessibility: Accessibility) -> Optional[ClickElementResponse]:
-        request = MessageDataFactory.click_element_request(accessibility)
+    def click_element(self, accessibility: Accessibility, index: int = 0) -> Optional[ClickElementResponse]:
+        request = MessageDataFactory.click_element_request(accessibility, index=index)
         return self.__send(request, MessageDeserializer.click_element_response)
 
     def get_elements_count(self, accessibility: Accessibility) \
