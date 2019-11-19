@@ -75,12 +75,19 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         while keepAlive && RunLoop.main.run(mode: .default, before: .distantFuture) { }
     }
 
-
     private func launchApp(bundleId: String) {
         continueAfterFailure = true
 
         app = XCUIApplication(bundleIdentifier: bundleId)
         app.launch()
+
+        addUIInterruptionMonitor(withDescription: "BT permissisons alert monitor") { alert in
+            if alert.buttons["OK"].exists {
+                alert.buttons["OK"].tap()
+                return true
+            }
+            return false
+        }
 
         Thread.sleep(forTimeInterval: 1.0)
 
