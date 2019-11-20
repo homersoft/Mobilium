@@ -1,5 +1,6 @@
 # pylint: disable=E0611, E0401
 import argparse
+import time
 from typing import Optional, Callable, TypeVar
 from common.named_partial import named_partial
 from common.wait import wait_until_true, wait_until_value
@@ -60,22 +61,22 @@ class MobiliumClient:
         request = MessageDataFactory.terminate_app_request()
         return self.__send(request, MessageDeserializer.terminate_app_response)
 
-    def is_element_visible(self, accessibility: Accessibility, timeout: float = 0) \
+    def is_element_visible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) \
             -> Optional[IsElementVisibleResponse]:
-        request = MessageDataFactory.is_element_visible_request(accessibility, timeout)
+        request = MessageDataFactory.is_element_visible_request(accessibility, index=index, timeout=timeout)
         return self.__send(request, MessageDeserializer.is_element_visible_response)
 
-    def set_element_text(self, accessibility: Accessibility, text: str,
+    def set_element_text(self, accessibility: Accessibility, text: str, index: int = 0,
                          clears: bool = True) -> Optional[SetValueOfElementResponse]:
-        request = MessageDataFactory.set_element_text_request(accessibility, text, clears)
+        request = MessageDataFactory.set_element_text_request(accessibility, text=text, index=index, clears=clears)
         return self.__send(request, MessageDeserializer.set_value_of_element_response)
 
-    def get_element_value(self, accessibility: Accessibility) -> Optional[GetValueOfElementResponse]:
-        request = MessageDataFactory.get_element_value_request(accessibility)
+    def get_element_value(self, accessibility: Accessibility, index: int = 0) -> Optional[GetValueOfElementResponse]:
+        request = MessageDataFactory.get_element_value_request(accessibility, index=index)
         return self.__send(request, MessageDeserializer.get_value_of_element_response)
 
-    def click_element(self, accessibility: Accessibility) -> Optional[ClickElementResponse]:
-        request = MessageDataFactory.click_element_request(accessibility)
+    def click_element(self, accessibility: Accessibility, index: int = 0) -> Optional[ClickElementResponse]:
+        request = MessageDataFactory.click_element_request(accessibility, index=index)
         return self.__send(request, MessageDeserializer.click_element_response)
 
     def get_elements_count(self, accessibility: Accessibility) \
@@ -124,15 +125,20 @@ def main():
     mobilium_client.launch_app()
 
     mobilium_client.is_element_visible(AccessibilityById("login_button"))
-    mobilium_client.set_element_text(AccessibilityByXpath("//XCUIElementTypeTextField"
-                                                          "[contains(@label, 'Email address')]"), "xpath\n")
-    mobilium_client.set_element_text(AccessibilityById("password_field"), "homer123\n")
-    mobilium_client.get_element_value(AccessibilityById("password_field"))
-    mobilium_client.click_element(AccessibilityById("login_field"))
+    mobilium_client.click_element(AccessibilityByXpath("//XCUIElementTypeButton[contains(@label, 'tab_1')]"))
 
-    mobilium_client.get_elements_count(AccessibilityById("password_field"))
-    mobilium_client.get_elements_count(AccessibilityByXpath("//XCUIElementTypeTextField[contains(@value" 
-                                                            "Email address')]"))
+    time.sleep(1)
+
+    mobilium_client.set_element_text(AccessibilityByXpath("//XCUIElementTypeTextField"
+                                                          "[contains(@label, 'Your company (optional)')]"), "xpath\n")
+    mobilium_client.set_element_text(AccessibilityById("email"), "homer123\n")
+    mobilium_client.get_element_value(AccessibilityById("email"))
+    mobilium_client.click_element(AccessibilityById("terms_checkbox"))
+
+    mobilium_client.get_elements_count(AccessibilityByXpath("//XCUIElementTypeTextField[contains(@label, 'name')]"))
+
+    mobilium_client.set_element_text(AccessibilityByXpath("//XCUIElementTypeTextField[contains(@label, 'name')]"),
+                                     text="element at index 1", index=1)
 
     mobilium_client.terminate_app()
     mobilium_client.uninstall_app()
