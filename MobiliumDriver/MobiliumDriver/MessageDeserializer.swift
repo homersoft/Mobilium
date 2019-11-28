@@ -28,6 +28,15 @@ class MessageDeserializer {
         return message as? IsElementVisibleRequest
     }
 
+    func isElementEnabledRequest(from data: [Data]) -> IsElementEnabledRequest? {
+        let message = extract(from: data) { oneOfMessage in
+            guard case .isElementEnabledRequest(let message) = oneOfMessage else { return nil }
+
+            return message
+        }
+        return message as? IsElementEnabledRequest
+    }
+
     func terminateAppRequest(from data: [Data]) -> TerminateAppRequest? {
         let message = extract(from: data) { oneOfMessage in
             guard case .terminateAppRequest(let message) = oneOfMessage else { return nil }

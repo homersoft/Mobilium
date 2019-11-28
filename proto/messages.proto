@@ -52,6 +52,16 @@ message IsElementVisibleResponse {
     bool is_visible = 2;
 }
 
+message IsElementEnabledRequest {
+    ElementIndicator element_indicator = 1;
+    uint32 index = 2;
+}
+
+message IsElementEnabledResponse {
+    ElementIndicator element_indicator = 1;
+    bool is_enabled = 2;
+}
+
 message ClickElementRequest {
     ElementIndicator element_indicator = 1;
     uint32 index = 2;
@@ -124,13 +134,15 @@ message MobiliumMessage {
         TerminateAppResponse terminate_app_response = 10;
         IsElementVisibleRequest is_element_visible_request = 11;
         IsElementVisibleResponse is_element_visible_response = 12;
-        ClickElementRequest click_element_request = 13;
-        ClickElementResponse click_element_response = 14;
-        GetValueOfElementRequest get_value_of_element_request = 15;
-        GetValueOfElementResponse get_value_of_element_response = 16;
-        SetValueOfElementRequest set_value_of_element_request = 17;
-        SetValueOfElementResponse set_value_of_element_response = 18;
-        GetElementsCountRequest get_elements_count_request = 19;
-        GetElementsCountResponse get_elements_count_response = 20;
+        IsElementEnabledRequest is_element_enabled_request = 13;
+        IsElementEnabledResponse is_element_enabled_response = 14;
+        ClickElementRequest click_element_request = 15;
+        ClickElementResponse click_element_response = 16;
+        GetValueOfElementRequest get_value_of_element_request = 17;
+        GetValueOfElementResponse get_value_of_element_response = 18;
+        SetValueOfElementRequest set_value_of_element_request = 19;
+        SetValueOfElementResponse set_value_of_element_response = 20;
+        GetElementsCountRequest get_elements_count_request = 21;
+        GetElementsCountResponse get_elements_count_response = 22;
     }
 }

@@ -63,6 +63,13 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
+    def is_element_enabled_request(accessibility: Accessibility, index: int) -> bytes:
+        message = IsElementEnabledRequest()
+        message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
+        message.index = index
+        return MessageDataFactory.__data_with(message)
+
+    @staticmethod
     def set_element_text_request(accessibility: Accessibility, text: str, index: int, clears: bool = True):
         message = SetValueOfElementRequest()
         message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
