@@ -123,7 +123,9 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     }
     
     private func checkElementInvisible(with accessibility: Accessibility, at index: Int, timeout: TimeInterval) {
-        let predicate = NSPredicate(format: "%K == %d", argumentArray: [\XCUIElement.exists, 0])
+        let predicate = NSPredicate { object, _ in
+             (object as? XCUIElement)?.exists == false
+        }
         let element = self.element(by: accessibility, at: index)
         
         expectation(for: predicate, evaluatedWith: element, handler: nil)
