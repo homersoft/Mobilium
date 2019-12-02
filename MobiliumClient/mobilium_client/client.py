@@ -10,8 +10,9 @@ from mobilium_proto_messages.accessibility import Accessibility, AccessibilityBy
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from mobilium_proto_messages.proto.messages_pb2 import StartDriverResponse, InstallAppResponse, LaunchAppResponse, \
-    UninstallAppResponse, TerminateAppResponse, IsElementVisibleResponse, SetValueOfElementResponse, \
-    GetValueOfElementResponse, ClickElementResponse, GetElementsCountResponse, IsElementEnabledResponse
+    UninstallAppResponse, TerminateAppResponse, IsElementVisibleResponse, IsElementInvisibleResponse, \
+    SetValueOfElementResponse, GetValueOfElementResponse, ClickElementResponse, GetElementsCountResponse, \
+    IsElementEnabledResponse
 
 from socketio import Client
 
@@ -65,6 +66,11 @@ class MobiliumClient:
             -> Optional[IsElementVisibleResponse]:
         request = MessageDataFactory.is_element_visible_request(accessibility, index=index, timeout=timeout)
         return self.__send(request, MessageDeserializer.is_element_visible_response)
+
+    def is_element_invisible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) \
+            -> Optional[IsElementInvisibleResponse]:
+        request = MessageDataFactory.is_element_invisible_request(accessibility, index=index, timeout=timeout)
+        return self.__send(request, MessageDeserializer.is_element_invisible_response)
 
     def is_element_enabled(self, accessibility: Accessibility, index: int = 0) -> Optional[IsElementEnabledResponse]:
         request = MessageDataFactory.is_element_enabled_request(accessibility, index=index)
@@ -129,6 +135,7 @@ def main():
     mobilium_client.launch_app()
 
     mobilium_client.is_element_visible(AccessibilityById("login_button"))
+    mobilium_client.is_element_invisible(AccessibilityById("login_button"))
     mobilium_client.is_element_enabled(AccessibilityById("login_button"))
     mobilium_client.click_element(AccessibilityByXpath("//XCUIElementTypeButton[contains(@label, 'tab_1')]"))
 
