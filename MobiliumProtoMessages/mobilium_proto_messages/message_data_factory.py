@@ -56,6 +56,14 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
+    def is_element_invisible_request(accessibility: Accessibility, index: int, timeout: float = 0) -> bytes:
+        message = IsElementInvisibleRequest()
+        message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
+        message.index = index
+        message.timeout = timeout
+        return MessageDataFactory.__data_with(message)
+
+    @staticmethod
     def get_element_value_request(accessibility: Accessibility, index: int) -> bytes:
         message = GetValueOfElementRequest()
         message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
