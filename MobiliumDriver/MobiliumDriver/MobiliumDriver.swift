@@ -46,6 +46,12 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
                 self?.checkElementVisible(with: accessibility, at: Int(message.index),
                                           timeout: TimeInterval(message.timeout))
             }
+            
+            if let message = self?.deserializer.isElementInvisibileRequest(from: data),
+                let accessibility = message.elementIndicator.toAccessibility() {
+                self?.checkElementInvisible(with: accessibility, at: Int(message.index),
+                                            timeout: TimeInterval(message.timeout))
+            }
 
             if let message = self?.deserializer.isElementEnabledRequest(from: data),
                 let accessibility = message.elementIndicator.toAccessibility() {
@@ -114,6 +120,19 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         let messageData = MessageDataFactory.isElementVisibleResponse(accessibility: accessibility,
                                                                       exists: elementExists)
         socket?.send(message: messageData)
+    }
+    
+    private func checkElementInvisible(with accessibility: Accessibility, at index: Int, timeout: TimeInterval) {
+        let predicate = NSPredicate(format: "%K == %d", argumentArray: [\XCUIElement.exists, 0])
+        let element = self.element(by: accessibility, at: index)
+        
+        expectation(for: predicate, evaluatedWith: element, handler: nil)
+        waitForExpectations(timeout: timeout) { [weak self] error in
+            let exists = error == nil ? false : true
+            let messageData = MessageDataFactory.isElementInvisibleResponse(accessibility: accessibility,
+                                                                            exists: exists)
+            self?.socket?.send(message: messageData)
+        }
     }
 
     private func checkElementEnabled(with accessibility: Accessibility, at index: Int) {

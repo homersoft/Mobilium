@@ -30,6 +30,15 @@ class MessageDataFactory {
             populator.message = .isElementVisibleResponse(response)
         })
     }
+    
+    static func isElementInvisibleResponse(accessibility: Accessibility, exists: Bool) -> Data {
+        return dataWith(populator: { populator in
+            var response = IsElementInvisibleResponse()
+            response.isInvisible = !exists
+            response.elementIndicator = accessibility.toElementIndicator()
+            populator.message = .isElementInvisibleResponse(response)
+        })
+    }
 
     static func isElementEnabledResponse(accessibility: Accessibility, enabled: Bool) -> Data {
         return dataWith(populator: { populator in
