@@ -135,7 +135,7 @@ def main():
     mobilium_client.launch_app()
 
     mobilium_client.is_element_visible(AccessibilityById("login_button"))
-    mobilium_client.is_element_invisible(AccessibilityById("login_button"))
+    mobilium_client.is_element_invisible(AccessibilityById("unknown_button"))
     mobilium_client.is_element_enabled(AccessibilityById("login_button"))
     mobilium_client.click_element(AccessibilityByXpath("//XCUIElementTypeButton[contains(@label, 'tab_1')]"))
 
