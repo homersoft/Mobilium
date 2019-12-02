@@ -127,9 +127,9 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
              (object as? XCUIElement)?.exists == false
         }
         let element = self.element(by: accessibility, at: index)
-        let exp = expectation(for: predicate, evaluatedWith: element, handler: nil)
+        let elementNotExistExpectation = expectation(for: predicate, evaluatedWith: element, handler: nil)
         
-        wait(for: [exp], timeout: timeout)
+        wait(for: [elementNotExistExpectation], timeout: timeout)
         
         let elementExists = element?.exists ?? false
         let messageData = MessageDataFactory.isElementInvisibleResponse(accessibility: accessibility,
