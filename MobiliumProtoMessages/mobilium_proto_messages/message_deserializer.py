@@ -41,6 +41,10 @@ class MessageDeserializer:
         return MessageDeserializer.__message(data, IsElementVisibleResponse)
 
     @staticmethod
+    def is_element_invisible_response(data: bytes) -> Optional[IsElementInvisibleResponse]:
+        return MessageDeserializer.__message(data, IsElementInvisibleResponse)
+
+    @staticmethod
     def is_element_enabled_response(data: bytes) -> Optional[IsElementEnabledResponse]:
         return MessageDeserializer.__message(data, IsElementEnabledResponse)
 
