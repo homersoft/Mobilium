@@ -127,14 +127,14 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
              (object as? XCUIElement)?.exists == false
         }
         let element = self.element(by: accessibility, at: index)
+        let exp = expectation(for: predicate, evaluatedWith: element, handler: nil)
         
-        expectation(for: predicate, evaluatedWith: element, handler: nil)
-        waitForExpectations(timeout: timeout) { [weak self] error in
-            let exists = error == nil ? false : true
-            let messageData = MessageDataFactory.isElementInvisibleResponse(accessibility: accessibility,
-                                                                            exists: exists)
-            self?.socket?.send(message: messageData)
-        }
+        wait(for: [exp], timeout: timeout)
+        
+        let elementExists = element?.exists ?? false
+        let messageData = MessageDataFactory.isElementInvisibleResponse(accessibility: accessibility,
+                                                                        exists: elementExists)
+        socket?.send(message: messageData)
     }
 
     private func checkElementEnabled(with accessibility: Accessibility, at index: Int) {
