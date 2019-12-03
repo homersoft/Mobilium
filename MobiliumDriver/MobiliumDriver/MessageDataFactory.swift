@@ -40,10 +40,14 @@ class MessageDataFactory {
         })
     }
 
-    static func isElementEnabledResponse(accessibility: Accessibility, enabled: Bool) -> Data {
+    static func isElementEnabledResponse(accessibility: Accessibility, enabled: Bool?) -> Data {
         return dataWith(populator: { populator in
             var response = IsElementEnabledResponse()
-            response.isEnabled = enabled
+            if let enabled = enabled {
+                response.status = .isEnabled(enabled)
+            } else {
+                response.status = .failure(.elementNotExists)
+            }
             response.elementIndicator = accessibility.toElementIndicator()
             populator.message = .isElementEnabledResponse(response)
         })

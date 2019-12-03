@@ -70,7 +70,10 @@ message IsElementEnabledRequest {
 
 message IsElementEnabledResponse {
     ElementIndicator element_indicator = 1;
-    bool is_enabled = 2;
+    oneof status {
+        bool is_enabled = 2;
+        ElementError failure = 3;
+    }
 }
 
 message ClickElementRequest {
