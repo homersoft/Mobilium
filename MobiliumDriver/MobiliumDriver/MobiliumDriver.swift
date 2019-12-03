@@ -139,7 +139,11 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
 
     private func checkElementEnabled(with accessibility: Accessibility, at index: Int) {
         let element = self.element(by: accessibility, at: index)
-        let elementEnabled = element?.isEnabled ?? false
+        let elementExists = element?.exists ?? false
+        var elementEnabled: Bool?
+        if elementExists {
+            elementEnabled = element?.isEnabled
+        }
 
         let messageData = MessageDataFactory.isElementEnabledResponse(accessibility: accessibility,
                                                                       enabled: elementEnabled)
