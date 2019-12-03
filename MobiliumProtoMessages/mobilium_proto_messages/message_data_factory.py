@@ -78,7 +78,7 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_element_text_request(accessibility: Accessibility, text: str, index: int, clears: bool = True):
+    def set_element_text_request(accessibility: Accessibility, text: str, index: int, clears: bool = True) -> bytes:
         message = SetValueOfElementRequest()
         message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
         message.index = index
@@ -87,7 +87,7 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_position_request(accessibility: Accessibility, index: int, position: float):
+    def set_position_request(accessibility: Accessibility, index: int, position: float) -> bytes:
         message = SetValueOfElementRequest()
         message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
         message.index = index
@@ -95,7 +95,7 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
-    def set_selection_request(accessibility: Accessibility, index: int, selection: bool):
+    def set_selection_request(accessibility: Accessibility, index: int, selection: bool) -> bytes:
         message = SetValueOfElementRequest()
         message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
         message.index = index
