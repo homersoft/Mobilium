@@ -81,6 +81,11 @@ class MobiliumClient:
         request = MessageDataFactory.set_element_text_request(accessibility, text=text, index=index, clears=clears)
         return self.__send(request, MessageDeserializer.set_value_of_element_response)
 
+    def set_slider_position(self, accessibility: Accessibility, position: float,
+                            index: int = 0) -> Optional[SetValueOfElementResponse]:
+        request = MessageDataFactory.set_position_request(accessibility, index=index, position=position)
+        return self.__send(request, MessageDeserializer.set_value_of_element_response)
+
     def get_element_value(self, accessibility: Accessibility, index: int = 0) -> Optional[GetValueOfElementResponse]:
         request = MessageDataFactory.get_element_value_request(accessibility, index=index)
         return self.__send(request, MessageDeserializer.get_value_of_element_response)
