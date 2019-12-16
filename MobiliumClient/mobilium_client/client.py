@@ -113,12 +113,19 @@ class MobiliumClient:
         if reason_attribute is None:
             return
         reason = getattr(failure, reason_attribute)
-        self.__handle_failure_reason(reason)
+        element_indicator = self.__element_indicator(response)
+        self.__handle_failure_reason(reason, element_indicator=element_indicator)
 
     @staticmethod
-    def __handle_failure_reason(reason: Optional[FailureReason]):
+    def __handle_failure_reason(reason: Optional[FailureReason], element_indicator: Optional[str]):
         if isinstance(reason, ElementNotExists):
-            raise ElementNotFoundException
+            raise ElementNotFoundException(element_indicator)
+
+    @staticmethod
+    def __element_indicator(response: MessageResponse) -> Optional[str]:
+        if not hasattr(response, 'element_indicator'):
+            return None
+        return getattr(response.element_indicator, response.element_indicator.WhichOneof('type'))
 
     def __is_connected(self) -> bool:
         return self.__client_namespace.is_connected

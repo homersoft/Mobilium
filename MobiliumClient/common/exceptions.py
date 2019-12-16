@@ -1,7 +1,7 @@
 from typing import Optional
 
 
-class TimeoutException(Exception):
+class MessageException(Exception):
 
     def __init__(self, message: Optional[str] = None):
         self.message = message
@@ -11,5 +11,9 @@ class TimeoutException(Exception):
         return self.message
 
 
-class ElementNotFoundException(Exception):
+class TimeoutException(MessageException):
+    pass
+
+
+class ElementNotFoundException(MessageException):
     pass
