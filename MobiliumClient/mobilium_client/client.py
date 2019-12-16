@@ -4,20 +4,18 @@ import time
 from typing import Optional, Callable, TypeVar
 from common.named_partial import named_partial
 from common.wait import wait_until_true, wait_until_value
+from common.exceptions import ElementNotFoundException
 from mobilium_client import config
 from mobilium_client.client_namespace import MobiliumClientNamespace
 from mobilium_proto_messages.accessibility import Accessibility, AccessibilityById, AccessibilityByXpath
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
-from mobilium_proto_messages.proto.messages_pb2 import StartDriverResponse, InstallAppResponse, LaunchAppResponse, \
-    UninstallAppResponse, TerminateAppResponse, IsElementVisibleResponse, IsElementInvisibleResponse, \
-    SetValueOfElementResponse, GetValueOfElementResponse, ClickElementResponse, GetElementsCountResponse, \
-    IsElementEnabledResponse
-
+from mobilium_proto_messages.proto.messages_pb2 import ElementNotExists
 from socketio import Client
 
 
 MessageResponse = TypeVar('MessageResponse')
+FailureReason = TypeVar('FailureReason')
 
 
 class MobiliumClient:
@@ -42,69 +40,85 @@ class MobiliumClient:
         self.__client.disconnect()
         self.__wait_until_disconnected()
 
-    def start_driver(self) -> Optional[StartDriverResponse]:
+    def start_driver(self):
         request = MessageDataFactory.start_driver_request(self.__device_udid)
-        return self.__send(request, MessageDeserializer.start_driver_response)
+        self.__send(request, MessageDeserializer.start_driver_response)
 
-    def install_app(self) -> Optional[InstallAppResponse]:
+    def install_app(self):
         request = MessageDataFactory.install_app_request(self.__device_udid, config.APP_FILE_PATH)
-        return self.__send(request, MessageDeserializer.install_app_response)
+        self.__send(request, MessageDeserializer.install_app_response)
 
-    def launch_app(self) -> Optional[LaunchAppResponse]:
+    def launch_app(self):
         request = MessageDataFactory.launch_app_request(config.APP_BUNDLE_ID)
-        return self.__send(request, MessageDeserializer.launch_app_response)
+        self.__send(request, MessageDeserializer.launch_app_response)
 
-    def uninstall_app(self) -> Optional[UninstallAppResponse]:
+    def uninstall_app(self):
         request = MessageDataFactory.uninstall_app_request(self.__device_udid, config.APP_BUNDLE_ID)
-        return self.__send(request, MessageDeserializer.uninstall_app_response)
+        self.__send(request, MessageDeserializer.uninstall_app_response)
 
-    def terminate_app(self) -> Optional[TerminateAppResponse]:
+    def terminate_app(self):
         request = MessageDataFactory.terminate_app_request()
-        return self.__send(request, MessageDeserializer.terminate_app_response)
+        self.__send(request, MessageDeserializer.terminate_app_response)
 
-    def is_element_visible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) \
-            -> Optional[IsElementVisibleResponse]:
+    def is_element_visible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) -> bool:
         request = MessageDataFactory.is_element_visible_request(accessibility, index=index, timeout=timeout)
-        return self.__send(request, MessageDeserializer.is_element_visible_response)
+        response = self.__send(request, MessageDeserializer.is_element_visible_response)
+        return response.is_visible
 
-    def is_element_invisible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) \
-            -> Optional[IsElementInvisibleResponse]:
+    def is_element_invisible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) -> bool:
         request = MessageDataFactory.is_element_invisible_request(accessibility, index=index, timeout=timeout)
-        return self.__send(request, MessageDeserializer.is_element_invisible_response)
+        response = self.__send(request, MessageDeserializer.is_element_invisible_response)
+        return response.is_invisible
 
-    def is_element_enabled(self, accessibility: Accessibility, index: int = 0) -> Optional[IsElementEnabledResponse]:
+    def is_element_enabled(self, accessibility: Accessibility, index: int = 0) -> bool:
         request = MessageDataFactory.is_element_enabled_request(accessibility, index=index)
-        return self.__send(request, MessageDeserializer.is_element_enabled_response)
+        response = self.__send(request, MessageDeserializer.is_element_enabled_response)
+        return response.is_enabled
 
-    def set_element_text(self, accessibility: Accessibility, text: str, index: int = 0,
-                         clears: bool = True) -> Optional[SetValueOfElementResponse]:
+    def set_element_text(self, accessibility: Accessibility, text: str, index: int = 0, clears: bool = True):
         request = MessageDataFactory.set_element_text_request(accessibility, text=text, index=index, clears=clears)
-        return self.__send(request, MessageDeserializer.set_value_of_element_response)
+        self.__send(request, MessageDeserializer.set_value_of_element_response)
 
-    def set_slider_position(self, accessibility: Accessibility, position: float,
-                            index: int = 0) -> Optional[SetValueOfElementResponse]:
+    def set_slider_position(self, accessibility: Accessibility, position: float, index: int = 0):
         request = MessageDataFactory.set_position_request(accessibility, index=index, position=position)
-        return self.__send(request, MessageDeserializer.set_value_of_element_response)
+        self.__send(request, MessageDeserializer.set_value_of_element_response)
 
-    def get_element_value(self, accessibility: Accessibility, index: int = 0) -> Optional[GetValueOfElementResponse]:
+    def get_element_value(self, accessibility: Accessibility, index: int = 0) -> str:
         request = MessageDataFactory.get_element_value_request(accessibility, index=index)
-        return self.__send(request, MessageDeserializer.get_value_of_element_response)
+        response = self.__send(request, MessageDeserializer.get_value_of_element_response)
+        return response.value
 
-    def click_element(self, accessibility: Accessibility, index: int = 0) -> Optional[ClickElementResponse]:
+    def click_element(self, accessibility: Accessibility, index: int = 0):
         request = MessageDataFactory.click_element_request(accessibility, index=index)
-        return self.__send(request, MessageDeserializer.click_element_response)
+        self.__send(request, MessageDeserializer.click_element_response)
 
-    def get_elements_count(self, accessibility: Accessibility) \
-            -> Optional[GetElementsCountResponse]:
+    def get_elements_count(self, accessibility: Accessibility) -> int:
         request = MessageDataFactory.get_elements_count_request(accessibility)
-        return self.__send(request, MessageDeserializer.get_elements_count_response)
+        response = self.__send(request, MessageDeserializer.get_elements_count_response)
+        return response.count
 
     def __send(self, request: bytes, deserialize: Callable[[bytes], Optional[MessageResponse]]) -> MessageResponse:
         print("Send message, waiting for response {0}\n{1}".format(deserialize.__name__, request))
         self.__client.send(request, namespace=self.__namespace)
         response = self.__wait_for_first_matching_response(deserialize)
         print("Did receive response {0}\n{1}".format(deserialize.__name__, response))
+        self.__handle_failure(response)
         return response
+
+    def __handle_failure(self, response: Optional[MessageResponse]):
+        if response is None or not hasattr(response, 'failure'):
+            return
+        failure = response.failure
+        reason_attribute = failure.WhichOneof('reason')
+        if reason_attribute is None:
+            return
+        reason = getattr(failure, reason_attribute)
+        self.__handle_failure_reason(reason)
+
+    @staticmethod
+    def __handle_failure_reason(reason: Optional[FailureReason]):
+        if isinstance(reason, ElementNotExists):
+            raise ElementNotFoundException
 
     def __is_connected(self) -> bool:
         return self.__client_namespace.is_connected
