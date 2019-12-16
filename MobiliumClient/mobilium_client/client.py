@@ -111,7 +111,7 @@ class MobiliumClient:
         failure = response.failure
         reason_attribute = failure.WhichOneof('reason')
         if reason_attribute is None:
-            return
+            raise Exception("Response with failure without reason")
         reason = getattr(failure, reason_attribute)
         element_indicator = self.__element_indicator(response)
         self.__handle_failure_reason(reason, element_indicator=element_indicator)
@@ -120,6 +120,7 @@ class MobiliumClient:
     def __handle_failure_reason(reason: Optional[FailureReason], element_indicator: Optional[str]):
         if isinstance(reason, ElementNotExists):
             raise ElementNotFoundException(element_indicator)
+        raise Exception("Not known failure reason from response")
 
     @staticmethod
     def __element_indicator(response: MessageResponse) -> Optional[str]:
