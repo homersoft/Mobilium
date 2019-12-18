@@ -33,5 +33,4 @@ class StartDriverProcessor(ShellMessageProcessor):
     def project_path(self):
         if path.exists(self.INTERNAL_PROJECT_PATH):
             return self.INTERNAL_PROJECT_PATH
-        else:
-            return self.EXTERNAL_PROJECT_PATH
+        return self.EXTERNAL_PROJECT_PATH
