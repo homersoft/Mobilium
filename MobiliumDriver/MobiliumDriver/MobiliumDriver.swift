@@ -169,8 +169,9 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             socket?.send(message: messageData)
             return
         }
-
-        let value = element?.value as? String ?? element?.label
+        
+        let elementValue = element?.value as? String ?? ""
+        let value = elementValue.isEmpty ? element?.label : elementValue
         let messageData = MessageDataFactory.getValueOfElementResponse(accessibility: accessibility,
                                                                        exists: true, value: value)
         socket?.send(message: messageData)
