@@ -44,16 +44,22 @@ class MobiliumClient:
         request = MessageDataFactory.start_driver_request(self.__device_udid)
         self.__send(request, MessageDeserializer.start_driver_response)
 
-    def install_app(self):
-        request = MessageDataFactory.install_app_request(self.__device_udid, config.APP_FILE_PATH)
+    def install_app(self, file_path: Optional[str] = None):
+        if file_path is None:
+            file_path = config.APP_FILE_PATH
+        request = MessageDataFactory.install_app_request(self.__device_udid, file_path)
         self.__send(request, MessageDeserializer.install_app_response)
 
-    def launch_app(self):
-        request = MessageDataFactory.launch_app_request(config.APP_BUNDLE_ID)
+    def launch_app(self, bundle_id: Optional[str] = None):
+        if bundle_id is None:
+            bundle_id = config.APP_BUNDLE_ID
+        request = MessageDataFactory.launch_app_request(bundle_id)
         self.__send(request, MessageDeserializer.launch_app_response)
 
-    def uninstall_app(self):
-        request = MessageDataFactory.uninstall_app_request(self.__device_udid, config.APP_BUNDLE_ID)
+    def uninstall_app(self, bundle_id: Optional[str] = None):
+        if bundle_id is None:
+            bundle_id = config.APP_BUNDLE_ID
+        request = MessageDataFactory.uninstall_app_request(self.__device_udid, bundle_id)
         self.__send(request, MessageDeserializer.uninstall_app_response)
 
     def terminate_app(self):

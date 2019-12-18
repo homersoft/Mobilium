@@ -1,3 +1,4 @@
+from os import path
 from typing import Optional
 
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
@@ -9,7 +10,8 @@ from mobilium_server.message_processors.shell_message_processor import ShellMess
 
 class StartDriverProcessor(ShellMessageProcessor):
 
-    PROJECT = '../MobiliumDriver/MobiliumDriver.xcodeproj'
+    INTERNAL_PROJECT_PATH = '../MobiliumDriver/MobiliumDriver.xcodeproj'
+    EXTERNAL_PROJECT_PATH = '../Mobilium/MobiliumDriver/MobiliumDriver.xcodeproj'
     SCHEME = 'MobiliumDriver'
 
     def __init__(self, shell_executor: ShellExecutor, message_sender: MessageSender, address: str, port: int,
@@ -25,5 +27,11 @@ class StartDriverProcessor(ShellMessageProcessor):
 
     def start_driver(self, udid: str):
         command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test' \
-            .format(StartDriverProcessor.PROJECT, StartDriverProcessor.SCHEME, udid, self.address, self.port)
+            .format(self.project_path(), StartDriverProcessor.SCHEME, udid, self.address, self.port)
         self.shell_executor.execute(command, track_output=True, waits_for_termination=False)
+
+    def project_path(self):
+        if path.exists(self.INTERNAL_PROJECT_PATH):
+            return self.INTERNAL_PROJECT_PATH
+        else:
+            return self.EXTERNAL_PROJECT_PATH
