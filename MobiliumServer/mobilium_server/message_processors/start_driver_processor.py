@@ -10,7 +10,7 @@ from mobilium_server.message_processors.shell_message_processor import ShellMess
 
 class StartDriverProcessor(ShellMessageProcessor):
 
-    INTERNAL_PROJECT_PATH = 'MobiliumDriver/MobiliumDriver.xcodeproj'
+    INTERNAL_PROJECT_PATH = '../MobiliumDriver/MobiliumDriver.xcodeproj'
     EXTERNAL_PROJECT_PATH = 'Mobilium/MobiliumDriver/MobiliumDriver.xcodeproj'
     SCHEME = 'MobiliumDriver'
 
