@@ -1,16 +1,11 @@
 from setuptools import setup, find_packages
-from setuptools.command.build_py import build_py
 import subprocess
 
-
-class GenerateProtoMessagesCommand(build_py):
-
-    def run(self):
-        build_py.run(self)
-        command = "protoc --python_out=./MobiliumProtoMessages/mobilium_proto_messages/proto " \
-                  "--proto_path=./proto messages.proto"
-        subprocess.check_call([command], shell=True)
-
+generate_messages_command = "protoc --python_out=./MobiliumProtoMessages/mobilium_proto_messages/proto " \
+                            "--proto_path=./proto messages.proto"
+install_requirements_command = 'pip install -r requirements.txt'
+subprocess.check_call([generate_messages_command], shell=True)
+subprocess.check_call([install_requirements_command], shell=True)
 
 setup(
     name='mobilium',
@@ -19,6 +14,7 @@ setup(
     url='https://github.com/homersoft/Mobilium',
     license='MIT',
     packages=find_packages(),
+    include_package_data=True,
     setup_requires=[
         'pytest-runner'
     ],
@@ -26,9 +22,10 @@ setup(
         'pytest'
     ],
     install_requires=[
-        'protobuf == 3.9.0'
-    ],
-    cmdclass={
-        'build_py': GenerateProtoMessagesCommand
-    }
+        'tornado == 6.0.3',
+        'protobuf == 3.9.0',
+        'mobilium-proto-messages == 0.0.1',
+        'mobilium-client == 0.0.1',
+        'mobilium-server == 0.0.1'
+    ]
 )
