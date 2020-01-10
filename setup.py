@@ -1,12 +1,21 @@
 from setuptools import setup, find_packages
 import subprocess
 
-generate_messages_command = "protoc --python_out=./MobiliumProtoMessages/mobilium_proto_messages/proto " \
-                            "--proto_path=./proto messages.proto"
-install_requirements_command = 'pip install -r requirements.txt'
-subprocess.check_call([generate_messages_command], shell=True)
-subprocess.check_call([install_requirements_command], shell=True)
 
+def generate_messages():
+    generate_messages_command = "protoc --python_out=./MobiliumProtoMessages/mobilium_proto_messages/proto " \
+                                "--proto_path=./proto messages.proto"
+    subprocess.check_call([generate_messages_command], shell=True)
+
+
+def install_subpackages():
+    subpackages = ['MobiliumProtoMessages', 'MobiliumClient', 'MobiliumServer']
+    for subpackage in subpackages:
+        subprocess.check_call(['pip install ./{}'.format(subpackage)], shell=True)
+
+
+generate_messages()
+install_subpackages()
 setup(
     name='mobilium',
     version='0.0.1',
