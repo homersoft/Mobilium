@@ -1,2 +1,5 @@
 tornado==6.0.3
+./MobiliumProtoMessages
+./MobiliumClient
+./MobiliumServer
 setuptools>=30.0.0

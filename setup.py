@@ -2,10 +2,11 @@ from setuptools import setup, find_packages
 import subprocess
 
 
-def generate_messages():
-    generate_messages_command = "protoc --python_out=./MobiliumProtoMessages/mobilium_proto_messages/proto " \
-                                "--proto_path=./proto messages.proto"
-    subprocess.check_call([generate_messages_command], shell=True)
+def carthage_update():
+    carthage_update_command = "cd MobiliumDriver ;" \
+                              "carthage update --platform iOS --cache-builds ;" \
+                              "cd .."
+    subprocess.call([carthage_update_command], shell=True)
 
 
 def install_subpackages():
@@ -14,7 +15,7 @@ def install_subpackages():
         subprocess.check_call(['pip install ./{}'.format(subpackage)], shell=True)
 
 
-generate_messages()
+carthage_update()
 install_subpackages()
 setup(
     name='mobilium',
@@ -23,7 +24,6 @@ setup(
     url='https://github.com/homersoft/Mobilium',
     license='MIT',
     packages=find_packages(),
-    include_package_data=True,
     setup_requires=[
         'pytest-runner'
     ],
