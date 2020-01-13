@@ -331,8 +331,4 @@ iOSInjectionProject/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 
-#ProtoBuffers
-/*/*/proto/*
-!/*/*/proto/__init__.py
-
 # End of https://www.gitignore.io/api/osx,swift,xcode,python,pycharm+all
