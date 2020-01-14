@@ -42,7 +42,7 @@ class MobiliumClient:
 
     def start_driver(self):
         request = MessageDataFactory.start_driver_request(self.__device_udid)
-        self.__send(request, MessageDeserializer.start_driver_response)
+        self.__send(request, MessageDeserializer.start_driver_response, timeout=300)
 
     def install_app(self, file_path: Optional[str] = None):
         if file_path is None:
@@ -103,10 +103,11 @@ class MobiliumClient:
         response = self.__send(request, MessageDeserializer.get_elements_count_response)
         return response.count
 
-    def __send(self, request: bytes, deserialize: Callable[[bytes], Optional[MessageResponse]]) -> MessageResponse:
+    def __send(self, request: bytes, deserialize: Callable[[bytes], Optional[MessageResponse]], timeout: int = 30)\
+            -> MessageResponse:
         print("Send message, waiting for response {0}\n{1}".format(deserialize.__name__, request))
         self.__client.send(request, namespace=self.__namespace)
-        response = self.__wait_for_first_matching_response(deserialize)
+        response = self.__wait_for_first_matching_response(deserialize, timeout=timeout)
         print("Did receive response {0}\n{1}".format(deserialize.__name__, response))
         self.__handle_failure(response)
         return response
@@ -140,10 +141,10 @@ class MobiliumClient:
     def __is_disconnected(self) -> bool:
         return not self.__is_connected()
 
-    def __wait_for_first_matching_response(self, deserialize: Callable[[bytes], Optional[MessageResponse]]) \
-            -> MessageResponse:
+    def __wait_for_first_matching_response(self, deserialize: Callable[[bytes], Optional[MessageResponse]],
+                                           timeout: int) -> MessageResponse:
         partial = named_partial(self.__client_namespace.read_first_matching_response, deserialize)
-        response = wait_until_value(partial)
+        response = wait_until_value(partial, timeout=timeout)
         self.__client_namespace.reset_responses_buffor()
         return response
 

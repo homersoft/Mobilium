@@ -2,20 +2,12 @@ from setuptools import setup, find_packages
 import subprocess
 
 
-def carthage_update():
-    carthage_update_command = "cd MobiliumDriver ;" \
-                              "carthage update --platform iOS --cache-builds ;" \
-                              "cd .."
-    subprocess.call([carthage_update_command], shell=True)
-
-
 def install_subpackages():
     subpackages = ['MobiliumProtoMessages', 'MobiliumClient', 'MobiliumServer']
     for subpackage in subpackages:
         subprocess.check_call(['pip install ./{}'.format(subpackage)], shell=True)
 
 
-carthage_update()
 install_subpackages()
 setup(
     name='mobilium',

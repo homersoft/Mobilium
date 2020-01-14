@@ -10,8 +10,9 @@ from mobilium_server.message_processors.shell_message_processor import ShellMess
 
 class StartDriverProcessor(ShellMessageProcessor):
 
-    INTERNAL_PROJECT_PATH = '../MobiliumDriver/MobiliumDriver.xcodeproj'
-    EXTERNAL_PROJECT_PATH = 'Mobilium/MobiliumDriver/MobiliumDriver.xcodeproj'
+    INTERNAL_PROJECT_DIR = '../MobiliumDriver/'
+    EXTERNAL_PROJECT_DIR = 'mobilium/MobiliumDriver/'
+    PROJECT_NAME = 'MobiliumDriver.xcodeproj'
     SCHEME = 'MobiliumDriver'
 
     def __init__(self, shell_executor: ShellExecutor, message_sender: MessageSender, address: str, port: int,
@@ -26,11 +27,13 @@ class StartDriverProcessor(ShellMessageProcessor):
             self.start_driver(message.udid)
 
     def start_driver(self, udid: str):
-        command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test' \
-            .format(self.project_path(), StartDriverProcessor.SCHEME, udid, self.address, self.port)
-        self.shell_executor.execute(command, track_output=True, waits_for_termination=False)
+        project_dir = self.project_dir()
+        update_carthage_command = 'cd {} ; carthage update --platform iOS --cache-builds ; '.format(project_dir)
+        build_command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test'\
+            .format(self.PROJECT_NAME, StartDriverProcessor.SCHEME, udid, self.address, self.port)
+        self.shell_executor.execute(update_carthage_command + build_command, track_output=True, waits_for_termination=False)
 
-    def project_path(self):
-        if path.exists(self.INTERNAL_PROJECT_PATH):
-            return self.INTERNAL_PROJECT_PATH
-        return self.EXTERNAL_PROJECT_PATH
+    def project_dir(self):
+        if path.exists(self.INTERNAL_PROJECT_DIR):
+            return self.INTERNAL_PROJECT_DIR
+        return self.EXTERNAL_PROJECT_DIR
