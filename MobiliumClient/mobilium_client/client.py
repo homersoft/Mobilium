@@ -40,9 +40,14 @@ class MobiliumClient:
         self.__client.disconnect()
         self.__wait_until_disconnected()
 
+    def prepare_driver(self):
+        request = MessageDataFactory.prepare_driver_request()
+        self.__send(request, MessageDeserializer.prepare_driver_response, timeout=300)
+        print('after preparations')
+
     def start_driver(self):
         request = MessageDataFactory.start_driver_request(self.__device_udid)
-        self.__send(request, MessageDeserializer.start_driver_response, timeout=300)
+        self.__send(request, MessageDeserializer.start_driver_response)
 
     def install_app(self, file_path: Optional[str] = None):
         if file_path is None:
@@ -121,6 +126,7 @@ class MobiliumClient:
             return
         reason = getattr(failure, reason_attribute)
         element_indicator = self.__element_indicator(response)
+        print('element indicator {}'.format(element_indicator))
         self.__handle_failure_reason(reason, element_indicator=element_indicator)
 
     @staticmethod

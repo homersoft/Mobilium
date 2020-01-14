@@ -9,6 +9,14 @@ class MessageDeserializer:
     T = TypeVar("T", bound=Message)  # pylint: disable=C0103
 
     @staticmethod
+    def prepare_driver_request(data: bytes) -> Optional[PrepareDriverRequest]:
+        return MessageDeserializer.__message(data, PrepareDriverRequest)
+
+    @staticmethod
+    def prepare_driver_response(data: bytes) -> Optional[PrepareDriverResponse]:
+        return MessageDeserializer.__message(data, PrepareDriverResponse)
+
+    @staticmethod
     def start_driver_request(data: bytes) -> Optional[StartDriverRequest]:
         return MessageDeserializer.__message(data, StartDriverRequest)
 
