@@ -28,10 +28,12 @@ class StartDriverProcessor(ShellMessageProcessor):
 
     def start_driver(self, udid: str):
         project_dir = self.project_dir()
-        update_carthage_command = 'cd {} ; carthage update --platform iOS --cache-builds ; '.format(project_dir)
+        project_path = project_dir + self.PROJECT_NAME
+        update_carthage_command = 'cd {} ; carthage update --platform iOS --cache-builds'.format(project_dir)
+        self.shell_executor.execute(update_carthage_command, track_output=True)
         build_command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test'\
-            .format(self.PROJECT_NAME, StartDriverProcessor.SCHEME, udid, self.address, self.port)
-        self.shell_executor.execute(update_carthage_command + build_command, track_output=True, waits_for_termination=False)
+            .format(project_path, StartDriverProcessor.SCHEME, udid, self.address, self.port)
+        self.shell_executor.execute(build_command, track_output=True, waits_for_termination=False)
 
     def project_dir(self):
         if path.exists(self.INTERNAL_PROJECT_DIR):
