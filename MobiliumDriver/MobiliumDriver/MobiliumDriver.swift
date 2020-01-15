@@ -99,6 +99,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             }
             return false
         }
+        app.tap()
 
         Thread.sleep(forTimeInterval: 1.0)
 
