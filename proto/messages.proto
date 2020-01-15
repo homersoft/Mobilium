@@ -134,6 +134,9 @@ message GetElementsCountResponse {
     int64 count = 2;
 }
 
+message PrepareDriverRequest {}
+message PrepareDriverResponse {}
+
 message MobiliumMessage {
     oneof message {
         StartDriverRequest start_driver_request = 1;
@@ -160,5 +163,7 @@ message MobiliumMessage {
         SetValueOfElementResponse set_value_of_element_response = 22;
         GetElementsCountRequest get_elements_count_request = 23;
         GetElementsCountResponse get_elements_count_response = 24;
+        PrepareDriverRequest prepare_driver_request = 25;
+        PrepareDriverResponse prepare_driver_response = 26;
     }
 }

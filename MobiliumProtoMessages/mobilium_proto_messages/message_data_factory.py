@@ -9,6 +9,14 @@ from mobilium_proto_messages.proto.messages_pb2 import *
 class MessageDataFactory:
 
     @staticmethod
+    def prepare_driver_request() -> bytes:
+        return MessageDataFactory.__data_with(PrepareDriverRequest())
+
+    @staticmethod
+    def prepare_driver_response() -> bytes:
+        return MessageDataFactory.__data_with(PrepareDriverResponse())
+
+    @staticmethod
     def start_driver_request(udid: str) -> bytes:
         message = StartDriverRequest()
         message.udid = udid
