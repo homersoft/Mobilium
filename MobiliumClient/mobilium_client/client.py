@@ -43,7 +43,6 @@ class MobiliumClient:
     def prepare_driver(self):
         request = MessageDataFactory.prepare_driver_request()
         self.__send(request, MessageDeserializer.prepare_driver_response, timeout=300)
-        print('after preparations')
 
     def start_driver(self):
         request = MessageDataFactory.start_driver_request(self.__device_udid)
