@@ -1,9 +1,9 @@
 from os import path
 
+from mobilium_server.message_processors.shell_message_processor import ShellMessageProcessor
 from mobilium_server.utils.mobilium_driver_localization import get_project_dir, CARTHAGE_DIR
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
-from mobilium_server.message_processors.shell_message_processor import ShellMessageProcessor
 
 
 class PrepareDriverProcessor(ShellMessageProcessor):

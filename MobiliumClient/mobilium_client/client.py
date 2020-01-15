@@ -126,7 +126,6 @@ class MobiliumClient:
             return
         reason = getattr(failure, reason_attribute)
         element_indicator = self.__element_indicator(response)
-        print('element indicator {}'.format(element_indicator))
         self.__handle_failure_reason(reason, element_indicator=element_indicator)
 
     @staticmethod
