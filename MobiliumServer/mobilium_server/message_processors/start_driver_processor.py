@@ -19,10 +19,10 @@ class StartDriverProcessor(ShellMessageProcessor):
     async def _process(self, data: bytes):
         message = MessageDeserializer.start_driver_request(data)
         if message is not None:
-            self.start_driver(message.udid)
+            await self.start_driver(message.udid)
 
-    def start_driver(self, udid: str):
+    async def start_driver(self, udid: str):
         project_dir = get_project_dir()
         build_command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test'\
             .format(project_dir + PROJECT_NAME, SCHEME, udid, self.address, self.port)
-        self.shell_executor.execute(build_command, track_output=True, waits_for_termination=False)
+        await self.shell_executor.execute(build_command, track_output=True, waits_for_termination=False)
