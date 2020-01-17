@@ -14,7 +14,7 @@ setup(name='mobilium-server',
       ],
       install_requires=[
           'python-socketio == 4.0.3',
-          'aiohttp == 3.5.4',
+          'aiohttp == 3.6.2',
           'websockets == 7.0',
           'mobilium-proto-messages == 0.0.1'
       ],
