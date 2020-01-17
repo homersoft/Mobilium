@@ -1,17 +1,17 @@
-from subprocess import Popen, DEVNULL, PIPE, STDOUT
-import threading
+from typing import Optional
+from subprocess import DEVNULL, STDOUT
+from asyncio.subprocess import Process
 import asyncio
 
 
 class ShellExecutor:
 
     def __init__(self):
-        self.process = None
-        self.thread = None
+        self.process: Optional[Process] = None
 
     async def execute(self, command: str, track_output: bool = False, waits_for_termination: bool = True):
         print('Run: %s', command)
-        if self.process is not None and self.process.poll() is None:
+        if self.process is not None and self.process.returncode is None:
             print("Killing already running process")
             self.process.kill()
         self.process = await asyncio.create_subprocess_shell(
