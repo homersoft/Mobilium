@@ -44,9 +44,9 @@ class MobiliumClient:
         request = MessageDataFactory.prepare_driver_request()
         self.__send(request, MessageDeserializer.prepare_driver_response, timeout=300)
 
-    def start_driver(self):
+    def start_driver(self, timeout: int = 180):
         request = MessageDataFactory.start_driver_request(self.__device_udid)
-        self.__send(request, MessageDeserializer.start_driver_response)
+        self.__send(request, MessageDeserializer.start_driver_response, timeout=timeout)
 
     def install_app(self, file_path: Optional[str] = None):
         if file_path is None:
