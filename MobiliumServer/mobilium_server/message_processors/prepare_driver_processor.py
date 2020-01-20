@@ -17,7 +17,7 @@ class PrepareDriverProcessor(ShellMessageProcessor):
         project_dir = get_project_dir()
         if not path.exists(project_dir + CARTHAGE_DIR):
             update_carthage_command = 'cd {} ; carthage update --platform iOS --cache-builds ; cd -'.format(project_dir)
-            self.shell_executor.execute(update_carthage_command, track_output=True)
+            await self.shell_executor.execute(update_carthage_command, track_output=True)
 
         message = MessageDataFactory.prepare_driver_response()
         await self.message_sender.send(message)

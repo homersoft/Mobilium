@@ -168,6 +168,7 @@ def main():
 
     mobilium_client = MobiliumClient()
     mobilium_client.connect(device_udid=arguments.udid, address=arguments.address, port=arguments.port)
+    mobilium_client.prepare_driver()
     mobilium_client.start_driver()
     mobilium_client.install_app()
     mobilium_client.launch_app()
