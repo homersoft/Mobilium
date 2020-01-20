@@ -12,6 +12,6 @@ class InstallAppProcessor(ShellMessageProcessor):
 
     async def install_app(self, udid: str, file_path: str):
         command = 'ideviceinstaller -u {0} -i {1}'.format(udid, file_path)
-        self.shell_executor.execute(command)
+        await self.shell_executor.execute(command)
         message = MessageDataFactory.install_app_response()
         await self.message_sender.send(message)
