@@ -110,6 +110,7 @@ class MobiliumClient:
     def __send(self, request: bytes, deserialize: Callable[[bytes], Optional[MessageResponse]], timeout: int = 30)\
             -> MessageResponse:
         print("Send message, waiting for response {0}\n{1}".format(deserialize.__name__, request))
+        self.__wait_until_connected()
         self.__client.send(request, namespace=self.__namespace)
         response = self.__wait_for_first_matching_response(deserialize, timeout=timeout)
         print("Did receive response {0}\n{1}".format(deserialize.__name__, response))
