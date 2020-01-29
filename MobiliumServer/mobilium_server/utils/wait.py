@@ -9,10 +9,9 @@ async def wait_until_true(action: Callable[[], bool], timeout: int = 30, interva
                           timeout_message: Optional[str] = None):
     end_time = time() + timeout
     while time() < end_time:
-        if not action():
-            await sleep(interval)
-        else:
+        if action():
             return
+        await sleep(interval)
     if timeout_message is None:
         timeout_message = "Timeout for {} after {} seconds".format(action.__name__, timeout)
     raise TimeoutException(timeout_message)
