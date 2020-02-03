@@ -2,9 +2,9 @@
 import argparse
 import time
 from typing import Optional, Callable, TypeVar
-from common.named_partial import named_partial
-from common.wait import wait_until_true, wait_until_value
-from common.exceptions import ElementNotFoundException
+from mobilium_client.common.named_partial import named_partial
+from mobilium_client.common.wait import wait_until_true, wait_until_value
+from mobilium_client.common.exceptions import ElementNotFoundException
 from mobilium_client import config
 from mobilium_client.client_namespace import MobiliumClientNamespace
 from mobilium_proto_messages.accessibility import Accessibility, AccessibilityById, AccessibilityByXpath

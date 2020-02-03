@@ -1,7 +1,7 @@
 import time
 from typing import Callable, Optional, TypeVar
 
-from common.exceptions import TimeoutException
+from mobilium_client.common.exceptions import TimeoutException
 
 WaitValue = TypeVar('WaitValue')
 
