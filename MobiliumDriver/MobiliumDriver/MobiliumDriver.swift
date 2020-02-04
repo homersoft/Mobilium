@@ -15,7 +15,6 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
     var app: XCUIApplication!
     var socket: SocketIOClient?
     var deserializer = MessageDeserializer()
-    var keepAlive = true
 
     func testApplication() {
         guard let host = ProcessInfo.processInfo.environment["HOST"],
@@ -31,7 +30,8 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         }
         socket?.on(clientEvent: .disconnect) { [weak self] (data, ack) in
             print("Driver socket disconnected!")
-            self?.keepAlive = false
+            self?.socket?.connect()
+            print("Driver socket reconnecting...")
         }
         socket?.on("message") { [weak self] (data, ack) in
             print("Driver did receive message")
@@ -46,7 +46,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
                 self?.checkElementVisible(with: accessibility, at: Int(message.index),
                                           timeout: TimeInterval(message.timeout))
             }
-            
+
             if let message = self?.deserializer.isElementInvisibileRequest(from: data),
                 let accessibility = message.elementIndicator.toAccessibility() {
                 self?.checkElementInvisible(with: accessibility, at: Int(message.index),
@@ -57,16 +57,16 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
                 let accessibility = message.elementIndicator.toAccessibility() {
                 self?.checkElementEnabled(with: accessibility, at: Int(message.index))
             }
-            
+
             if let message = self?.deserializer.getValueOfElementRequest(from: data),
                 let accessibility = message.elementIndicator.toAccessibility() {
                 self?.readValueOfElement(with: accessibility, at: Int(message.index))
             }
-            
+
             if let message = self?.deserializer.setValueOfElementRequest(from: data) {
                 self?.setValueOfElementUsingMessage(message, at: Int(message.index))
             }
-            
+
             if let message = self?.deserializer.clickElementRequest(from: data),
                 let accessibility = message.elementIndicator.toAccessibility() {
                 self?.clickElement(with: accessibility, at: Int(message.index))
@@ -75,7 +75,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             if let message = self?.deserializer.getElementsCountRequest(from: data) {
                 self?.getElementsCountUsingMessage(message)
             }
-            
+
             if let _ = self?.deserializer.terminateAppRequest(from: data) {
                 self?.terminateApp()
             }
@@ -83,7 +83,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         print("Driver socket connection attempt")
         socket?.connect()
 
-        while keepAlive && RunLoop.main.run(mode: .default, before: .distantFuture) { }
+        while RunLoop.main.run(mode: .default, before: .distantFuture) { }
     }
 
     private func launchApp(bundleId: String) {
@@ -157,7 +157,7 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         if elementExists {
             element?.tap()
         }
-        
+
         let messageData = MessageDataFactory.clickElementResponse(accessibility: accessibility, exists: elementExists)
         socket?.send(message: messageData)
     }
