@@ -15,7 +15,6 @@ extension SocketIOClient {
         let deadline = Date(timeIntervalSinceNow: 30)
         waitForConnection(until: deadline, success: { [weak self] in
             self?.emit("message", with: [data])
-
         }, failure: { [weak self] in
             self?.failDriver()
         })
@@ -39,7 +38,6 @@ extension SocketIOClient {
     }
 
     private func failDriver() {
-        print("Driver reconnection failed!")
-        XCTFail()
+        XCTFail("Driver reconnection failed!")
     }
 }
