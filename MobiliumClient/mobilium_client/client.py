@@ -32,7 +32,7 @@ class MobiliumClient:
         self.__device_udid = device_udid
         self.__client_namespace = MobiliumClientNamespace(self.__namespace, device_udid)
         self.__client.register_namespace(self.__client_namespace)
-        self.__client.connect('tcp://{0}:{1}'.format(address, port))
+        self.__connect_to_server(address, port)
         self.__wait_until_connected()
 
     def disconnect(self):
@@ -106,6 +106,14 @@ class MobiliumClient:
         request = MessageDataFactory.get_elements_count_request(accessibility)
         response = self.__send(request, MessageDeserializer.get_elements_count_response)
         return response.count
+
+    def __connect_to_server(self, address: str, port: int):
+        def connect(): self.__client.connect('tcp://{0}:{1}'.format(address, port))
+        try:
+            connect()
+        except ConnectionError:
+            time.sleep(3)
+            connect()
 
     def __send(self, request: bytes, deserialize: Callable[[bytes], Optional[MessageResponse]], timeout: int = 30)\
             -> MessageResponse:
