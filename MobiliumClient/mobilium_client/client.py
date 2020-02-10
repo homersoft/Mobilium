@@ -108,10 +108,12 @@ class MobiliumClient:
         return response.count
 
     def __connect_to_server(self, address: str, port: int):
-        def connect(): self.__client.connect('tcp://{0}:{1}'.format(address, port))
+        def connect():
+            self.__client.connect('tcp://{0}:{1}'.format(address, port))
         try:
             connect()
-        except ConnectionError:
+        except ConnectionError as error:
+            print("Retrying connection due to error: {}".format(error))
             time.sleep(3)
             connect()
 
