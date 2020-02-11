@@ -1,7 +1,7 @@
 from os import path
 
 from mobilium_server.message_processors.shell_message_processor import ShellMessageProcessor
-from mobilium_server.utils.mobilium_driver_localization import get_project_dir, CARTHAGE_DIR
+from mobilium_server.utils.mobilium_driver_localization import get_project_dir
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 
@@ -15,9 +15,8 @@ class PrepareDriverProcessor(ShellMessageProcessor):
 
     async def prepare_driver(self):
         project_dir = get_project_dir()
-        if not path.exists(project_dir + CARTHAGE_DIR):
-            update_carthage_command = 'cd {} ; carthage update --platform iOS --cache-builds ; cd -'.format(project_dir)
-            await self.shell_executor.execute(update_carthage_command, track_output=True)
+        update_carthage_command = 'cd {} ; carthage update --platform iOS --cache-builds ; cd -'.format(project_dir)
+        await self.shell_executor.execute(update_carthage_command, track_output=True)
 
         message = MessageDataFactory.prepare_driver_response()
         await self.message_sender.send(message)
