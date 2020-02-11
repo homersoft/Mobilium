@@ -19,6 +19,24 @@ class MessageDeserializer {
         return message as? LaunchAppRequest
     }
 
+    func touchRequest(from data: [Data]) -> TouchRequest? {
+        let message = extract(from: data) { oneOfMessage in
+            guard case .touchRequest(let message) = oneOfMessage else { return nil }
+
+            return message
+        }
+        return message as? TouchRequest
+    }
+
+    func getWindowSizeRequest(from data: [Data]) -> GetWindowSizeRequest? {
+        let message = extract(from: data) { oneOfMessage in
+            guard case .getWindowSizeRequest(let message) = oneOfMessage else { return nil }
+
+            return message
+        }
+        return message as? GetWindowSizeRequest
+    }
+
     func isElementVisibileRequest(from data: [Data]) -> IsElementVisibleRequest? {
         let message = extract(from: data) { oneOfMessage in
             guard case .isElementVisibleRequest(let message) = oneOfMessage else { return nil }

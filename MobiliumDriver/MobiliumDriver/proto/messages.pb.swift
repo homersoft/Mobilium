@@ -109,26 +109,6 @@ struct ElementIndicator {
   init() {}
 }
 
-struct PrepareDriverRequest {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct PrepareDriverResponse {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
 struct StartDriverRequest {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -235,6 +215,54 @@ struct TerminateAppResponse {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct TouchRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var x: Int64 = 0
+
+  var y: Int64 = 0
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct TouchResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct GetWindowSizeRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct GetWindowSizeResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var width: Float = 0
+
+  var height: Float = 0
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -794,6 +822,26 @@ struct GetElementsCountResponse {
   fileprivate var _storage = _StorageClass.defaultInstance
 }
 
+struct PrepareDriverRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct PrepareDriverResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
 struct MobiliumMessage {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -1012,6 +1060,38 @@ struct MobiliumMessage {
     set {_uniqueStorage()._message = .prepareDriverResponse(newValue)}
   }
 
+  var touchRequest: TouchRequest {
+    get {
+      if case .touchRequest(let v)? = _storage._message {return v}
+      return TouchRequest()
+    }
+    set {_uniqueStorage()._message = .touchRequest(newValue)}
+  }
+
+  var touchResponse: TouchResponse {
+    get {
+      if case .touchResponse(let v)? = _storage._message {return v}
+      return TouchResponse()
+    }
+    set {_uniqueStorage()._message = .touchResponse(newValue)}
+  }
+
+  var getWindowSizeRequest: GetWindowSizeRequest {
+    get {
+      if case .getWindowSizeRequest(let v)? = _storage._message {return v}
+      return GetWindowSizeRequest()
+    }
+    set {_uniqueStorage()._message = .getWindowSizeRequest(newValue)}
+  }
+
+  var getWindowSizeResponse: GetWindowSizeResponse {
+    get {
+      if case .getWindowSizeResponse(let v)? = _storage._message {return v}
+      return GetWindowSizeResponse()
+    }
+    set {_uniqueStorage()._message = .getWindowSizeResponse(newValue)}
+  }
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum OneOf_Message: Equatable {
@@ -1041,6 +1121,10 @@ struct MobiliumMessage {
     case getElementsCountResponse(GetElementsCountResponse)
     case prepareDriverRequest(PrepareDriverRequest)
     case prepareDriverResponse(PrepareDriverResponse)
+    case touchRequest(TouchRequest)
+    case touchResponse(TouchResponse)
+    case getWindowSizeRequest(GetWindowSizeRequest)
+    case getWindowSizeResponse(GetWindowSizeResponse)
 
   #if !swift(>=4.1)
     static func ==(lhs: MobiliumMessage.OneOf_Message, rhs: MobiliumMessage.OneOf_Message) -> Bool {
@@ -1071,6 +1155,10 @@ struct MobiliumMessage {
       case (.getElementsCountResponse(let l), .getElementsCountResponse(let r)): return l == r
       case (.prepareDriverRequest(let l), .prepareDriverRequest(let r)): return l == r
       case (.prepareDriverResponse(let l), .prepareDriverResponse(let r)): return l == r
+      case (.touchRequest(let l), .touchRequest(let r)): return l == r
+      case (.touchResponse(let l), .touchResponse(let r)): return l == r
+      case (.getWindowSizeRequest(let l), .getWindowSizeRequest(let r)): return l == r
+      case (.getWindowSizeResponse(let l), .getWindowSizeResponse(let r)): return l == r
       default: return false
       }
     }
@@ -1209,44 +1297,6 @@ extension ElementIndicator: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
 
   static func ==(lhs: ElementIndicator, rhs: ElementIndicator) -> Bool {
     if lhs.type != rhs.type {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension PrepareDriverRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "PrepareDriverRequest"
-  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let _ = try decoder.nextFieldNumber() {
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: PrepareDriverRequest, rhs: PrepareDriverRequest) -> Bool {
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension PrepareDriverResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "PrepareDriverResponse"
-  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let _ = try decoder.nextFieldNumber() {
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: PrepareDriverResponse, rhs: PrepareDriverResponse) -> Bool {
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1489,6 +1539,114 @@ extension TerminateAppResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImp
   }
 
   static func ==(lhs: TerminateAppResponse, rhs: TerminateAppResponse) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension TouchRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = "TouchRequest"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "x"),
+    2: .same(proto: "y"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeSingularInt64Field(value: &self.x)
+      case 2: try decoder.decodeSingularInt64Field(value: &self.y)
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.x != 0 {
+      try visitor.visitSingularInt64Field(value: self.x, fieldNumber: 1)
+    }
+    if self.y != 0 {
+      try visitor.visitSingularInt64Field(value: self.y, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: TouchRequest, rhs: TouchRequest) -> Bool {
+    if lhs.x != rhs.x {return false}
+    if lhs.y != rhs.y {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension TouchResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = "TouchResponse"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: TouchResponse, rhs: TouchResponse) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension GetWindowSizeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = "GetWindowSizeRequest"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: GetWindowSizeRequest, rhs: GetWindowSizeRequest) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension GetWindowSizeResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = "GetWindowSizeResponse"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "width"),
+    2: .same(proto: "height"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeSingularFloatField(value: &self.width)
+      case 2: try decoder.decodeSingularFloatField(value: &self.height)
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.width != 0 {
+      try visitor.visitSingularFloatField(value: self.width, fieldNumber: 1)
+    }
+    if self.height != 0 {
+      try visitor.visitSingularFloatField(value: self.height, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: GetWindowSizeResponse, rhs: GetWindowSizeResponse) -> Bool {
+    if lhs.width != rhs.width {return false}
+    if lhs.height != rhs.height {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -2604,6 +2762,44 @@ extension GetElementsCountResponse: SwiftProtobuf.Message, SwiftProtobuf._Messag
   }
 }
 
+extension PrepareDriverRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = "PrepareDriverRequest"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: PrepareDriverRequest, rhs: PrepareDriverRequest) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension PrepareDriverResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = "PrepareDriverResponse"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let _ = try decoder.nextFieldNumber() {
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: PrepareDriverResponse, rhs: PrepareDriverResponse) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension MobiliumMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = "MobiliumMessage"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -2633,6 +2829,10 @@ extension MobiliumMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
     24: .standard(proto: "get_elements_count_response"),
     25: .standard(proto: "prepare_driver_request"),
     26: .standard(proto: "prepare_driver_response"),
+    27: .standard(proto: "touch_request"),
+    28: .standard(proto: "touch_response"),
+    29: .standard(proto: "get_window_size_request"),
+    30: .standard(proto: "get_window_size_response"),
   ]
 
   fileprivate class _StorageClass {
@@ -2867,6 +3067,38 @@ extension MobiliumMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
           }
           try decoder.decodeSingularMessageField(value: &v)
           if let v = v {_storage._message = .prepareDriverResponse(v)}
+        case 27:
+          var v: TouchRequest?
+          if let current = _storage._message {
+            try decoder.handleConflictingOneOf()
+            if case .touchRequest(let m) = current {v = m}
+          }
+          try decoder.decodeSingularMessageField(value: &v)
+          if let v = v {_storage._message = .touchRequest(v)}
+        case 28:
+          var v: TouchResponse?
+          if let current = _storage._message {
+            try decoder.handleConflictingOneOf()
+            if case .touchResponse(let m) = current {v = m}
+          }
+          try decoder.decodeSingularMessageField(value: &v)
+          if let v = v {_storage._message = .touchResponse(v)}
+        case 29:
+          var v: GetWindowSizeRequest?
+          if let current = _storage._message {
+            try decoder.handleConflictingOneOf()
+            if case .getWindowSizeRequest(let m) = current {v = m}
+          }
+          try decoder.decodeSingularMessageField(value: &v)
+          if let v = v {_storage._message = .getWindowSizeRequest(v)}
+        case 30:
+          var v: GetWindowSizeResponse?
+          if let current = _storage._message {
+            try decoder.handleConflictingOneOf()
+            if case .getWindowSizeResponse(let m) = current {v = m}
+          }
+          try decoder.decodeSingularMessageField(value: &v)
+          if let v = v {_storage._message = .getWindowSizeResponse(v)}
         default: break
         }
       }
@@ -2928,6 +3160,14 @@ extension MobiliumMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
         try visitor.visitSingularMessageField(value: v, fieldNumber: 25)
       case .prepareDriverResponse(let v)?:
         try visitor.visitSingularMessageField(value: v, fieldNumber: 26)
+      case .touchRequest(let v)?:
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 27)
+      case .touchResponse(let v)?:
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 28)
+      case .getWindowSizeRequest(let v)?:
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 29)
+      case .getWindowSizeResponse(let v)?:
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 30)
       case nil: break
       }
     }

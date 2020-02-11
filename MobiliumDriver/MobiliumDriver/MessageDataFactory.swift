@@ -22,6 +22,21 @@ class MessageDataFactory {
         })
     }
 
+    static func touchResponse() -> Data {
+        return dataWith(populator: { populator in
+            populator.message = .touchResponse(TouchResponse())
+        })
+    }
+
+    static func getWindowSizeResponse(width: Float, height: Float) -> Data {
+        return dataWith(populator: { populator in
+            var response = GetWindowSizeResponse()
+            response.width = width
+            response.height = height
+            populator.message = .getWindowSizeResponse(response)
+        })
+    }
+
     static func isElementVisibleResponse(accessibility: Accessibility, exists: Bool) -> Data {
         return dataWith(populator: { populator in
             var response = IsElementVisibleResponse()

@@ -41,6 +41,14 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
                 self?.launchApp(bundleId: message.bundleID)
             }
 
+            if let message = self?.deserializer.touchRequest(from: data) {
+                self?.touch(x: Int(message.x), y: Int(message.y))
+            }
+
+            if let _ = self?.deserializer.getWindowSizeRequest(from: data) {
+                self?.getWindowSize()
+            }
+
             if let message = self?.deserializer.isElementVisibileRequest(from: data),
                 let accessibility = message.elementIndicator.toAccessibility() {
                 self?.checkElementVisible(with: accessibility, at: Int(message.index),
@@ -111,6 +119,29 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
         app.terminate()
 
         let messageData = MessageDataFactory.terminateAppResponse()
+        socket?.send(message: messageData)
+    }
+
+    private func touch(x: Int, y: Int) {
+        let window = app.windows.firstMatch
+        guard window.exists else { return }
+
+        let origin = window.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
+        let coordinate = origin.withOffset(CGVector(dx: x, dy: y))
+        coordinate.tap()
+
+        let messageData = MessageDataFactory.touchResponse()
+        socket?.send(message: messageData)
+    }
+
+    private func getWindowSize() {
+        let window = app.windows.firstMatch
+        guard window.exists else { return }
+
+        let width = Float(window.frame.width)
+        let height = Float(window.frame.height)
+
+        let messageData = MessageDataFactory.getWindowSizeResponse(width: width, height: height)
         socket?.send(message: messageData)
     }
 

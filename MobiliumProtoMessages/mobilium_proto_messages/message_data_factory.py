@@ -56,6 +56,18 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(UninstallAppResponse())
 
     @staticmethod
+    def touch_request(x: int, y: int) -> bytes:
+        message = TouchRequest()
+        message.x = x
+        message.y = y
+        return MessageDataFactory.__data_with(message)
+
+    @staticmethod
+    def get_window_size_request() -> bytes:
+        message = GetWindowSizeRequest()
+        return MessageDataFactory.__data_with(message)
+
+    @staticmethod
     def is_element_visible_request(accessibility: Accessibility, index: int, timeout: float = 0) -> bytes:
         message = IsElementVisibleRequest()
         message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
