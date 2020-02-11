@@ -70,7 +70,7 @@ class MobiliumClient:
         request = MessageDataFactory.terminate_app_request()
         self.__send(request, MessageDeserializer.terminate_app_response)
 
-    def touch(self, x: int, y: int):
+    def touch(self, x: int, y: int):  # pylint: disable=C0103
         request = MessageDataFactory.touch_request(x, y)
         self.__send(request, MessageDeserializer.touch_response)
 
