@@ -13,6 +13,7 @@ from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from mobilium_proto_messages.proto.messages_pb2 import ElementNotExists
 from socketio import Client
+from logging import getLogger, WARNING
 
 MessageResponse = TypeVar('MessageResponse')
 FailureReason = TypeVar('FailureReason')
@@ -26,6 +27,8 @@ class MobiliumClient:
         self.__namespace = '/client'
         self.__client_namespace = None
         self.__device_udid = None
+        getLogger('socketio').setLevel(WARNING)
+        getLogger('engineio').setLevel(WARNING)
 
     def connect(self, device_udid: str, address: str, port: int):
         print("Connect device_id %s" % device_udid)
@@ -207,7 +210,7 @@ def main():
                                                           "[contains(@label, 'Your company (optional)')]"), "xpath\n")
     mobilium_client.set_element_text(AccessibilityById("email"), "homer123\n")
     mobilium_client.get_element_value(AccessibilityById("email"))
-    mobilium_client.click_element(AccessibilityById("terms_checkbox"))
+    mobilium_client.click_element(AccessibilityById("terms_checkbox_button"))
 
     mobilium_client.get_elements_count(AccessibilityByXpath("//XCUIElementTypeTextField[contains(@label, 'name')]"))
 
