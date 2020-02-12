@@ -2,6 +2,7 @@
 import argparse
 import time
 from typing import Optional, Callable, TypeVar
+from logging import getLogger, WARNING
 from mobilium_client.common.named_partial import named_partial
 from mobilium_client.common.wait import wait_until_true, wait_until_value
 from mobilium_client.common.exceptions import ElementNotFoundException
@@ -26,6 +27,8 @@ class MobiliumClient:
         self.__namespace = '/client'
         self.__client_namespace = None
         self.__device_udid = None
+        getLogger('socketio').setLevel(WARNING)
+        getLogger('engineio').setLevel(WARNING)
 
     def connect(self, device_udid: str, address: str, port: int):
         print("Connect device_id %s" % device_udid)
@@ -207,7 +210,7 @@ def main():
                                                           "[contains(@label, 'Your company (optional)')]"), "xpath\n")
     mobilium_client.set_element_text(AccessibilityById("email"), "homer123\n")
     mobilium_client.get_element_value(AccessibilityById("email"))
-    mobilium_client.click_element(AccessibilityById("terms_checkbox"))
+    mobilium_client.click_element(AccessibilityById("terms_checkbox_button"))
 
     mobilium_client.get_elements_count(AccessibilityByXpath("//XCUIElementTypeTextField[contains(@label, 'name')]"))
 
