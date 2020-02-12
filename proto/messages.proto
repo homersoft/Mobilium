@@ -41,6 +41,20 @@ message TerminateAppRequest {}
 
 message TerminateAppResponse {}
 
+message TouchRequest {
+    int64 x = 1;
+    int64 y = 2;
+}
+
+message TouchResponse {}
+
+message GetWindowSizeRequest { }
+
+message GetWindowSizeResponse {
+    float width = 1;
+    float height = 2;
+}
+
 message IsElementVisibleRequest {
     ElementIndicator element_indicator = 1;
     uint32 index = 2;
@@ -165,5 +179,9 @@ message MobiliumMessage {
         GetElementsCountResponse get_elements_count_response = 24;
         PrepareDriverRequest prepare_driver_request = 25;
         PrepareDriverResponse prepare_driver_response = 26;
+        TouchRequest touch_request = 27;
+        TouchResponse touch_response = 28;
+        GetWindowSizeRequest get_window_size_request = 29;
+        GetWindowSizeResponse get_window_size_response = 30;
     }
 }

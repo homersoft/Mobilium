@@ -45,6 +45,14 @@ class MessageDeserializer:
         return MessageDeserializer.__message(data, LaunchAppResponse)
 
     @staticmethod
+    def touch_response(data: bytes) -> Optional[TouchResponse]:
+        return MessageDeserializer.__message(data, TouchResponse)
+
+    @staticmethod
+    def get_window_size_response(data: bytes) -> Optional[GetWindowSizeResponse]:
+        return MessageDeserializer.__message(data, GetWindowSizeResponse)
+
+    @staticmethod
     def is_element_visible_response(data: bytes) -> Optional[IsElementVisibleResponse]:
         return MessageDeserializer.__message(data, IsElementVisibleResponse)
 

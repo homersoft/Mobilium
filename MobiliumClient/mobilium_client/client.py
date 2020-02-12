@@ -5,6 +5,7 @@ from typing import Optional, Callable, TypeVar
 from mobilium_client.common.named_partial import named_partial
 from mobilium_client.common.wait import wait_until_true, wait_until_value
 from mobilium_client.common.exceptions import ElementNotFoundException
+from mobilium_client.common.window_size import WindowSize
 from mobilium_client import config
 from mobilium_client.client_namespace import MobiliumClientNamespace
 from mobilium_proto_messages.accessibility import Accessibility, AccessibilityById, AccessibilityByXpath
@@ -12,7 +13,6 @@ from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from mobilium_proto_messages.proto.messages_pb2 import ElementNotExists
 from socketio import Client
-
 
 MessageResponse = TypeVar('MessageResponse')
 FailureReason = TypeVar('FailureReason')
@@ -69,6 +69,15 @@ class MobiliumClient:
     def terminate_app(self):
         request = MessageDataFactory.terminate_app_request()
         self.__send(request, MessageDeserializer.terminate_app_response)
+
+    def touch(self, x: int, y: int):  # pylint: disable=C0103
+        request = MessageDataFactory.touch_request(x, y)
+        self.__send(request, MessageDeserializer.touch_response)
+
+    def get_window_size(self) -> WindowSize:
+        request = MessageDataFactory.get_window_size_request()
+        response = self.__send(request, MessageDeserializer.get_window_size_response)
+        return WindowSize(width=response.width, height=response.height)
 
     def is_element_visible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) -> bool:
         request = MessageDataFactory.is_element_visible_request(accessibility, index=index, timeout=timeout)
@@ -183,6 +192,9 @@ def main():
     mobilium_client.start_driver()
     mobilium_client.install_app()
     mobilium_client.launch_app()
+
+    window_size = mobilium_client.get_window_size()
+    mobilium_client.touch(x=int(window_size.width/2), y=20)
 
     mobilium_client.is_element_visible(AccessibilityById("login_button"))
     mobilium_client.is_element_invisible(AccessibilityById("unknown_button"))
