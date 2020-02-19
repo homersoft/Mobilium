@@ -108,6 +108,15 @@ class MessageDataFactory {
         })
     }
     
+    static func getElementIdResponse(accessibility: Accessibility, exists: Bool, id: String?) -> Data {
+        return dataWith(populator: { populator in
+            var response = GetElementIdResponse()
+            response.elementIndicator = accessibility.toElementIndicator()
+            response.status = exists ? .id(id ?? "") : .failure(.elementNotExists)
+            populator.message = .getElementIDResponse(response)
+        })
+    }
+    
     static func terminateAppResponse() -> Data {
         return dataWith(populator: { populator in
             let response = TerminateAppResponse()

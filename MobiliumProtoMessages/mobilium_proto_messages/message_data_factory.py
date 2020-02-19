@@ -136,6 +136,13 @@ class MessageDataFactory:
         return MessageDataFactory.__data_with(message)
 
     @staticmethod
+    def get_element_id_request(accessibility: Accessibility, index: int) -> bytes:
+        message = GetElementIdRequest()
+        message.element_indicator.CopyFrom(MessageDataFactory.__element_indicator(accessibility))
+        message.index = index
+        return MessageDataFactory.__data_with(message)
+
+    @staticmethod
     def __data_with(message: Message) -> bytes:
         class_name = message.__class__.__name__
         attribute_name = '_'.join(MessageDataFactory.__camel_case_split(class_name)).lower()

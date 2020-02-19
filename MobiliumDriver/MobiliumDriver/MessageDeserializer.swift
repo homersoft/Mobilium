@@ -109,6 +109,15 @@ class MessageDeserializer {
         return message as? GetElementsCountRequest
     }
     
+    func getElementIdRequest(from data: [Data]) -> GetElementIdRequest? {
+        let message = extract(from: data) { oneOfMessage in
+            guard case .getElementIDRequest(let message) = oneOfMessage else { return nil }
+            
+            return message
+        }
+        return message as? GetElementIdRequest
+    }
+    
     private func extract(from data: [Data], using extractor: (MobiliumMessage.OneOf_Message) -> Message?) -> Message? {
         guard let serializedData = data.first,
             let mobiliumMessage = try? MobiliumMessage(serializedData: serializedData),
