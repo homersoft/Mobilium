@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x0emessages.proto\"\x12\n\x10\x45lementNotExists\"G\n\x0c\x45lementError\x12-\n\x10\x65lementNotExists\x18\x01 \x01(\x0b\x32\x11.ElementNotExistsH\x00\x42\x08\n\x06reason\"9\n\x10\x45lementIndicator\x12\x0c\n\x02id\x18\x01 \x01(\tH\x00\x12\x0f\n\x05xpath\x18\x02 \x01(\tH\x00\x42\x06\n\x04type\"\"\n\x12StartDriverRequest\x12\x0c\n\x04udid\x18\x01 \x01(\t\"\x15\n\x13StartDriverResponse\"4\n\x11InstallAppRequest\x12\x0c\n\x04udid\x18\x01 \x01(\t\x12\x11\n\tfile_path\x18\x02 \x01(\t\"\x14\n\x12InstallAppResponse\"6\n\x13UninstallAppRequest\x12\x0c\n\x04udid\x18\x01 \x01(\t\x12\x11\n\tbundle_id\x18\x02 \x01(\t\"\x16\n\x14UninstallAppResponse\"%\n\x10LaunchAppRequest\x12\x11\n\tbundle_id\x18\x01 \x01(\t\"\x13\n\x11LaunchAppResponse\"\x15\n\x13TerminateAppRequest\"\x16\n\x14TerminateAppResponse\"$\n\x0cTouchRequest\x12\t\n\x01x\x18\x01 \x01(\x03\x12\t\n\x01y\x18\x02 \x01(\x03\"\x0f\n\rTouchResponse\"\x16\n\x14GetWindowSizeRequest\"6\n\x15GetWindowSizeResponse\x12\r\n\x05width\x18\x01 \x01(\x02\x12\x0e\n\x06height\x18\x02 \x01(\x02\"g\n\x17IsElementVisibleRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05index\x18\x02 \x01(\r\x12\x0f\n\x07timeout\x18\x03 \x01(\x02\"i\n\x19IsElementInvisibleRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05index\x18\x02 \x01(\r\x12\x0f\n\x07timeout\x18\x03 \x01(\x02\"\\\n\x18IsElementVisibleResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\x12\n\nis_visible\x18\x02 \x01(\x08\"`\n\x1aIsElementInvisibleResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\x14\n\x0cis_invisible\x18\x02 \x01(\x08\"V\n\x17IsElementEnabledRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05index\x18\x02 \x01(\r\"\x8a\x01\n\x18IsElementEnabledResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\x14\n\nis_enabled\x18\x02 \x01(\x08H\x00\x12 \n\x07\x66\x61ilure\x18\x03 \x01(\x0b\x32\r.ElementErrorH\x00\x42\x08\n\x06status\"R\n\x13\x43lickElementRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05index\x18\x02 \x01(\r\"\x83\x01\n\x14\x43lickElementResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\x11\n\x07success\x18\x02 \x01(\x08H\x00\x12 \n\x07\x66\x61ilure\x18\x03 \x01(\x0b\x32\r.ElementErrorH\x00\x42\x08\n\x06status\"W\n\x18GetValueOfElementRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05index\x18\x02 \x01(\r\"\x86\x01\n\x19GetValueOfElementResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\x0f\n\x05value\x18\x02 \x01(\tH\x00\x12 \n\x07\x66\x61ilure\x18\x03 \x01(\x0b\x32\r.ElementErrorH\x00\x42\x08\n\x06status\"\xea\x01\n\x18SetValueOfElementRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05index\x18\x02 \x01(\r\x12\x33\n\x04text\x18\x03 \x01(\x0b\x32#.SetValueOfElementRequest.TextValueH\x00\x12\x12\n\x08position\x18\x04 \x01(\x02H\x00\x12\x13\n\tselection\x18\x05 \x01(\x08H\x00\x1a*\n\tTextValue\x12\r\n\x05value\x18\x01 \x01(\t\x12\x0e\n\x06\x63lears\x18\x02 \x01(\x08\x42\x07\n\x05value\"\x88\x01\n\x19SetValueOfElementResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\x11\n\x07success\x18\x02 \x01(\x08H\x00\x12 \n\x07\x66\x61ilure\x18\x03 \x01(\x0b\x32\r.ElementErrorH\x00\x42\x08\n\x06status\"G\n\x17GetElementsCountRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\"W\n\x18GetElementsCountResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05\x63ount\x18\x02 \x01(\x03\"\x16\n\x14PrepareDriverRequest\"\x17\n\x15PrepareDriverResponse\"\x80\x0e\n\x0fMobiliumMessage\x12\x33\n\x14start_driver_request\x18\x01 \x01(\x0b\x32\x13.StartDriverRequestH\x00\x12\x35\n\x15start_driver_response\x18\x02 \x01(\x0b\x32\x14.StartDriverResponseH\x00\x12\x31\n\x13install_app_request\x18\x03 \x01(\x0b\x32\x12.InstallAppRequestH\x00\x12\x33\n\x14install_app_response\x18\x04 \x01(\x0b\x32\x13.InstallAppResponseH\x00\x12\x35\n\x15uninstall_app_request\x18\x05 \x01(\x0b\x32\x14.UninstallAppRequestH\x00\x12\x37\n\x16uninstall_app_response\x18\x06 \x01(\x0b\x32\x15.UninstallAppResponseH\x00\x12/\n\x12launch_app_request\x18\x07 \x01(\x0b\x32\x11.LaunchAppRequestH\x00\x12\x31\n\x13launch_app_response\x18\x08 \x01(\x0b\x32\x12.LaunchAppResponseH\x00\x12\x35\n\x15terminate_app_request\x18\t \x01(\x0b\x32\x14.TerminateAppRequestH\x00\x12\x37\n\x16terminate_app_response\x18\n \x01(\x0b\x32\x15.TerminateAppResponseH\x00\x12>\n\x1ais_element_visible_request\x18\x0b \x01(\x0b\x32\x18.IsElementVisibleRequestH\x00\x12@\n\x1bis_element_visible_response\x18\x0c \x01(\x0b\x32\x19.IsElementVisibleResponseH\x00\x12\x42\n\x1cis_element_invisible_request\x18\r \x01(\x0b\x32\x1a.IsElementInvisibleRequestH\x00\x12\x44\n\x1dis_element_invisible_response\x18\x0e \x01(\x0b\x32\x1b.IsElementInvisibleResponseH\x00\x12>\n\x1ais_element_enabled_request\x18\x0f \x01(\x0b\x32\x18.IsElementEnabledRequestH\x00\x12@\n\x1bis_element_enabled_response\x18\x10 \x01(\x0b\x32\x19.IsElementEnabledResponseH\x00\x12\x35\n\x15\x63lick_element_request\x18\x11 \x01(\x0b\x32\x14.ClickElementRequestH\x00\x12\x37\n\x16\x63lick_element_response\x18\x12 \x01(\x0b\x32\x15.ClickElementResponseH\x00\x12\x41\n\x1cget_value_of_element_request\x18\x13 \x01(\x0b\x32\x19.GetValueOfElementRequestH\x00\x12\x43\n\x1dget_value_of_element_response\x18\x14 \x01(\x0b\x32\x1a.GetValueOfElementResponseH\x00\x12\x41\n\x1cset_value_of_element_request\x18\x15 \x01(\x0b\x32\x19.SetValueOfElementRequestH\x00\x12\x43\n\x1dset_value_of_element_response\x18\x16 \x01(\x0b\x32\x1a.SetValueOfElementResponseH\x00\x12>\n\x1aget_elements_count_request\x18\x17 \x01(\x0b\x32\x18.GetElementsCountRequestH\x00\x12@\n\x1bget_elements_count_response\x18\x18 \x01(\x0b\x32\x19.GetElementsCountResponseH\x00\x12\x37\n\x16prepare_driver_request\x18\x19 \x01(\x0b\x32\x15.PrepareDriverRequestH\x00\x12\x39\n\x17prepare_driver_response\x18\x1a \x01(\x0b\x32\x16.PrepareDriverResponseH\x00\x12&\n\rtouch_request\x18\x1b \x01(\x0b\x32\r.TouchRequestH\x00\x12(\n\x0etouch_response\x18\x1c \x01(\x0b\x32\x0e.TouchResponseH\x00\x12\x38\n\x17get_window_size_request\x18\x1d \x01(\x0b\x32\x15.GetWindowSizeRequestH\x00\x12:\n\x18get_window_size_response\x18\x1e \x01(\x0b\x32\x16.GetWindowSizeResponseH\x00\x42\t\n\x07messageb\x06proto3')
+  serialized_pb=_b('\n\x0emessages.proto\"\x12\n\x10\x45lementNotExists\"G\n\x0c\x45lementError\x12-\n\x10\x65lementNotExists\x18\x01 \x01(\x0b\x32\x11.ElementNotExistsH\x00\x42\x08\n\x06reason\"9\n\x10\x45lementIndicator\x12\x0c\n\x02id\x18\x01 \x01(\tH\x00\x12\x0f\n\x05xpath\x18\x02 \x01(\tH\x00\x42\x06\n\x04type\"\"\n\x12StartDriverRequest\x12\x0c\n\x04udid\x18\x01 \x01(\t\"\x15\n\x13StartDriverResponse\"4\n\x11InstallAppRequest\x12\x0c\n\x04udid\x18\x01 \x01(\t\x12\x11\n\tfile_path\x18\x02 \x01(\t\"\x14\n\x12InstallAppResponse\"6\n\x13UninstallAppRequest\x12\x0c\n\x04udid\x18\x01 \x01(\t\x12\x11\n\tbundle_id\x18\x02 \x01(\t\"\x16\n\x14UninstallAppResponse\"%\n\x10LaunchAppRequest\x12\x11\n\tbundle_id\x18\x01 \x01(\t\"\x13\n\x11LaunchAppResponse\"\x15\n\x13TerminateAppRequest\"\x16\n\x14TerminateAppResponse\"$\n\x0cTouchRequest\x12\t\n\x01x\x18\x01 \x01(\x03\x12\t\n\x01y\x18\x02 \x01(\x03\"\x0f\n\rTouchResponse\"\x16\n\x14GetWindowSizeRequest\"6\n\x15GetWindowSizeResponse\x12\r\n\x05width\x18\x01 \x01(\x02\x12\x0e\n\x06height\x18\x02 \x01(\x02\"g\n\x17IsElementVisibleRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05index\x18\x02 \x01(\r\x12\x0f\n\x07timeout\x18\x03 \x01(\x02\"i\n\x19IsElementInvisibleRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05index\x18\x02 \x01(\r\x12\x0f\n\x07timeout\x18\x03 \x01(\x02\"\\\n\x18IsElementVisibleResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\x12\n\nis_visible\x18\x02 \x01(\x08\"`\n\x1aIsElementInvisibleResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\x14\n\x0cis_invisible\x18\x02 \x01(\x08\"V\n\x17IsElementEnabledRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05index\x18\x02 \x01(\r\"\x8a\x01\n\x18IsElementEnabledResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\x14\n\nis_enabled\x18\x02 \x01(\x08H\x00\x12 \n\x07\x66\x61ilure\x18\x03 \x01(\x0b\x32\r.ElementErrorH\x00\x42\x08\n\x06status\"R\n\x13\x43lickElementRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05index\x18\x02 \x01(\r\"\x83\x01\n\x14\x43lickElementResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\x11\n\x07success\x18\x02 \x01(\x08H\x00\x12 \n\x07\x66\x61ilure\x18\x03 \x01(\x0b\x32\r.ElementErrorH\x00\x42\x08\n\x06status\"W\n\x18GetValueOfElementRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05index\x18\x02 \x01(\r\"\x86\x01\n\x19GetValueOfElementResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\x0f\n\x05value\x18\x02 \x01(\tH\x00\x12 \n\x07\x66\x61ilure\x18\x03 \x01(\x0b\x32\r.ElementErrorH\x00\x42\x08\n\x06status\"\xea\x01\n\x18SetValueOfElementRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05index\x18\x02 \x01(\r\x12\x33\n\x04text\x18\x03 \x01(\x0b\x32#.SetValueOfElementRequest.TextValueH\x00\x12\x12\n\x08position\x18\x04 \x01(\x02H\x00\x12\x13\n\tselection\x18\x05 \x01(\x08H\x00\x1a*\n\tTextValue\x12\r\n\x05value\x18\x01 \x01(\t\x12\x0e\n\x06\x63lears\x18\x02 \x01(\x08\x42\x07\n\x05value\"\x88\x01\n\x19SetValueOfElementResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\x11\n\x07success\x18\x02 \x01(\x08H\x00\x12 \n\x07\x66\x61ilure\x18\x03 \x01(\x0b\x32\r.ElementErrorH\x00\x42\x08\n\x06status\"G\n\x17GetElementsCountRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\"W\n\x18GetElementsCountResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05\x63ount\x18\x02 \x01(\x03\"R\n\x13GetElementIdRequest\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\r\n\x05index\x18\x02 \x01(\r\"~\n\x14GetElementIdResponse\x12,\n\x11\x65lement_indicator\x18\x01 \x01(\x0b\x32\x11.ElementIndicator\x12\x0c\n\x02id\x18\x02 \x01(\tH\x00\x12 \n\x07\x66\x61ilure\x18\x03 \x01(\x0b\x32\r.ElementErrorH\x00\x42\x08\n\x06status\"\x16\n\x14PrepareDriverRequest\"\x17\n\x15PrepareDriverResponse\"\xf2\x0e\n\x0fMobiliumMessage\x12\x33\n\x14start_driver_request\x18\x01 \x01(\x0b\x32\x13.StartDriverRequestH\x00\x12\x35\n\x15start_driver_response\x18\x02 \x01(\x0b\x32\x14.StartDriverResponseH\x00\x12\x31\n\x13install_app_request\x18\x03 \x01(\x0b\x32\x12.InstallAppRequestH\x00\x12\x33\n\x14install_app_response\x18\x04 \x01(\x0b\x32\x13.InstallAppResponseH\x00\x12\x35\n\x15uninstall_app_request\x18\x05 \x01(\x0b\x32\x14.UninstallAppRequestH\x00\x12\x37\n\x16uninstall_app_response\x18\x06 \x01(\x0b\x32\x15.UninstallAppResponseH\x00\x12/\n\x12launch_app_request\x18\x07 \x01(\x0b\x32\x11.LaunchAppRequestH\x00\x12\x31\n\x13launch_app_response\x18\x08 \x01(\x0b\x32\x12.LaunchAppResponseH\x00\x12\x35\n\x15terminate_app_request\x18\t \x01(\x0b\x32\x14.TerminateAppRequestH\x00\x12\x37\n\x16terminate_app_response\x18\n \x01(\x0b\x32\x15.TerminateAppResponseH\x00\x12>\n\x1ais_element_visible_request\x18\x0b \x01(\x0b\x32\x18.IsElementVisibleRequestH\x00\x12@\n\x1bis_element_visible_response\x18\x0c \x01(\x0b\x32\x19.IsElementVisibleResponseH\x00\x12\x42\n\x1cis_element_invisible_request\x18\r \x01(\x0b\x32\x1a.IsElementInvisibleRequestH\x00\x12\x44\n\x1dis_element_invisible_response\x18\x0e \x01(\x0b\x32\x1b.IsElementInvisibleResponseH\x00\x12>\n\x1ais_element_enabled_request\x18\x0f \x01(\x0b\x32\x18.IsElementEnabledRequestH\x00\x12@\n\x1bis_element_enabled_response\x18\x10 \x01(\x0b\x32\x19.IsElementEnabledResponseH\x00\x12\x35\n\x15\x63lick_element_request\x18\x11 \x01(\x0b\x32\x14.ClickElementRequestH\x00\x12\x37\n\x16\x63lick_element_response\x18\x12 \x01(\x0b\x32\x15.ClickElementResponseH\x00\x12\x41\n\x1cget_value_of_element_request\x18\x13 \x01(\x0b\x32\x19.GetValueOfElementRequestH\x00\x12\x43\n\x1dget_value_of_element_response\x18\x14 \x01(\x0b\x32\x1a.GetValueOfElementResponseH\x00\x12\x41\n\x1cset_value_of_element_request\x18\x15 \x01(\x0b\x32\x19.SetValueOfElementRequestH\x00\x12\x43\n\x1dset_value_of_element_response\x18\x16 \x01(\x0b\x32\x1a.SetValueOfElementResponseH\x00\x12>\n\x1aget_elements_count_request\x18\x17 \x01(\x0b\x32\x18.GetElementsCountRequestH\x00\x12@\n\x1bget_elements_count_response\x18\x18 \x01(\x0b\x32\x19.GetElementsCountResponseH\x00\x12\x36\n\x16get_element_id_request\x18\x19 \x01(\x0b\x32\x14.GetElementIdRequestH\x00\x12\x38\n\x17get_element_id_response\x18\x1a \x01(\x0b\x32\x15.GetElementIdResponseH\x00\x12\x37\n\x16prepare_driver_request\x18\x1b \x01(\x0b\x32\x15.PrepareDriverRequestH\x00\x12\x39\n\x17prepare_driver_response\x18\x1c \x01(\x0b\x32\x16.PrepareDriverResponseH\x00\x12&\n\rtouch_request\x18\x1d \x01(\x0b\x32\r.TouchRequestH\x00\x12(\n\x0etouch_response\x18\x1e \x01(\x0b\x32\x0e.TouchResponseH\x00\x12\x38\n\x17get_window_size_request\x18\x1f \x01(\x0b\x32\x15.GetWindowSizeRequestH\x00\x12:\n\x18get_window_size_response\x18  \x01(\x0b\x32\x16.GetWindowSizeResponseH\x00\x42\t\n\x07messageb\x06proto3')
 )
 
 
@@ -1171,6 +1171,92 @@ _GETELEMENTSCOUNTRESPONSE = _descriptor.Descriptor(
 )
 
 
+_GETELEMENTIDREQUEST = _descriptor.Descriptor(
+  name='GetElementIdRequest',
+  full_name='GetElementIdRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='element_indicator', full_name='GetElementIdRequest.element_indicator', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='index', full_name='GetElementIdRequest.index', index=1,
+      number=2, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2242,
+  serialized_end=2324,
+)
+
+
+_GETELEMENTIDRESPONSE = _descriptor.Descriptor(
+  name='GetElementIdResponse',
+  full_name='GetElementIdResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='element_indicator', full_name='GetElementIdResponse.element_indicator', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='id', full_name='GetElementIdResponse.id', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='failure', full_name='GetElementIdResponse.failure', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='status', full_name='GetElementIdResponse.status',
+      index=0, containing_type=None, fields=[]),
+  ],
+  serialized_start=2326,
+  serialized_end=2452,
+)
+
+
 _PREPAREDRIVERREQUEST = _descriptor.Descriptor(
   name='PrepareDriverRequest',
   full_name='PrepareDriverRequest',
@@ -1190,8 +1276,8 @@ _PREPAREDRIVERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2242,
-  serialized_end=2264,
+  serialized_start=2454,
+  serialized_end=2476,
 )
 
 
@@ -1214,8 +1300,8 @@ _PREPAREDRIVERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2266,
-  serialized_end=2289,
+  serialized_start=2478,
+  serialized_end=2501,
 )
 
 
@@ -1395,43 +1481,57 @@ _MOBILIUMMESSAGE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='prepare_driver_request', full_name='MobiliumMessage.prepare_driver_request', index=24,
+      name='get_element_id_request', full_name='MobiliumMessage.get_element_id_request', index=24,
       number=25, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='prepare_driver_response', full_name='MobiliumMessage.prepare_driver_response', index=25,
+      name='get_element_id_response', full_name='MobiliumMessage.get_element_id_response', index=25,
       number=26, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='touch_request', full_name='MobiliumMessage.touch_request', index=26,
+      name='prepare_driver_request', full_name='MobiliumMessage.prepare_driver_request', index=26,
       number=27, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='touch_response', full_name='MobiliumMessage.touch_response', index=27,
+      name='prepare_driver_response', full_name='MobiliumMessage.prepare_driver_response', index=27,
       number=28, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='get_window_size_request', full_name='MobiliumMessage.get_window_size_request', index=28,
+      name='touch_request', full_name='MobiliumMessage.touch_request', index=28,
       number=29, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='get_window_size_response', full_name='MobiliumMessage.get_window_size_response', index=29,
+      name='touch_response', full_name='MobiliumMessage.touch_response', index=29,
       number=30, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='get_window_size_request', full_name='MobiliumMessage.get_window_size_request', index=30,
+      number=31, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='get_window_size_response', full_name='MobiliumMessage.get_window_size_response', index=31,
+      number=32, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -1451,8 +1551,8 @@ _MOBILIUMMESSAGE = _descriptor.Descriptor(
       name='message', full_name='MobiliumMessage.message',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2292,
-  serialized_end=4084,
+  serialized_start=2504,
+  serialized_end=4410,
 )
 
 _ELEMENTERROR.fields_by_name['elementNotExists'].message_type = _ELEMENTNOTEXISTS
@@ -1518,6 +1618,15 @@ _SETVALUEOFELEMENTRESPONSE.oneofs_by_name['status'].fields.append(
 _SETVALUEOFELEMENTRESPONSE.fields_by_name['failure'].containing_oneof = _SETVALUEOFELEMENTRESPONSE.oneofs_by_name['status']
 _GETELEMENTSCOUNTREQUEST.fields_by_name['element_indicator'].message_type = _ELEMENTINDICATOR
 _GETELEMENTSCOUNTRESPONSE.fields_by_name['element_indicator'].message_type = _ELEMENTINDICATOR
+_GETELEMENTIDREQUEST.fields_by_name['element_indicator'].message_type = _ELEMENTINDICATOR
+_GETELEMENTIDRESPONSE.fields_by_name['element_indicator'].message_type = _ELEMENTINDICATOR
+_GETELEMENTIDRESPONSE.fields_by_name['failure'].message_type = _ELEMENTERROR
+_GETELEMENTIDRESPONSE.oneofs_by_name['status'].fields.append(
+  _GETELEMENTIDRESPONSE.fields_by_name['id'])
+_GETELEMENTIDRESPONSE.fields_by_name['id'].containing_oneof = _GETELEMENTIDRESPONSE.oneofs_by_name['status']
+_GETELEMENTIDRESPONSE.oneofs_by_name['status'].fields.append(
+  _GETELEMENTIDRESPONSE.fields_by_name['failure'])
+_GETELEMENTIDRESPONSE.fields_by_name['failure'].containing_oneof = _GETELEMENTIDRESPONSE.oneofs_by_name['status']
 _MOBILIUMMESSAGE.fields_by_name['start_driver_request'].message_type = _STARTDRIVERREQUEST
 _MOBILIUMMESSAGE.fields_by_name['start_driver_response'].message_type = _STARTDRIVERRESPONSE
 _MOBILIUMMESSAGE.fields_by_name['install_app_request'].message_type = _INSTALLAPPREQUEST
@@ -1542,6 +1651,8 @@ _MOBILIUMMESSAGE.fields_by_name['set_value_of_element_request'].message_type = _
 _MOBILIUMMESSAGE.fields_by_name['set_value_of_element_response'].message_type = _SETVALUEOFELEMENTRESPONSE
 _MOBILIUMMESSAGE.fields_by_name['get_elements_count_request'].message_type = _GETELEMENTSCOUNTREQUEST
 _MOBILIUMMESSAGE.fields_by_name['get_elements_count_response'].message_type = _GETELEMENTSCOUNTRESPONSE
+_MOBILIUMMESSAGE.fields_by_name['get_element_id_request'].message_type = _GETELEMENTIDREQUEST
+_MOBILIUMMESSAGE.fields_by_name['get_element_id_response'].message_type = _GETELEMENTIDRESPONSE
 _MOBILIUMMESSAGE.fields_by_name['prepare_driver_request'].message_type = _PREPAREDRIVERREQUEST
 _MOBILIUMMESSAGE.fields_by_name['prepare_driver_response'].message_type = _PREPAREDRIVERRESPONSE
 _MOBILIUMMESSAGE.fields_by_name['touch_request'].message_type = _TOUCHREQUEST
@@ -1621,6 +1732,12 @@ _MOBILIUMMESSAGE.oneofs_by_name['message'].fields.append(
   _MOBILIUMMESSAGE.fields_by_name['get_elements_count_response'])
 _MOBILIUMMESSAGE.fields_by_name['get_elements_count_response'].containing_oneof = _MOBILIUMMESSAGE.oneofs_by_name['message']
 _MOBILIUMMESSAGE.oneofs_by_name['message'].fields.append(
+  _MOBILIUMMESSAGE.fields_by_name['get_element_id_request'])
+_MOBILIUMMESSAGE.fields_by_name['get_element_id_request'].containing_oneof = _MOBILIUMMESSAGE.oneofs_by_name['message']
+_MOBILIUMMESSAGE.oneofs_by_name['message'].fields.append(
+  _MOBILIUMMESSAGE.fields_by_name['get_element_id_response'])
+_MOBILIUMMESSAGE.fields_by_name['get_element_id_response'].containing_oneof = _MOBILIUMMESSAGE.oneofs_by_name['message']
+_MOBILIUMMESSAGE.oneofs_by_name['message'].fields.append(
   _MOBILIUMMESSAGE.fields_by_name['prepare_driver_request'])
 _MOBILIUMMESSAGE.fields_by_name['prepare_driver_request'].containing_oneof = _MOBILIUMMESSAGE.oneofs_by_name['message']
 _MOBILIUMMESSAGE.oneofs_by_name['message'].fields.append(
@@ -1669,6 +1786,8 @@ DESCRIPTOR.message_types_by_name['SetValueOfElementRequest'] = _SETVALUEOFELEMEN
 DESCRIPTOR.message_types_by_name['SetValueOfElementResponse'] = _SETVALUEOFELEMENTRESPONSE
 DESCRIPTOR.message_types_by_name['GetElementsCountRequest'] = _GETELEMENTSCOUNTREQUEST
 DESCRIPTOR.message_types_by_name['GetElementsCountResponse'] = _GETELEMENTSCOUNTRESPONSE
+DESCRIPTOR.message_types_by_name['GetElementIdRequest'] = _GETELEMENTIDREQUEST
+DESCRIPTOR.message_types_by_name['GetElementIdResponse'] = _GETELEMENTIDRESPONSE
 DESCRIPTOR.message_types_by_name['PrepareDriverRequest'] = _PREPAREDRIVERREQUEST
 DESCRIPTOR.message_types_by_name['PrepareDriverResponse'] = _PREPAREDRIVERRESPONSE
 DESCRIPTOR.message_types_by_name['MobiliumMessage'] = _MOBILIUMMESSAGE
@@ -1898,6 +2017,20 @@ GetElementsCountResponse = _reflection.GeneratedProtocolMessageType('GetElements
   # @@protoc_insertion_point(class_scope:GetElementsCountResponse)
   })
 _sym_db.RegisterMessage(GetElementsCountResponse)
+
+GetElementIdRequest = _reflection.GeneratedProtocolMessageType('GetElementIdRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETELEMENTIDREQUEST,
+  '__module__' : 'messages_pb2'
+  # @@protoc_insertion_point(class_scope:GetElementIdRequest)
+  })
+_sym_db.RegisterMessage(GetElementIdRequest)
+
+GetElementIdResponse = _reflection.GeneratedProtocolMessageType('GetElementIdResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETELEMENTIDRESPONSE,
+  '__module__' : 'messages_pb2'
+  # @@protoc_insertion_point(class_scope:GetElementIdResponse)
+  })
+_sym_db.RegisterMessage(GetElementIdResponse)
 
 PrepareDriverRequest = _reflection.GeneratedProtocolMessageType('PrepareDriverRequest', (_message.Message,), {
   'DESCRIPTOR' : _PREPAREDRIVERREQUEST,

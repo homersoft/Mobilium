@@ -119,6 +119,11 @@ class MobiliumClient:
         response = self.__send(request, MessageDeserializer.get_elements_count_response)
         return response.count
 
+    def get_element_id(self, accessibility: Accessibility, index: int = 0) -> str:
+        request = MessageDataFactory.get_element_id_request(accessibility, index=index)
+        response = self.__send(request, MessageDeserializer.get_element_id_response)
+        return response.id
+
     def __connect_to_server(self, address: str, port: int):
         def connect():
             self.__client.connect('tcp://{0}:{1}'.format(address, port))

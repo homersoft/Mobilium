@@ -83,6 +83,10 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
             if let message = self?.deserializer.getElementsCountRequest(from: data) {
                 self?.getElementsCountUsingMessage(message)
             }
+            
+            if let message = self?.deserializer.getElementIdRequest(from: data) {
+                self?.getElementIdUsingMessage(message)
+            }
 
             if let _ = self?.deserializer.terminateAppRequest(from: data) {
                 self?.terminateApp()
@@ -244,6 +248,17 @@ class MobiliumDriver: XCTestCase, StreamDelegate {
 
         let response = MessageDataFactory.getElementsCountResponse(accessibility: accessibility, count: count)
         socket?.send(message: response)
+    }
+    
+    private func getElementIdUsingMessage(_ message: GetElementIdRequest) {
+        guard let accessibility = message.elementIndicator.toAccessibility() else { return }
+        
+        let index = Int(message.index)
+        let element = self.element(by: accessibility, at: index)
+        let exists = element?.exists == true
+        let message = MessageDataFactory.getElementIdResponse(accessibility: accessibility, exists: exists,
+                                                              id: element?.identifier)
+        socket?.send(message: message)
     }
 
     private func element(by accessibility: Accessibility, at index: Int) -> XCUIElement? {

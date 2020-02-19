@@ -148,6 +148,19 @@ message GetElementsCountResponse {
     int64 count = 2;
 }
 
+message GetElementIdRequest {
+    ElementIndicator element_indicator = 1;
+    uint32 index = 2;
+}
+
+message GetElementIdResponse {
+    ElementIndicator element_indicator = 1;
+    oneof status {
+        string id = 2;
+        ElementError failure = 3;
+    }
+}
+
 message PrepareDriverRequest {}
 message PrepareDriverResponse {}
 
@@ -177,11 +190,13 @@ message MobiliumMessage {
         SetValueOfElementResponse set_value_of_element_response = 22;
         GetElementsCountRequest get_elements_count_request = 23;
         GetElementsCountResponse get_elements_count_response = 24;
-        PrepareDriverRequest prepare_driver_request = 25;
-        PrepareDriverResponse prepare_driver_response = 26;
-        TouchRequest touch_request = 27;
-        TouchResponse touch_response = 28;
-        GetWindowSizeRequest get_window_size_request = 29;
-        GetWindowSizeResponse get_window_size_response = 30;
+        GetElementIdRequest get_element_id_request = 25;
+        GetElementIdResponse get_element_id_response = 26;
+        PrepareDriverRequest prepare_driver_request = 27;
+        PrepareDriverResponse prepare_driver_response = 28;
+        TouchRequest touch_request = 29;
+        TouchResponse touch_response = 30;
+        GetWindowSizeRequest get_window_size_request = 31;
+        GetWindowSizeResponse get_window_size_response = 32;
     }
 }
