@@ -23,6 +23,6 @@ class StartDriverProcessor(ShellMessageProcessor):
 
     async def start_driver(self, udid: str):
         project_dir = get_project_dir()
-        build_command = 'xcodebuild -project {0} -scheme {1} -destination "platform=iOS,id={2}" HOST={3} PORT={4} test'\
+        build_command = 'xcodebuild -project {0} -scheme {1} -destination "id={2}" HOST={3} PORT={4} test'\
             .format(project_dir + PROJECT_NAME, SCHEME, udid, self.address, self.port)
         await self.shell_executor.execute(build_command, track_output=True, waits_for_termination=False)

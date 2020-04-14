@@ -5,7 +5,7 @@ import subprocess
 def install_subpackages():
     subpackages = ['MobiliumProtoMessages', 'MobiliumClient', 'MobiliumServer']
     for subpackage in subpackages:
-        subprocess.check_call(['pip install ./{}'.format(subpackage)], shell=True)
+        subprocess.check_call(['pip3 install ./{}'.format(subpackage)], shell=True)
 
 
 install_subpackages()
