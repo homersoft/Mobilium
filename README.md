@@ -11,6 +11,11 @@ We build Mobilium as an Appium WebDriver replacement taking under the considerat
 - Pip [How to install pip](https://pip.pypa.io/en/stable/installing/)
 - Carthage [Get Carthage](https://github.com/Carthage/Carthage)
 
+NOTE:
+```
+iOS/iPad device needs to be connected to this same local network to which Mobilium Server machine is connected
+```
+
 ## How to install
 
 - Clone this repo
@@ -60,8 +65,13 @@ This method allows us to connect to the MobiliumServer at the provided address a
 - `def is_element_invisible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) -> bool` this method allows you to verify if given element is not on the screen. This method can also wait given period of time (timeout) waiting until this element disappear if its currently visible
 - `def is_element_enabled(self, accessibility: Accessibility, index: int = 0) -> bool` - this method allows too check if user interactions for element with given accessibility is enabled
 - `def set_element_text(self, accessibility: Accessibility, text: str, index: int = 0, clears: bool = True)` - this method allows to set text on elements that allows to do that (text fields, and text views). it allows to clear current text field content (`clears == true`) or leave it as it is.
-- `def set_slider_position(self, accessibility: Accessibility, position: float, index: int = 0)` - this method allows to move iOS sliders. Range should be between [0, 1].
+- `def set_slider_position(self, accessibility: Accessibility, position: float, index: int = 0)` - this method allows to move iOS sliders. Position should be between [0, 1].
 - `def get_element_value(self, accessibility: Accessibility, index: int = 0) -> str` - This method returns value (text or label) of element with given accessibility.
 - `def click_element(self, accessibility: Accessibility, index: int = 0)` - This method allows to perform click (touch up inside) action on element with given accessibility
 - `def get_elements_count(self, accessibility: Accessibility) -> int` - This method returns total amount of elements with provided accessibility. For unique elements it will always returns 1.
 - `def get_element_id(self, accessibility: Accessibility, index: int = 0) -> str` Helper method that allows to get element accessibility identifier based on element XPath accessibility.
+
+#### Short story about accessibility
+When you are working with XCUITests there is two possibilities to identify an element.
+- Using accessibility identifier
+- Building query that allows to find element that suits to that query.
