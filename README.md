@@ -122,12 +122,35 @@ def click_element(self, accessibility: Accessibility, index: int = 0)
 ```
 def get_elements_count(self, accessibility: Accessibility) -> int
 ```
-- Get element accessibility identifier based on element XPath accessibility.
+- Get element accessibility identifier based on element XPath.
 ```
 def get_element_id(self, accessibility: Accessibility, index: int = 0) -> str
 ```
 
-#### Short story about accessibility
+## Short story about accessibility
 When you are working with XCUITests there is two possibilities to identify an element.
 - Using accessibility identifier
-- Building query that allows to find element that suits to that query.
+- Building query that allows to find elements that match this query
+
+That's why we've decided to support two types of accessibility element matching:
+- `AccessibilityById`
+- `AccessibilityByXpath`
+
+Accessibility identifiers is most popular way to identify an element. You can set element accessibility identifier be setting following element property.
+```
+let label = UILabel()
+label.text = "My label text"
+label.accessibilityIdentifier = "my_label"
+```
+And then you can access to that element using `AccessibilityById` reference
+```
+label_text = client.get_element_value(AccessibilityById("my_label"))
+assert(label_text == "My label text") # true
+```
+But sometimes when view structure is complicated you would like to use more sofisticated way to access an element. Let's assume that you have cells that are identified uniqly (cell_1, cell_2), and inside this cells there is a button with accessibility identifier "my_button". In this case to access a button inside second cell you can't use AccessibilityById because there are two elements with this identifier on the screen. In this scenarios AccessibilityByXpath is helpfull. You can use following code to touch button inside second cell.
+```
+button_xPath = "XCUIElementTypeCell[contains(@label, 'cell_2')]/XCUIElementTypeButton" \
+                                   "[contains(@label, 'my_button')]"
+client.click_element(AccessibilityByXpath(button_xPath))
+```
+You can read more about accessibility [here](https://bitbar.com/blog/appium-tip-18-how-to-use-xpath-locators-efficiently/)
