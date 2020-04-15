@@ -7,7 +7,6 @@ from mobilium_client.common.named_partial import named_partial
 from mobilium_client.common.wait import wait_until_true, wait_until_value
 from mobilium_client.common.exceptions import ElementNotFoundException
 from mobilium_client.common.window_size import WindowSize
-from mobilium_client import config
 from mobilium_client.client_namespace import MobiliumClientNamespace
 from mobilium_proto_messages.accessibility import Accessibility, AccessibilityById, AccessibilityByXpath
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
@@ -51,21 +50,15 @@ class MobiliumClient:
         request = MessageDataFactory.start_driver_request(self.__device_udid)
         self.__send(request, MessageDeserializer.start_driver_response, timeout=timeout)
 
-    def install_app(self, file_path: Optional[str] = None):
-        if file_path is None:
-            file_path = config.APP_FILE_PATH
+    def install_app(self, file_path: str):
         request = MessageDataFactory.install_app_request(self.__device_udid, file_path)
         self.__send(request, MessageDeserializer.install_app_response)
 
-    def launch_app(self, bundle_id: Optional[str] = None):
-        if bundle_id is None:
-            bundle_id = config.APP_BUNDLE_ID
+    def launch_app(self, bundle_id: str):
         request = MessageDataFactory.launch_app_request(bundle_id)
         self.__send(request, MessageDeserializer.launch_app_response)
 
-    def uninstall_app(self, bundle_id: Optional[str] = None):
-        if bundle_id is None:
-            bundle_id = config.APP_BUNDLE_ID
+    def uninstall_app(self, bundle_id: str):
         request = MessageDataFactory.uninstall_app_request(self.__device_udid, bundle_id)
         self.__send(request, MessageDeserializer.uninstall_app_response)
 
