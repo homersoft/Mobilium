@@ -47,13 +47,31 @@ After those step, your app should be launched on the simulator
 MobiliumClient object provides public API that allows using client.
 This API can be divided into two groups: App management and user interactions.
 ##### App Management methods
-- `def connect(self, device_udid: str, address: str, port: int)`
-This method allows us to connect to the MobiliumServer at the provided address and port. This method is required to be called to perform any other actions
-- `def disconnect(self)` - disconnect client from server
-- `def prepare_driver(self) ` - this method allows us to rebuild all underlying driver dependencies running carthage update inside driver directory. This method can be time-consuming, and it doesn't have to be called every time tests are performed until the driver was setup properly previously
-- `def start_driver(self, timeout: int = 180)` - this method execute xcodebuild method to run Mobilium driver on provided device
-- `def install_app(self, file_path: Optional[str] = None)` - This method will install app at provided file_path into the device. If file_path is nil, the path from MobiliumClient config.py file will be used.
-- `def launch_app(self, bundle_id: Optional[str] = None)` - This method will launch application with given bundle_id on the device/simulator. If bundle_id is nil, bundle_id from config.py will be used.
+- Connect client with a running Mobilium Server instance.
+```
+def connect(self, device_udid: str, address: str, port: int)
+```
+- Disconnect client from server
+```
+def disconnect(self)
+```
+- Update/install all underlying driver dependencies (Carthage).
+```
+def prepare_driver(self)
+```
+- Run Mobilium Driver on device/simulator
+```
+def start_driver(self, timeout: int = 180)
+```
+- Install app saved at file_path on the device/simulator. If file_path will be nil, then file_path from config.py file will be taken
+```
+def install_app(self, file_path: Optional[str] = None)
+```
+- Launch app with bundle_id on the device/simulator. If bundle_id is nil, bundle_id from config.py will be used.
+```
+def launch_app(self, bundle_id: Optional[str] = None)
+```
+- Uninstall app with bundle_id from device/simulator
 - `def uninstall_app(self, bundle_id: Optional[str] = None)` - This method uninstall application with provided bundle_id from the device/simulator
 - `def terminate_app(self)` - this method will terminate the currently running app
 
