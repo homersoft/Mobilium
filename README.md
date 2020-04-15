@@ -147,7 +147,7 @@ And then you can access to that element using `AccessibilityById` reference
 label_text = client.get_element_value(AccessibilityById("my_label"))
 assert(label_text == "My label text") # true
 ```
-But sometimes when view structure is complicated you would like to use more sofisticated way to access an element. Let's assume that you have cells that are identified uniqly (cell_1, cell_2), and inside this cells there is a button with accessibility identifier "my_button". In this case to access a button inside second cell you can't use AccessibilityById because there are two elements with this identifier on the screen. In this scenarios AccessibilityByXpath is helpfull. You can use following code to touch button inside second cell.
+But sometimes when view structure is complicated you would like to use a more sophisticated way to access an element. Let's assume that you have cells that are identified uniquely (cell_1, cell_2), and inside these cells there is a button with accessibility identifier "my_button". In this case to access a button inside the second cell you can't use AccessibilityById because there are two elements with this identifier on the screen. In this scenario AccessibilityByXpath is helpful. You can use the following code to touch button inside second cell.
 ```
 button_xPath = "XCUIElementTypeCell[contains(@label, 'cell_2')]/XCUIElementTypeButton" \
                                    "[contains(@label, 'my_button')]"
