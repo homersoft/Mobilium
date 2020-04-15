@@ -128,9 +128,9 @@ def get_element_id(self, accessibility: Accessibility, index: int = 0) -> str
 ```
 
 ## Short story about accessibility
-When you are working with XCUITests there is two possibilities to identify an element.
+When you are working with XCUITests there are two possibilities to identify an element.
 - Using accessibility identifier
-- Building query that allows to find elements that match this query
+- Building a query that allows finding elements that match this query
 
 That's why we've decided to support two types of accessibility element matching:
 - `AccessibilityById`
