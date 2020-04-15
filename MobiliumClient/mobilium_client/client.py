@@ -1,5 +1,4 @@
 # pylint: disable=E0611, E0401
-import argparse
 import time
 from typing import Optional, Callable, TypeVar
 from logging import getLogger, WARNING
@@ -8,7 +7,7 @@ from mobilium_client.common.wait import wait_until_true, wait_until_value
 from mobilium_client.common.exceptions import ElementNotFoundException
 from mobilium_client.common.window_size import WindowSize
 from mobilium_client.client_namespace import MobiliumClientNamespace
-from mobilium_proto_messages.accessibility import Accessibility, AccessibilityById, AccessibilityByXpath
+from mobilium_proto_messages.accessibility import Accessibility
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from mobilium_proto_messages.proto.messages_pb2 import ElementNotExists
