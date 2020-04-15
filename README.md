@@ -37,3 +37,31 @@ client.launch_app("com.mobilium.demo") # bundle id of your app
 ```
 - Save as `test.py` and run using: `python3 test.py`
 After those step, your app should be launched on the simulator
+
+## Available methods
+MobiliumClient object provides public API that allows using client.
+This API can be divided into two groups: App management and user interactions.
+##### App Management methods
+- `def connect(self, device_udid: str, address: str, port: int)`
+This method allows us to connect to the MobiliumServer at the provided address and port. This method is required to be called to perform any other actions
+- `def disconnect(self)` - disconnect client from server
+- `def prepare_driver(self) ` - this method allows us to rebuild all underlying driver dependencies running carthage update inside driver directory. This method can be time-consuming, and it doesn't have to be called every time tests are performed until the driver was setup properly previously
+- `def start_driver(self, timeout: int = 180)` - this method execute xcodebuild method to run Mobilium driver on provided device
+- `def install_app(self, file_path: Optional[str] = None)` - This method will install app at provided file_path into the device. If file_path is nil, the path from MobiliumClient config.py file will be used.
+- `def launch_app(self, bundle_id: Optional[str] = None)` - This method will launch application with given bundle_id on the device/simulator. If bundle_id is nil, bundle_id from config.py will be used.
+- `def uninstall_app(self, bundle_id: Optional[str] = None)` - This method uninstall application with provided bundle_id from the device/simulator
+- `def terminate_app(self)` - this method will terminate the currently running app
+
+
+#### User interaction methods
+- `def touch(self, x: int, y: int)` - This method allows to perform touch action at given coordinates.
+- `def get_window_size(self) -> WindowSize` - Get's device window size dimensions (width, height)
+- `def is_element_visible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) -> bool` - Check if given element is visible on the screen with one second periods waiting for visibility of this element for a given timeout. If element doesn't appear until timeout then it returns false
+- `def is_element_invisible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) -> bool` this method allows you to verify if given element is not on the screen. This method can also wait given period of time (timeout) waiting until this element disappear if its currently visible
+- `def is_element_enabled(self, accessibility: Accessibility, index: int = 0) -> bool` - this method allows too check if user interactions for element with given accessibility is enabled
+- `def set_element_text(self, accessibility: Accessibility, text: str, index: int = 0, clears: bool = True)` - this method allows to set text on elements that allows to do that (text fields, and text views). it allows to clear current text field content (`clears == true`) or leave it as it is.
+- `def set_slider_position(self, accessibility: Accessibility, position: float, index: int = 0)` - this method allows to move iOS sliders. Range should be between [0, 1].
+- `def get_element_value(self, accessibility: Accessibility, index: int = 0) -> str` - This method returns value (text or label) of element with given accessibility.
+- `def click_element(self, accessibility: Accessibility, index: int = 0)` - This method allows to perform click (touch up inside) action on element with given accessibility
+- `def get_elements_count(self, accessibility: Accessibility) -> int` - This method returns total amount of elements with provided accessibility. For unique elements it will always returns 1.
+- `def get_element_id(self, accessibility: Accessibility, index: int = 0) -> str` Helper method that allows to get element accessibility identifier based on element XPath accessibility.
