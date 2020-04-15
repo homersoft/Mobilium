@@ -72,22 +72,60 @@ def install_app(self, file_path: Optional[str] = None)
 def launch_app(self, bundle_id: Optional[str] = None)
 ```
 - Uninstall app with bundle_id from device/simulator
-- `def uninstall_app(self, bundle_id: Optional[str] = None)` - This method uninstall application with provided bundle_id from the device/simulator
-- `def terminate_app(self)` - this method will terminate the currently running app
+```
+def uninstall_app(self, bundle_id: Optional[str] = None)
+```
+- Terminate the currently running app
+```
+def terminate_app(self)
+```
 
 
 #### User interaction methods
-- `def touch(self, x: int, y: int)` - This method allows to perform touch action at given coordinates.
-- `def get_window_size(self) -> WindowSize` - Get's device window size dimensions (width, height)
-- `def is_element_visible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) -> bool` - Check if given element is visible on the screen with one second periods waiting for visibility of this element for a given timeout. If element doesn't appear until timeout then it returns false
-- `def is_element_invisible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) -> bool` this method allows you to verify if given element is not on the screen. This method can also wait given period of time (timeout) waiting until this element disappear if its currently visible
-- `def is_element_enabled(self, accessibility: Accessibility, index: int = 0) -> bool` - this method allows too check if user interactions for element with given accessibility is enabled
-- `def set_element_text(self, accessibility: Accessibility, text: str, index: int = 0, clears: bool = True)` - this method allows to set text on elements that allows to do that (text fields, and text views). it allows to clear current text field content (`clears == true`) or leave it as it is.
-- `def set_slider_position(self, accessibility: Accessibility, position: float, index: int = 0)` - this method allows to move iOS sliders. Position should be between [0, 1].
-- `def get_element_value(self, accessibility: Accessibility, index: int = 0) -> str` - This method returns value (text or label) of element with given accessibility.
-- `def click_element(self, accessibility: Accessibility, index: int = 0)` - This method allows to perform click (touch up inside) action on element with given accessibility
-- `def get_elements_count(self, accessibility: Accessibility) -> int` - This method returns total amount of elements with provided accessibility. For unique elements it will always returns 1.
-- `def get_element_id(self, accessibility: Accessibility, index: int = 0) -> str` Helper method that allows to get element accessibility identifier based on element XPath accessibility.
+- Perform touch action at given point
+```
+def touch(self, x: int, y: int)
+```
+- Get device/simulator screen dimensions (width, height)
+```
+def get_window_size(self) -> WindowSize
+```
+- Check if given element is visible on the screen with one second periods waiting for visibility of this element for a given timeout. If element doesn't appear until timeout then it returns false
+```
+def is_element_visible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) -> bool
+```
+- Verify if given element is not on the screen. This method can also wait given period of time (timeout) waiting until this element disappear if its currently visible
+```
+def is_element_invisible(self, accessibility: Accessibility, index: int = 0, timeout: float = 0) -> bool
+```
+- Check if user interactions for element with given accessibility is enabled
+```
+def is_element_enabled(self, accessibility: Accessibility, index: int = 0) -> bool
+```
+- Set text on elements that allows to do that (text fields, and text views). it allows to clear current text field content (`clears == true`) or leave it as it is.
+```
+def set_element_text(self, accessibility: Accessibility, text: str, index: int = 0, clears: bool = True)
+```
+- Adjust iOS sliders. Position should be between [0, 1].
+```
+def set_slider_position(self, accessibility: Accessibility, position: float, index: int = 0)
+```
+- Get value (text or label) of element with given accessibility.
+```
+def get_element_value(self, accessibility: Accessibility, index: int = 0) -> str
+```
+- Perform click (touch up inside) action on element with given accessibility
+```
+def click_element(self, accessibility: Accessibility, index: int = 0)
+```
+- Get total amount of elements with provided accessibility. For unique elements it will always returns 1.
+```
+def get_elements_count(self, accessibility: Accessibility) -> int
+```
+- Get element accessibility identifier based on element XPath accessibility.
+```
+def get_element_id(self, accessibility: Accessibility, index: int = 0) -> str
+```
 
 #### Short story about accessibility
 When you are working with XCUITests there is two possibilities to identify an element.
