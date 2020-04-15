@@ -1,9 +1,9 @@
 # Mobilium
 
-Mobilium is an open source testing framework that allows to test iOS/iPadOS applications. Mobilium can be use independly, but also can be included into other testing framework as a replacement for Appium WebDriver.
+Mobilium is an open-source testing framework that allows test iOS/iPadOS applications. Mobilium can be used independently, but also can be included in other testing frameworks as a replacement for Appium WebDriver.
 
 ## Motivation
-We've build Mobilium as a Appium WebDriver replacement taking under the consideration Appium poor performance and many other Appium drawbacks.
+We build Mobilium as an Appium WebDriver replacement taking under the consideration Appium poor performance and many other Appium drawbacks.
 
 ## Requirments
 - Xcode 11.4 [Apple](https://developer.apple.com/news/releases/?id=03032020f)
@@ -36,4 +36,4 @@ client.install_app("./app.ipa") # relative path to your app to Mobilium repo
 client.launch_app("com.mobilium.demo") # bundle id of your app
 ```
 - Save as `test.py` and run using: `python3 test.py`
-After those step your app should be launched on the simulator
+After those step, your app should be launched on the simulator
