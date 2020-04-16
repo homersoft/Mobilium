@@ -1,15 +1,15 @@
 # Mobilium framework architecture
 
 #### Components
-- **Mobilium Server** - core of the Mobilium project. This application written in python is a gate for communication between Client and Driver. In addition, Server is responsible for running MobiliumDriver on device/simulator.
-- **Mobilium iOS Driver** - UI Test executor. This component has implementation of our testing procedures, and it is runned on the iOS device. It is directly testing System Under Test (SUT), which will be your iOS application.
-- **Mobilium Client** - UI Test runner where we manage whole testing process, request application and environment changes on server and communicate through the system with SUT
+- **Mobilium Server** - the core of the Mobilium project. This application written in python is a gate for communication between Client and Driver. In addition, the Server is responsible for running MobiliumDriver on device/simulator.
+- **Mobilium iOS Driver** - UI Test executor. This component has an implementation of our testing procedures, and it is run on the iOS device. It is directly testing System Under Test (SUT), which will be your iOS application.
+- **Mobilium Client** - UI Test runner where we manage whole testing process, request application and environment changes on the server and communicate through the system with SUT
 
 ![Diagram](artifacts/sut.png)
 
 #### Components communication
-We used WebSockets to allow communication between components. WebSockets ensure quick, reliabe two way communication.
-Following diagram represents how communication flow is achived. Imporant note is that, that client is never directly sending messages to thee iOS driver, instead client sends request to the server, which will decided if this request should be handled by the server or procceed to the driver directly.
+We used WebSockets to allow communication between components. WebSockets ensure quick, reliable two-way communication.
+The following diagram represents how communication flow is achieved. An important note is that, the client is never directly sending messages to the iOS driver, instead client sends a request to the server, which will be decided if this request should be handled by the server or proceed to the driver directly.
 
 ![DataFlow](artifacts/data_flow_diagram.png)
 
