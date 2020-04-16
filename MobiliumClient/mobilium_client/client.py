@@ -1,5 +1,4 @@
 # pylint: disable=E0611, E0401
-import argparse
 import time
 from typing import Optional, Callable, TypeVar
 from logging import getLogger, WARNING
@@ -7,9 +6,8 @@ from mobilium_client.common.named_partial import named_partial
 from mobilium_client.common.wait import wait_until_true, wait_until_value
 from mobilium_client.common.exceptions import ElementNotFoundException
 from mobilium_client.common.window_size import WindowSize
-from mobilium_client import config
 from mobilium_client.client_namespace import MobiliumClientNamespace
-from mobilium_proto_messages.accessibility import Accessibility, AccessibilityById, AccessibilityByXpath
+from mobilium_proto_messages.accessibility import Accessibility
 from mobilium_proto_messages.message_data_factory import MessageDataFactory
 from mobilium_proto_messages.message_deserializer import MessageDeserializer
 from mobilium_proto_messages.proto.messages_pb2 import ElementNotExists
@@ -51,21 +49,15 @@ class MobiliumClient:
         request = MessageDataFactory.start_driver_request(self.__device_udid)
         self.__send(request, MessageDeserializer.start_driver_response, timeout=timeout)
 
-    def install_app(self, file_path: Optional[str] = None):
-        if file_path is None:
-            file_path = config.APP_FILE_PATH
+    def install_app(self, file_path: str):
         request = MessageDataFactory.install_app_request(self.__device_udid, file_path)
         self.__send(request, MessageDeserializer.install_app_response)
 
-    def launch_app(self, bundle_id: Optional[str] = None):
-        if bundle_id is None:
-            bundle_id = config.APP_BUNDLE_ID
+    def launch_app(self, bundle_id: str):
         request = MessageDataFactory.launch_app_request(bundle_id)
         self.__send(request, MessageDeserializer.launch_app_response)
 
-    def uninstall_app(self, bundle_id: Optional[str] = None):
-        if bundle_id is None:
-            bundle_id = config.APP_BUNDLE_ID
+    def uninstall_app(self, bundle_id: str):
         request = MessageDataFactory.uninstall_app_request(self.__device_udid, bundle_id)
         self.__send(request, MessageDeserializer.uninstall_app_response)
 
@@ -185,47 +177,3 @@ class MobiliumClient:
 
     def __wait_until_disconnected(self):
         wait_until_true(self.__is_disconnected)
-
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-a", "--address", help="Mobilium Server IP Address", required=True)
-    parser.add_argument("-p", "--port", help="Mobilium Server port. Default: 65432", default=65432)
-    parser.add_argument("-u", "--udid", help="UDID of iOS device on which tests are run", required=True)
-    arguments = parser.parse_args()
-
-    mobilium_client = MobiliumClient()
-    mobilium_client.connect(device_udid=arguments.udid, address=arguments.address, port=arguments.port)
-    mobilium_client.prepare_driver()
-    mobilium_client.start_driver()
-    mobilium_client.install_app()
-    mobilium_client.launch_app()
-
-    window_size = mobilium_client.get_window_size()
-    mobilium_client.touch(x=int(window_size.width/2), y=20)
-
-    mobilium_client.is_element_visible(AccessibilityById("login_button"))
-    mobilium_client.is_element_invisible(AccessibilityById("unknown_button"))
-    mobilium_client.is_element_enabled(AccessibilityById("login_button"))
-    mobilium_client.click_element(AccessibilityByXpath("//XCUIElementTypeButton[contains(@label, 'tab_1')]"))
-
-    time.sleep(1)
-
-    mobilium_client.set_element_text(AccessibilityByXpath("//XCUIElementTypeTextField"
-                                                          "[contains(@label, 'Your company (optional)')]"), "xpath\n")
-    mobilium_client.set_element_text(AccessibilityById("email"), "homer123\n")
-    mobilium_client.get_element_value(AccessibilityById("email"))
-    mobilium_client.click_element(AccessibilityById("terms_checkbox_button"))
-
-    mobilium_client.get_elements_count(AccessibilityByXpath("//XCUIElementTypeTextField[contains(@label, 'name')]"))
-
-    mobilium_client.set_element_text(AccessibilityByXpath("//XCUIElementTypeTextField[contains(@label, 'name')]"),
-                                     text="element at index 1", index=1)
-
-    mobilium_client.terminate_app()
-    mobilium_client.uninstall_app()
-    mobilium_client.disconnect()
-
-
-if __name__ == '__main__':
-    main()

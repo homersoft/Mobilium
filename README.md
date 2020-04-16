@@ -11,6 +11,11 @@ We build Mobilium as an Appium WebDriver replacement taking under the considerat
 - Pip [How to install pip](https://pip.pypa.io/en/stable/installing/)
 - Carthage [Get Carthage](https://github.com/Carthage/Carthage)
 
+NOTE:
+```
+iOS/iPad device needs to be connected to this same local network to which Mobilium Server machine is connected
+```
+
 ## How to install
 
 - Clone this repo
@@ -37,3 +42,6 @@ client.launch_app("com.mobilium.demo") # bundle id of your app
 ```
 - Save as `test.py` and run using: `python3 test.py`
 After those step, your app should be launched on the simulator
+
+## Available actions
+All Mobilium client actions are listed and described [here](https://github.com/homersoft/Mobilium/blob/master/MobiliumClient/README.md)
