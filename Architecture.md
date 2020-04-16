@@ -16,7 +16,8 @@ Following diagram represents how communication flow is achived. Imporant note is
 #### Proto models
 
 All communication between components is based on request/response model.
-This means that at the time, there is only one request performed by client, and client is waiting for a response dedicated for that request.
+This means that at the time, there is only one request performed by client, and client is waiting for a response dedicated for that request. This request can be handled by server or proxied to the iOS driver.
+When request is handled server is sending or proxying response to the client.
 
 To unify all messages (request/response) we've decided to use [Google proto](https://developers.google.com/protocol-buffers).
 
