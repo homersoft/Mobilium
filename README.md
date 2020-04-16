@@ -45,3 +45,15 @@ After those step, your app should be launched on the simulator
 
 ## Available actions
 All Mobilium client actions are listed and described [here](https://github.com/homersoft/Mobilium/blob/master/MobiliumClient/README.md)
+
+## Permissions handling
+Mobilium source code has added an interruption handler so all permission requests are handled automatically
+
+## Running Mobilium on real devices
+
+Because of apple requirements to run an Xcode project on the device you have to set correct provisioning profile inside MobiliumDriver project.
+- Open MobiliumDriver.xcodeproj
+- Open MobiliumDrvier project details
+- Open Signing and capabilities tab
+- Under iOS Platform select the correct provisioning profile to which your device has been assigned.
+- Select MobiliumDriver target and your connected device in xcode and run tests (Product -> Test) or `command + U`
