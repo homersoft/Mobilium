@@ -12,7 +12,7 @@ MobiliumDriver should be started by MobiliumServer. If you want to start it manu
 ```
 xcodebuild -project MobiliumDriver.xcodeproj \
     -scheme MobiliumDriver \
-    -destination "platform=iOS,id=UDID_OF_YOUR_CONNECTED_DEVICE" \
+    -destination "id=UDID_OF_YOUR_CONNECTED_DEVICE" \
     HOST=MOBILIUM_SERVER_HOST \
     PORT=MOBILIUM_SERVER_PORT \
     test
