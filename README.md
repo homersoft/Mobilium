@@ -3,7 +3,12 @@
 Mobilium is an open-source testing framework that allows testing iOS/iPadOS applications. Mobilium can be used independently, but also can be included in other testing frameworks as a replacement for Appium WebDriver.
 
 ## Motivation
-We build Mobilium as an Appium WebDriver replacement taking under the consideration Appium poor performance and many other Appium drawbacks.
+While Appium is build as unified UI testing framework for all possible platforms it's handy but have some drawbacks.
+E.g. Appium is building XML representation of current application UI elements, and then allows to interact with those elements.
+This leads to performance issues, issues with finding some UI elements, or other issues connected with that this structure is not always accurred.
+Mobilium under the hood is ussing Xcode UITest framework, which should answer for issues laying under the unified frameworks architecture.
+
+Check [architecture documentation](Architecture.md) for more details.
 
 ## Requirments
 - Xcode 11.4 [Apple](https://developer.apple.com/news/releases/?id=03032020f)
