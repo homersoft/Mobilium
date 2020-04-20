@@ -64,4 +64,4 @@ Because of apple requirements to run an Xcode project on the device you have to 
 - Select MobiliumDriver target and your connected device in xcode and run tests (Product -> Test) or `command + U`
 
 ## Licence
-Mobilium is distributed under MIT license. You can check more [here](LICENSE)
+Mobilium is distributed under MIT license. You can check more [here](LICENSE.md)
