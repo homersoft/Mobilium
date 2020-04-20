@@ -62,3 +62,6 @@ Because of apple requirements to run an Xcode project on the device you have to 
 - Open Signing and capabilities tab
 - Under iOS Platform select the correct provisioning profile to which your device has been assigned.
 - Select MobiliumDriver target and your connected device in xcode and run tests (Product -> Test) or `command + U`
+
+## Licence
+Mobilium is distributed under MIT license. You can check more [here](LICENSE)
