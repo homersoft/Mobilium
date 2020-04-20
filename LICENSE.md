@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2020 Silvair Sp. z o.o Krs: 0000395561
+Copyright (c) 2020 Silvair Sp. z o.o. Krs: 0000395561
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
