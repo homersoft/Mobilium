@@ -117,11 +117,7 @@ class LoginViewController: ViewController, UIPickerViewDelegate, UIPickerViewDat
         if phone.isEmpty || code.isEmpty {
             showAlert(with: "Ops", message: "Please provide input data")
         } else {
-            loadingIndicator.startAnimating()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-                self?.loadingIndicator.stopAnimating()
-                self?.showAccountView()
-            }
+            showAccountView()
         }
     }
     
