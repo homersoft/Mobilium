@@ -7,13 +7,10 @@
 //
 
 import UIKit
-class ViewController<ViewModel>: UIViewController {
-    let viewModel: ViewModel
 
-    // MARK: - Lifecycle
-
-    init(viewModel: ViewModel) {
-        self.viewModel = viewModel
+class ViewController: UIViewController {
+    
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
 

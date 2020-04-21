@@ -9,13 +9,11 @@
 import UIKit
 
 class ModuleFactory {
-    func makeLoginVC(coordinator: LoginViewCoordinator) -> UIViewController {
-        let viewModel = LoginViewModel(coordinator: coordinator)
-        return LoginViewController(viewModel: viewModel)
+    func makeLoginVC() -> UIViewController {
+        return LoginViewController()
     }
 
-    func makeAccountVC(for user: User, coordinator: AccountCoordinator) -> UIViewController {
-        let viewModel = AccountViewModel(currentUser: user, coordinator: coordinator)
-        return AccountViewController(viewModel: viewModel)
+    func makeAccountVC() -> UIViewController {
+        return AccountViewController()
     }
 }

@@ -9,7 +9,7 @@
 import UIKit
 import Combine
 
-class AccountViewController: ViewController<AccountViewModel>, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AccountViewController: ViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     private lazy var loader = UIActivityIndicatorView.makeForAutolayout()
         .set(\.hidesWhenStopped, to: true)
     private lazy var stackView = UIStackView.makeForAutolayout()
@@ -73,15 +73,12 @@ class AccountViewController: ViewController<AccountViewModel>, UITextFieldDelega
     private var allRequiredInputs: [InputField] { [ firstNameTextField, lastNameTextField,
                                                                emailTextField, phoneTextField, locationTextField, pictureImageView] }
     private var cancellables = Set<AnyCancellable>()
-    private var userData: [AccountField: Any?] = [:]
 
     // MARK: - Lifecycyle
 
     override func viewDidLoad() {
           super.viewDidLoad()
           title = "Your account"
-          initializeObservers()
-          viewModel.loadData()
       }
 
     override func initializeSubviews() {
@@ -113,41 +110,12 @@ class AccountViewController: ViewController<AccountViewModel>, UITextFieldDelega
         ])
     }
 
-    // MARK: - Observers
-
-    private func initializeObservers() {
-        pictureImageView
-            .chooseImageButton
-            .publisher(for: .touchUpInside)
-            .sink(receiveValue: { [unowned self] _ in
-                self.onChangePictureTouched()
-            })
-            .store(in: &cancellables)
-        saveButton
-            .publisher(for: .touchUpInside)
-            .sink(receiveValue: { [unowned self] _ in
-                self.onSaveTouched()
-            })
-            .store(in: &cancellables)
-        logoutButton
-            .publisher(for: .touchUpInside)
-            .sink(receiveValue: { [unowned self] _ in
-                self.onLogutTouched()
-            })
-            .store(in: &cancellables)
-        viewModel
-            .viewState
-            .receive(on: OperationQueue.main)
-            .sink(receiveValue: { [unowned self] in self.onViewStateChanged(to: $0) })
-            .store(in: &cancellables)
-    }
-
     // MARK: - Actions
 
     private func onSaveTouched() {
         view.endEditing(true)
         if allRequiredInputs.filter({ $0.forceValidation() }).count == allRequiredInputs.count {
-            viewModel.store(userData: userData)
+            // success
         } else {
             // This code is not so great, but my time has done
             showAlert(with: "Ops...", message: "Please fullfill all required fields")
@@ -173,7 +141,7 @@ class AccountViewController: ViewController<AccountViewModel>, UITextFieldDelega
     }
 
     func onLogutTouched() {
-        viewModel.logout()
+        
     }
 
     // MARK: - ImagePicker
@@ -193,53 +161,6 @@ class AccountViewController: ViewController<AccountViewModel>, UITextFieldDelega
         })
     }
 
-    private func onViewStateChanged(to state: AccountViewState) {
-        saveButton.isUserInteractionEnabled = true
-        switch state {
-        case .initial:
-            break
-        case .syncing:
-            saveButton.isUserInteractionEnabled = false
-            loader.startAnimating()
-        case .loaded(let userData):
-            loader.stopAnimating()
-            set(userData)
-        case .saved:
-            loader.stopAnimating()
-            showAlert(with: "Yey", message: "Data saved")
-        case .validationError(let title, let message):
-            loader.stopAnimating()
-            showAlert(with: title, message: message)
-            allRequiredInputs.forEach { $0.forceValidation() }
-        case .error(let title, let message):
-            loader.stopAnimating()
-            showAlert(with: title, message: message)
-        }
-    }
-
-    private func set(_ userData: [AccountField: Any]) {
-        self.userData = userData
-        userData.forEach(set)
-    }
-
-    private func set(atField field: AccountField, value: Any) {
-        switch field {
-        case .firstName:
-            firstNameTextField.text = value as? String
-        case .lastName:
-            lastNameTextField.text = value as? String
-        case .email:
-            emailTextField.text = value as? String
-        case .location:
-            locationTextField.text = value as? String
-        case .phoneNumber:
-            phoneTextField.text = value as? String
-        case .picture where value is Data:
-            pictureImageView.image = UIImage(data: value as! Data)
-        case .picture: break
-        }
-    }
-
     // MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -253,8 +174,6 @@ class AccountViewController: ViewController<AccountViewModel>, UITextFieldDelega
             return
         }
         pictureImageView.image = image
-        _ = pictureImageView.forceValidation()
-        userData[.picture] = image.pngData()
     }
 
     // MARK: - UITextFieldDelegate
@@ -269,27 +188,6 @@ class AccountViewController: ViewController<AccountViewModel>, UITextFieldDelega
             phoneTextField.becomeFirstResponder()
         case phoneTextField:
             locationTextField.becomeFirstResponder()
-        default: break
-        }
-        return true
-    }
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let text = textField.text,
-            let textRange = Range(range, in: text) else { return true }
-        let updatedText = text.replacingCharacters(in: textRange, with: string)
-        let isValid = (textField as? TextField)?.validate() == true
-        switch textField {
-        case firstNameTextField:
-            userData[.firstName] = isValid ? updatedText : nil
-        case lastNameTextField:
-            userData[.lastName] = isValid ? updatedText : nil
-        case emailTextField:
-            userData[.email] = isValid ? updatedText : nil
-        case phoneTextField:
-            userData[.phoneNumber] = isValid ? updatedText : nil
-        case locationTextField:
-            userData[.location] = isValid ? updatedText : nil
         default: break
         }
         return true

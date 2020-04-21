@@ -9,7 +9,7 @@
 import UIKit
 import Combine
 
-class LoginViewController: ViewController<LoginViewModel>, UIPickerViewDelegate, UIPickerViewDataSource {
+class LoginViewController: ViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     private lazy var loginStackView = UIStackView.makeForAutolayout()
         .set(\.spacing, to: 20)
         .set(\.axis, to: .vertical)
@@ -33,7 +33,6 @@ class LoginViewController: ViewController<LoginViewModel>, UIPickerViewDelegate,
     private lazy var verificationCodeTextField = UITextField()
         .set(\.returnKeyType, to: .done)
         .set(\.placeholder, to: "Verification code")
-        .set(\.isHidden, to: true)
         .set(\.textContentType, to: .oneTimeCode)
         .set(\.accessibilityIdentifier, to: "code_field")
 
@@ -52,15 +51,14 @@ class LoginViewController: ViewController<LoginViewModel>, UIPickerViewDelegate,
         .set(\.onDone, to: { [weak phoneNumberTextField] in phoneNumberTextField?.becomeFirstResponder() })
 
     private var cancellables: Set<AnyCancellable> = []
-    private var countryCodes: [Country] = []
+    private var countryCodes: [String] = ["+48"]
 
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Login"
-        initializeObservers()
-        viewModel.loadCountryCodes()
+        initializeButtons()
     }
 
     override func initializeSubviews() {
@@ -83,6 +81,10 @@ class LoginViewController: ViewController<LoginViewModel>, UIPickerViewDelegate,
             loadingIndicator.centerYAnchor.constraint(equalTo: layoutGuide.centerYAnchor)
         ])
     }
+    
+    private func initializeButtons() {
+        loginButton.addTarget(self, action: #selector(login(_:)), for: .touchUpInside)
+    }
 
     // MARK: - PickerViewDataSource
 
@@ -95,77 +97,36 @@ class LoginViewController: ViewController<LoginViewModel>, UIPickerViewDelegate,
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        "\(countryCodes[row].dialCode) | \(countryCodes[row].name)"
+        "\(countryCodes[row])"
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let country = countryCodes[row]
-        countryCodeTextField.text = country.dialCode
+        countryCodeTextField.text = country
     }
 
     // MARK: - Private
-
-    private func initializeObservers(){
-        viewModel
-            .viewState
-            .receive(on: OperationQueue.main)
-            .sink { [weak self] in self?.onViewStateChanged(to: $0) }
-            .store(in: &cancellables)
-        loginButton
-            .publisher(for: .touchUpInside)
-            .withLatestFrom(viewModel.viewState, resultSelector: { $1 })
-            .receive(on: OperationQueue.main)
-            .sink(receiveValue: { [weak self] in
-                switch $0 {
-                case .loaded, .error:
-                    self?.login()
-                case .phoneNumberConfirmed:
-                    self?.confirmVerificationCode()
-                case .loading, .initial:
-                    break
-                }
-            })
-            .store(in: &cancellables)
-    }
 
     private func initializeStackViews() {
         [phoneStackView, verificationCodeTextField].forEach(loginStackView.addArrangedSubview)
         [countryCodeTextField, phoneNumberTextField].forEach(phoneStackView.addArrangedSubview)
     }
 
-    private func login() {
-        guard let text = phoneNumberTextField.text, let code = countryCodeTextField.text else { return }
-        viewModel.verify(phoneNumber: code + text)
-    }
-
-    private func confirmVerificationCode() {
-        guard let text = verificationCodeTextField.text else { return }
-        viewModel.confirm(verificationCode: text)
-    }
-
-    private func onViewStateChanged(to viewState: LoginViewState) {
-        switch viewState {
-        case .initial:
-            break
-        case .loading:
+    @objc private func login(_ sender: Any?) {
+        guard let phone = phoneNumberTextField.text, let code = verificationCodeTextField.text else { return }
+        if phone.isEmpty || code.isEmpty {
+            showAlert(with: "Ops", message: "Please provide input data")
+        } else {
             loadingIndicator.startAnimating()
-        case .error(let title, let message):
-            showVerificationCodeField(false)
-            loadingIndicator.stopAnimating()
-            showAlert(with: title, message: message)
-        case .phoneNumberConfirmed:
-            verificationCodeTextField.text = ""
-            loadingIndicator.stopAnimating()
-            showVerificationCodeField(true)
-        case .loaded(let countries):
-            self.countryCodes = countries
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+                self?.loadingIndicator.stopAnimating()
+                self?.showAccountView()
+            }
         }
     }
-
-    private func showVerificationCodeField(_ show: Bool) {
-        UIView.animate(withDuration: 0.3) { [weak verificationCodeTextField] in
-            verificationCodeTextField?.isHidden = !show
-        }
-        if show { verificationCodeTextField.becomeFirstResponder() }
+    
+    private func showAccountView() {
+        let vc = ModuleFactory().makeAccountVC()
+        navigationController?.setViewControllers([vc], animated: true)
     }
 }
