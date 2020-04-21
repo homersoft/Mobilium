@@ -65,22 +65,23 @@ class AccountViewController: ViewController, UITextFieldDelegate, UIImagePickerC
         .set(\.title, to: "Logout")
         .set(\.accessibilityIdentifier, to: "logout_button")
         .set(\.titleColor, to: .blue)
-
+    
     private lazy var pickerController = UIImagePickerController()
         .set(\.delegate, to: self)
         .set(\.allowsEditing, to: true)
         .set(\.mediaTypes, to: ["public.image"])
-    private var allRequiredInputs: [InputField] { [ firstNameTextField, lastNameTextField,
-                                                               emailTextField, phoneTextField, locationTextField, pictureImageView] }
+    private var allRequiredInputs: [InputField] { [firstNameTextField, lastNameTextField,
+                                                   emailTextField, phoneTextField, locationTextField, pictureImageView] }
     private var cancellables = Set<AnyCancellable>()
-
+    
     // MARK: - Lifecycyle
-
+    
     override func viewDidLoad() {
-          super.viewDidLoad()
-          title = "Your account"
-      }
-
+        super.viewDidLoad()
+        title = "Your account"
+        initializeButtons()
+    }
+    
     override func initializeSubviews() {
         super.initializeSubviews()
         pictureImageView.backgroundColor = .darkGray
@@ -94,7 +95,7 @@ class AccountViewController: ViewController, UITextFieldDelegate, UIImagePickerC
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: logoutButton)
         createConstraints()
     }
-
+    
     override func createConstraints() {
         super.createConstraints()
         let layoutGuide = view.safeAreaLayoutGuide
@@ -109,21 +110,27 @@ class AccountViewController: ViewController, UITextFieldDelegate, UIImagePickerC
             pictureImageView.heightAnchor.constraint(equalToConstant: 125)
         ])
     }
-
+    
+    private func initializeButtons() {
+        logoutButton.addTarget(self, action: #selector(onLogutTouched(_:)), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(onSaveTouched(_:)), for: .touchUpInside)
+        pictureImageView.chooseImageButton.addTarget(self, action: #selector(onChangePictureTouched(_:)), for: .touchUpInside)
+    }
+    
     // MARK: - Actions
-
-    private func onSaveTouched() {
+    
+    @objc private func onSaveTouched(_ sender: Any) {
         view.endEditing(true)
         if allRequiredInputs.filter({ $0.forceValidation() }).count == allRequiredInputs.count {
-            // success
+            showAlert(with: "Success", message: "Data saved!")
         } else {
             // This code is not so great, but my time has done
             showAlert(with: "Ops...", message: "Please fullfill all required fields")
         }
     }
-
-
-    private func onChangePictureTouched() {
+    
+    
+    @objc private func onChangePictureTouched(_ sender: Any) {
         let alertController = UIAlertController(title: "Update profile picture", message: "Choose source", preferredStyle: .actionSheet)
         if let action = self.action(for: .camera, title: "Take photo") {
             alertController.addAction(action)
@@ -134,39 +141,40 @@ class AccountViewController: ViewController, UITextFieldDelegate, UIImagePickerC
         if let action = self.action(for: .photoLibrary, title: "Photo library") {
             alertController.addAction(action)
         }
-
+        
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
+        
         present(alertController, animated: true, completion: nil)
     }
-
-    func onLogutTouched() {
-        
+    
+    @objc private func onLogutTouched(_ sender: Any?) {
+        let vc = ModuleFactory().makeLoginVC()
+        navigationController?.setViewControllers([vc], animated: true)
     }
-
+    
     // MARK: - ImagePicker
-
+    
     private func showImagePicker(type: UIImagePickerController.SourceType) {
         pickerController.sourceType = type
         present(pickerController, animated: true, completion: nil)
     }
-
+    
     private func action(for type: UIImagePickerController.SourceType, title: String) -> UIAlertAction? {
         guard UIImagePickerController.isSourceTypeAvailable(type) else {
             return nil
         }
-
+        
         return UIAlertAction(title: title, style: .default, handler: { [weak self] _ in
             self?.showImagePicker(type: type)
         })
     }
-
+    
     // MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
-
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
-
+    
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         defer { picker.dismiss(animated: true, completion: nil) }
@@ -175,9 +183,9 @@ class AccountViewController: ViewController, UITextFieldDelegate, UIImagePickerC
         }
         pictureImageView.image = image
     }
-
+    
     // MARK: - UITextFieldDelegate
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
         case firstNameTextField:
