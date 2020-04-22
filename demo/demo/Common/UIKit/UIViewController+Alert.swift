@@ -11,6 +11,8 @@ import UIKit
 extension UIViewController {
     func showAlert(with title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.view.accessibilityIdentifier = "alert_view"
+        alert.view.accessibilityValue = "\(title)-\(message)"
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)

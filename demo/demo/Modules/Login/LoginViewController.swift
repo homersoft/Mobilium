@@ -113,12 +113,7 @@ class LoginViewController: ViewController, UIPickerViewDelegate, UIPickerViewDat
     }
 
     @objc private func login(_ sender: Any?) {
-        guard let phone = phoneNumberTextField.text, let code = verificationCodeTextField.text else { return }
-        if phone.isEmpty || code.isEmpty {
-            showAlert(with: "Ops", message: "Please provide input data")
-        } else {
-            showAccountView()
-        }
+        showAccountView()
     }
     
     private func showAccountView() {

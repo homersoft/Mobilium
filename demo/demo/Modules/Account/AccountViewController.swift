@@ -66,6 +66,13 @@ class AccountViewController: ViewController, UITextFieldDelegate, UIImagePickerC
         .set(\.accessibilityIdentifier, to: "logout_button")
         .set(\.titleColor, to: .blue)
     
+    private lazy var successLabel = UILabel.makeForAutolayout()
+        .set(\.text, to: "Account data saved")
+        .set(\.accessibilityIdentifier, to: "success_label")
+        .set(\.backgroundColor, to: .white)
+        .set(\.textAlignment, to: .center)
+        .set(\.isHidden, to: true)
+    
     private lazy var pickerController = UIImagePickerController()
         .set(\.delegate, to: self)
         .set(\.allowsEditing, to: true)
@@ -87,6 +94,7 @@ class AccountViewController: ViewController, UITextFieldDelegate, UIImagePickerC
         pictureImageView.backgroundColor = .darkGray
         view.addSubview(stackView)
         view.addSubview(loader)
+        view.addSubview(successLabel)
         [avatarStackView, emailTextField, phoneTextField, locationTextField]
             .forEach(stackView.addArrangedSubview)
         [firstNameTextField, lastNameTextField].forEach(infoStackView.addArrangedSubview)
@@ -107,7 +115,11 @@ class AccountViewController: ViewController, UITextFieldDelegate, UIImagePickerC
             stackView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -20),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: layoutGuide.bottomAnchor),
             pictureImageView.widthAnchor.constraint(equalToConstant: 125),
-            pictureImageView.heightAnchor.constraint(equalToConstant: 125)
+            pictureImageView.heightAnchor.constraint(equalToConstant: 125),
+            successLabel.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
+            successLabel.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+            successLabel.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+            successLabel.heightAnchor.constraint(equalToConstant: 26)
         ])
     }
     
@@ -121,12 +133,13 @@ class AccountViewController: ViewController, UITextFieldDelegate, UIImagePickerC
     
     @objc private func onSaveTouched(_ sender: Any) {
         view.endEditing(true)
-        if allRequiredInputs.filter({ $0.forceValidation() }).count == allRequiredInputs.count {
-            showAlert(with: "Success", message: "Data saved!")
-        } else {
-            // This code is not so great, but my time has done
-            showAlert(with: "Ops...", message: "Please fullfill all required fields")
-        }
+        showSuccessLabel()
+    }
+    
+    private func showSuccessLabel() {
+        UIView.animate(withDuration: 0.5, animations: { [weak successLabel] in
+            successLabel?.isHidden = false
+        })
     }
     
     
