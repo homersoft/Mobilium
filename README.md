@@ -18,6 +18,7 @@ Check [architecture documentation](Architecture.md) for more details.
 
 NOTE:
 ```
+Right now Mobilium can be used only with reali iOS/iPadOS devices. Sumulators are not supported!
 iOS/iPad device needs to be connected to this same local network to which Mobilium Server machine is connected
 ```
 
@@ -33,8 +34,7 @@ This will install 2 command-line tools in your environment: `mobilium-server`, a
 
 - Obtain your localhost ip address using `ifconfig`
 - run server `mobilium-server ip_address` e.g. `mobilium-server 192.168.1.7`
-- obtain desired simulator or device id using `instruments -s devices`
-- if you are running your app on simulator open Simulator.app `open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app`
+- obtain desired device id using `instruments -s devices`
 - copy your app.ipa file into Mobilium directory
 - write your first test:
 ```
@@ -46,7 +46,7 @@ client.install_app("./app.ipa") # relative path to your app to Mobilium repo
 client.launch_app("com.mobilium.demo") # bundle id of your app
 ```
 - Save as `test.py` and run using: `python3 test.py`
-After those step, your app should be launched on the simulator
+After those step, your app should be launched on your device.
 
 ## Available actions
 All Mobilium client actions are listed and described [here](https://github.com/homersoft/Mobilium/blob/master/MobiliumClient/README.md)
@@ -61,7 +61,14 @@ Because of apple requirements to run an Xcode project on the device you have to 
 - Open MobiliumDrvier project details
 - Open Signing and capabilities tab
 - Under iOS Platform select the correct provisioning profile to which your device has been assigned.
-- Select MobiliumDriver target and your connected device in xcode and run tests (Product -> Test) or `command + U`
+- Select MobiliumDriver target and your connected device in Xcode and run tests (Product -> Test) or `command + U`
 
+## Example
+Check [demo](demo) directory to see example Xcode project and UI tests written in Mobilium.
+
+## Know issues
+- As apple not allows to setup accessibility identifiers to UIAlertController titles and buttons Mobilium doesn't support system alerts
+- Mobilium doesn't support testing on iOS simulators
+-
 ## Licence
 Mobilium is distributed under MIT license. You can check more [here](LICENSE.md)
