@@ -64,7 +64,7 @@ Because of apple requirements to run an Xcode project on the device you have to 
 - Select MobiliumDriver target and your connected device in Xcode and run tests (Product -> Test) or `command + U`
 
 ## Example
-Check [demo](demo) directory to see example Xcode project and UI tests written in Mobilium.
+Check [demo](demo) to see example Xcode project and UI tests written in Mobilium.
 
 ## Know issues
 - As apple not allows to setup accessibility identifiers to UIAlertController titles and buttons Mobilium doesn't support system alerts

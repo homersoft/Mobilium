@@ -17,6 +17,8 @@ class TestRunner:
         self.client.install_app(file_path="demo/demo.ipa")
         self.test_user_puts_phone_and_code_and_touch_login()
         self.test_user_saves_all_required_data()
+        self.test_user_logout()
+        self.client.terminate_app()
         self.client.disconnect()
 
     def test_user_puts_phone_and_code_and_touch_login(self):
@@ -30,7 +32,7 @@ class TestRunner:
 
         #then "Your accoount" page is visible
         navigation_title = self.client.get_element_id(AccessibilityByXpath("//XCUIElementTypeNavigationBar"))
-        assert navigation_title in "Your account"
+        assert navigation_title in "Your account", "Your account page is not visible"
 
     def test_user_saves_all_required_data(self):
         # given: Your account page is visible
@@ -44,8 +46,18 @@ class TestRunner:
         self.client.click_element(AccessibilityById("save_button"))
 
         # then
-        success_label_visible = self.client.is_element_visible(AccessibilityById("success_label"))
-        assert save_label_visible, "Success label is invisible"
+        is_success_visible = self.client.is_element_visible(AccessibilityById("success_label"))
+        assert is_success_visible, "Success label is not visible"
+
+    def test_user_logout(self):
+        # given: User is on "Your account page"
+
+        #when: user logouts
+        self.client.click_element(AccessibilityById("logout_button"))
+
+        #then "Login" page is visible
+        page_title = self.client.get_element_id(AccessibilityByXpath("//XCUIElementTypeNavigationBar"))
+        assert page_title in "Login", "Login page is not visible"
 
 
 def main():
