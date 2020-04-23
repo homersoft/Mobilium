@@ -10,4 +10,4 @@ It implements three tests:
 All testing steps are implemented inside [demo_tests.py](demo_tests.py)
 
 ## Result
-![Result](demo.gif)
+![Result](demo_run.gif)
