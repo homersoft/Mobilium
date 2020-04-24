@@ -1,0 +1,202 @@
+syntax = "proto3";
+
+message ElementNotExists {}
+
+message ElementError {
+    oneof reason {
+        ElementNotExists elementNotExists = 1;
+    }
+}
+
+message ElementIndicator {
+    oneof type {
+        string id = 1;
+        string xpath = 2;
+    }
+}
+
+message StartDriverRequest {
+    string udid = 1;
+}
+message StartDriverResponse {}
+
+message InstallAppRequest {
+    string udid = 1;
+    string file_path = 2;
+}
+message InstallAppResponse {}
+
+message UninstallAppRequest {
+    string udid = 1;
+    string bundle_id = 2;
+}
+message UninstallAppResponse {}
+
+message LaunchAppRequest {
+    string bundle_id = 1;
+}
+message LaunchAppResponse {}
+
+message TerminateAppRequest {}
+
+message TerminateAppResponse {}
+
+message TouchRequest {
+    int64 x = 1;
+    int64 y = 2;
+}
+
+message TouchResponse {}
+
+message GetWindowSizeRequest { }
+
+message GetWindowSizeResponse {
+    float width = 1;
+    float height = 2;
+}
+
+message IsElementVisibleRequest {
+    ElementIndicator element_indicator = 1;
+    uint32 index = 2;
+    float timeout = 3;
+}
+
+message IsElementInvisibleRequest {
+    ElementIndicator element_indicator = 1;
+    uint32 index = 2;
+    float timeout = 3;
+}
+
+message IsElementVisibleResponse {
+    ElementIndicator element_indicator = 1;
+    bool is_visible = 2;
+}
+
+message IsElementInvisibleResponse {
+    ElementIndicator element_indicator = 1;
+    bool is_invisible = 2;
+}
+
+message IsElementEnabledRequest {
+    ElementIndicator element_indicator = 1;
+    uint32 index = 2;
+}
+
+message IsElementEnabledResponse {
+    ElementIndicator element_indicator = 1;
+    oneof status {
+        bool is_enabled = 2;
+        ElementError failure = 3;
+    }
+}
+
+message ClickElementRequest {
+    ElementIndicator element_indicator = 1;
+    uint32 index = 2;
+}
+
+message ClickElementResponse {
+    ElementIndicator element_indicator = 1;
+    oneof status {
+        bool success = 2;
+        ElementError failure = 3;
+    }
+}
+
+message GetValueOfElementRequest {
+    ElementIndicator element_indicator = 1;
+    uint32 index= 2;
+}
+
+message GetValueOfElementResponse {
+    ElementIndicator element_indicator = 1;
+    oneof status {
+        string value = 2;
+        ElementError failure = 3;
+    }
+}
+
+message SetValueOfElementRequest {
+    message TextValue {
+        string value = 1;
+        bool clears = 2;
+    }
+
+    ElementIndicator element_indicator = 1;
+    uint32 index = 2;
+    oneof value {
+        TextValue text = 3;
+        float position = 4;
+        bool selection = 5;
+    }
+}
+
+message SetValueOfElementResponse {
+    ElementIndicator element_indicator = 1;
+    oneof status {
+        bool success = 2;
+        ElementError failure = 3;
+    }
+}
+
+message GetElementsCountRequest {
+    ElementIndicator element_indicator = 1;
+}
+
+message GetElementsCountResponse {
+    ElementIndicator element_indicator = 1;
+    int64 count = 2;
+}
+
+message GetElementIdRequest {
+    ElementIndicator element_indicator = 1;
+    uint32 index = 2;
+}
+
+message GetElementIdResponse {
+    ElementIndicator element_indicator = 1;
+    oneof status {
+        string id = 2;
+        ElementError failure = 3;
+    }
+}
+
+message PrepareDriverRequest {}
+message PrepareDriverResponse {}
+
+message MobiliumMessage {
+    oneof message {
+        StartDriverRequest start_driver_request = 1;
+        StartDriverResponse start_driver_response = 2;
+        InstallAppRequest install_app_request = 3;
+        InstallAppResponse install_app_response = 4;
+        UninstallAppRequest uninstall_app_request = 5;
+        UninstallAppResponse uninstall_app_response = 6;
+        LaunchAppRequest launch_app_request = 7;
+        LaunchAppResponse launch_app_response = 8;
+        TerminateAppRequest terminate_app_request = 9;
+        TerminateAppResponse terminate_app_response = 10;
+        IsElementVisibleRequest is_element_visible_request = 11;
+        IsElementVisibleResponse is_element_visible_response = 12;
+        IsElementInvisibleRequest is_element_invisible_request = 13;
+        IsElementInvisibleResponse is_element_invisible_response = 14;
+        IsElementEnabledRequest is_element_enabled_request = 15;
+        IsElementEnabledResponse is_element_enabled_response = 16;
+        ClickElementRequest click_element_request = 17;
+        ClickElementResponse click_element_response = 18;
+        GetValueOfElementRequest get_value_of_element_request = 19;
+        GetValueOfElementResponse get_value_of_element_response = 20;
+        SetValueOfElementRequest set_value_of_element_request = 21;
+        SetValueOfElementResponse set_value_of_element_response = 22;
+        GetElementsCountRequest get_elements_count_request = 23;
+        GetElementsCountResponse get_elements_count_response = 24;
+        GetElementIdRequest get_element_id_request = 25;
+        GetElementIdResponse get_element_id_response = 26;
+        PrepareDriverRequest prepare_driver_request = 27;
+        PrepareDriverResponse prepare_driver_response = 28;
+        TouchRequest touch_request = 29;
+        TouchResponse touch_response = 30;
+        GetWindowSizeRequest get_window_size_request = 31;
+        GetWindowSizeResponse get_window_size_response = 32;
+    }
+}
